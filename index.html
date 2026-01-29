@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DUSTED™ | Mini Car Vacuum</title>
 <style>
-/* GLOBAL */
+/* GLOBAL STYLES */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Inter',sans-serif;background:#f7f7f7;color:#222;line-height:1.5;overflow-x:hidden;}
 a{text-decoration:none;color:inherit;}
@@ -13,39 +13,35 @@ img{max-width:100%;display:block;}
 
 /* HEADER */
 header{
-  background:#1d3557;color:#f1faee;text-align:center;padding:70px 20px;
-  animation:fadeInDown 1s ease;
+  background:#1d3557;color:#f1faee;text-align:center;padding:80px 20px;
 }
-header h1{font-size:56px;font-weight:900;margin-bottom:10px;letter-spacing:2px;}
-header p{font-size:20px;color:#f1faee;}
+header h1{font-size:60px;font-weight:900;margin-bottom:15px;letter-spacing:2px;}
+header p{font-size:22px;color:#f1faee;}
 
-/* HERO */
+/* HERO / SLIDER */
 .hero{
   max-width:1300px;margin:-60px auto 60px;padding:20px;
-  display:grid;grid-template-columns:1.3fr 1fr;gap:50px;
-  background:#fff;border-radius:22px;
+  background:#fff;border-radius:25px;
   box-shadow:0 35px 90px rgba(0,0,0,0.15);
-  overflow:hidden;opacity:0;transform:translateY(50px);
-  animation:fadeInUp 1s forwards 0.2s;
+  overflow:hidden;display:grid;grid-template-columns:1.5fr 1fr;gap:50px;
 }
-.hero img{border-radius:22px;transition:0.5s;}
-.hero img:hover{transform:scale(1.05);}
+.slider{position:relative;border-radius:25px;overflow:hidden;}
+.slider img{width:100%;height:500px;object-fit:cover;transition:0.5s;}
+.slider img:hover{transform:scale(1.05);}
+.slider-controls{position:absolute;top:50%;left:0;width:100%;display:flex;justify-content:space-between;transform:translateY(-50%);}
+.slider-controls span{background:rgba(0,0,0,0.5);color:#fff;font-size:30px;padding:10px 15px;border-radius:50%;cursor:pointer;user-select:none;}
+
+/* HERO INFO */
 .hero-info h2{font-size:48px;margin-bottom:20px;}
 .hero-info p{font-size:18px;color:#555;margin-bottom:20px;}
-.price{font-size:42px;color:#e63946;font-weight:800;margin-bottom:10px;}
+.price{font-size:44px;color:#e63946;font-weight:800;margin-bottom:10px;}
 .old-price{text-decoration:line-through;font-size:18px;color:#999;margin-left:10px;}
 .buy-btn{display:inline-block;background:#e63946;color:#fff;padding:22px 40px;border-radius:12px;font-size:22px;font-weight:700;transition:0.3s;margin-bottom:15px;}
 .buy-btn:hover{background:#d62828;transform:translateY(-2px);}
 .trust{text-align:center;font-size:15px;color:#555;margin-top:8px;}
 
-/* STICKY BUY */
-.sticky-buy{
-  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
-  background:#e63946;color:#fff;padding:20px 40px;border-radius:12px;font-size:20px;font-weight:700;
-  z-index:999;box-shadow:0 12px 40px rgba(0,0,0,0.25);
-  display:none;transition:0.3s;
-}
-.sticky-buy:hover{background:#d62828;}
+/* COUNTDOWN */
+.countdown{margin:20px 0;font-size:20px;font-weight:700;color:#e63946;text-align:center;}
 
 /* FEATURES */
 .features{max-width:1300px;margin:60px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;padding:0 20px;}
@@ -66,8 +62,19 @@ header p{font-size:20px;color:#f1faee;}
 .review h4{font-size:18px;margin-bottom:8px;}
 .review p{font-size:16px;color:#555;}
 
-/* COUNTDOWN */
-.countdown{margin:20px 0;font-size:20px;font-weight:700;color:#e63946;text-align:center;}
+/* PRODUCT GALLERY */
+.gallery{max-width:1300px;margin:60px auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:0 20px;}
+.gallery img{border-radius:16px;cursor:pointer;transition:0.3s;}
+.gallery img:hover{transform:scale(1.05);box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+
+/* STICKY BUY */
+.sticky-buy{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#e63946;color:#fff;padding:20px 40px;border-radius:12px;font-size:20px;font-weight:700;
+  z-index:999;box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  display:none;transition:0.3s;
+}
+.sticky-buy:hover{background:#d62828;}
 
 /* SOCIAL PROOF */
 .social-proof{
@@ -89,6 +96,7 @@ footer a:hover{color:#fff;}
 @media(max-width:1000px){
   .hero{grid-template-columns:1fr;}
   .features{grid-template-columns:1fr;}
+  .gallery{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
@@ -99,20 +107,34 @@ footer a:hover{color:#fff;}
   <p>Mini Car Vacuum – Powerful, Compact & Stylish</p>
 </header>
 
-<!-- HERO -->
+<!-- HERO SECTION -->
 <div class="hero">
-  <img src="https://via.placeholder.com/600x600" alt="DUSTED Mini Car Vacuum">
+  <div class="slider">
+    <img src="https://via.placeholder.com/700x500?text=Main+Image+1" alt="DUSTED Mini Car Vacuum">
+    <img src="https://via.placeholder.com/700x500?text=Image+2" alt="DUSTED Side View" style="display:none;">
+    <img src="https://via.placeholder.com/700x500?text=Image+3" alt="DUSTED in Car" style="display:none;">
+    <div class="slider-controls">
+      <span id="prev">&#10094;</span>
+      <span id="next">&#10095;</span>
+    </div>
+  </div>
   <div class="hero-info">
     <h2>Mini Car Vacuum Cleaner</h2>
-    <p>Keep your car spotless with DUSTED™ — ultra-compact, rechargeable, and perfect for all surfaces: seats, floors, mats, and dashboards.</p>
-    
+    <p>Keep your car spotless with DUSTED™ — ultra-compact, rechargeable, and perfect for all surfaces.</p>
     <div class="countdown" id="countdown">Hurry! Offer ends in: 24:00:00</div>
-    
     <div class="price">€29.99 <span class="old-price">€49.99</span></div>
     <a href="https://buy.stripe.com/YOUR_LINK_HERE" class="buy-btn">Buy Now — Fast & Secure</a>
     <div class="trust">🔒 Secure checkout • 🚚 Fast shipping • 🔁 14-day returns</div>
   </div>
 </div>
+
+<!-- PRODUCT GALLERY -->
+<section class="gallery">
+  <img src="https://via.placeholder.com/300x300?text=Gallery+1" alt="Gallery Image 1">
+  <img src="https://via.placeholder.com/300x300?text=Gallery+2" alt="Gallery Image 2">
+  <img src="https://via.placeholder.com/300x300?text=Gallery+3" alt="Gallery Image 3">
+  <img src="https://via.placeholder.com/300x300?text=Gallery+4" alt="Gallery Image 4">
+</section>
 
 <!-- FEATURES -->
 <section class="features">
@@ -139,13 +161,27 @@ footer a:hover{color:#fff;}
 </footer>
 
 <script>
+// Slider Logic
+let currentSlide=0;
+const slides=document.querySelectorAll('.slider img');
+document.getElementById('next').onclick=function(){
+  slides[currentSlide].style.display='none';
+  currentSlide=(currentSlide+1)%slides.length;
+  slides[currentSlide].style.display='block';
+}
+document.getElementById('prev').onclick=function(){
+  slides[currentSlide].style.display='none';
+  currentSlide=(currentSlide-1+slides.length)%slides.length;
+  slides[currentSlide].style.display='block';
+}
+
 // Sticky Buy Button
-const stickyBtn = document.getElementById('stickyBuy');
-window.addEventListener('scroll', ()=> {stickyBtn.style.display = window.scrollY > 400 ? 'block':'none';});
+const stickyBtn=document.getElementById('stickyBuy');
+window.addEventListener('scroll',()=>{stickyBtn.style.display=window.scrollY>400?'block':'none';});
 
 // Countdown Timer
-let countdown = 24*60*60;
-const countdownEl = document.getElementById('countdown');
+let countdown=24*60*60;
+const countdownEl=document.getElementById('countdown');
 function updateCountdown(){
   let h=Math.floor(countdown/3600);
   let m=Math.floor((countdown%3600)/60);
@@ -157,7 +193,7 @@ setInterval(updateCountdown,1000);
 
 // Scroll animations
 function scrollAnimation(){
-  const elements=document.querySelectorAll('.feature, .review');
+  const elements=document.querySelectorAll('.feature,.review,.gallery img');
   const triggerBottom=window.innerHeight*0.85;
   elements.forEach(el=>{if(el.getBoundingClientRect().top<triggerBottom){el.style.opacity='1';el.style.transform='translateY(0)';}});
 }
@@ -167,7 +203,9 @@ window.addEventListener('load',scrollAnimation);
 // Social Proof Popup
 const socialProof=document.getElementById('socialProof');
 const messages=["John from Germany just bought one!","Maria from Italy just ordered DUSTED™!","Alex from Spain got one now!","Linda from France purchased 2 units!"];
-let index=0;setInterval(()=>{socialProof.textContent=messages[index];index=(index+1)%messages.length;},5000);
+let index=0;
+setInterval(()=>{socialProof.textContent=messages[index];index=(index+1)%messages.length;},5000);
 </script>
+
 </body>
 </html>
