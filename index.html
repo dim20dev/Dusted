@@ -66,14 +66,6 @@ header p{font-size:20px;color:#f1faee;}
 .review h4{font-size:18px;margin-bottom:8px;}
 .review p{font-size:16px;color:#555;}
 
-/* UPSALES */
-.upsell{max-width:1300px;margin:60px auto;padding:0 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
-.upsell-item{background:#fff;padding:25px;border-radius:16px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.08);transition:0.3s;}
-.upsell-item img{border-radius:12px;margin-bottom:15px;}
-.upsell-item h4{font-size:18px;margin-bottom:8px;}
-.upsell-item p{font-size:15px;color:#555;}
-.upsell-item:hover{transform:translateY(-5px);}
-
 /* COUNTDOWN */
 .countdown{margin:20px 0;font-size:20px;font-weight:700;color:#e63946;text-align:center;}
 
@@ -97,7 +89,6 @@ footer a:hover{color:#fff;}
 @media(max-width:1000px){
   .hero{grid-template-columns:1fr;}
   .features{grid-template-columns:1fr;}
-  .upsell{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -137,25 +128,6 @@ footer a:hover{color:#fff;}
   <div class="review"> <h4>⭐⭐⭐⭐⭐ Mike R.</h4> <p>“Compact, stylish, and actually works. Totally recommend!”</p> </div>
 </section>
 
-<!-- UPSALES -->
-<section class="upsell">
-  <div class="upsell-item">
-    <img src="https://via.placeholder.com/250x250" alt="Car Air Purifier">
-    <h4>Mini Car Air Purifier</h4>
-    <p>Keep your car smelling fresh & clean</p>
-  </div>
-  <div class="upsell-item">
-    <img src="https://via.placeholder.com/250x250" alt="Portable Car LED Light">
-    <h4>Portable Car LED Light</h4>
-    <p>Brighten your car interior instantly</p>
-  </div>
-  <div class="upsell-item">
-    <img src="https://via.placeholder.com/250x250" alt="Phone Holder">
-    <h4>Universal Phone Holder</h4>
-    <p>Secure your phone while driving safely</p>
-  </div>
-</section>
-
 <!-- STICKY BUY -->
 <a href="https://buy.stripe.com/YOUR_LINK_HERE" class="sticky-buy" id="stickyBuy">Buy Now — Fast & Secure</a>
 
@@ -169,48 +141,33 @@ footer a:hover{color:#fff;}
 <script>
 // Sticky Buy Button
 const stickyBtn = document.getElementById('stickyBuy');
-window.addEventListener('scroll', ()=> {
-  stickyBtn.style.display = window.scrollY > 400 ? 'block':'none';
-});
+window.addEventListener('scroll', ()=> {stickyBtn.style.display = window.scrollY > 400 ? 'block':'none';});
 
 // Countdown Timer
 let countdown = 24*60*60;
 const countdownEl = document.getElementById('countdown');
 function updateCountdown(){
-  let h = Math.floor(countdown/3600);
-  let m = Math.floor((countdown%3600)/60);
-  let s = countdown%60;
-  countdownEl.textContent = `Hurry! Offer ends in: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-  countdown--;
-  if(countdown<0) countdown=0;
+  let h=Math.floor(countdown/3600);
+  let m=Math.floor((countdown%3600)/60);
+  let s=countdown%60;
+  countdownEl.textContent=`Hurry! Offer ends in: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+  countdown--; if(countdown<0) countdown=0;
 }
 setInterval(updateCountdown,1000);
 
 // Scroll animations
 function scrollAnimation(){
-  const elements = document.querySelectorAll('.feature, .review, .upsell-item');
-  const triggerBottom = window.innerHeight * 0.85;
-  elements.forEach(el=>{
-    const boxTop = el.getBoundingClientRect().top;
-    if(boxTop < triggerBottom){ el.style.opacity='1'; el.style.transform='translateY(0)'; }
-  });
+  const elements=document.querySelectorAll('.feature, .review');
+  const triggerBottom=window.innerHeight*0.85;
+  elements.forEach(el=>{if(el.getBoundingClientRect().top<triggerBottom){el.style.opacity='1';el.style.transform='translateY(0)';}});
 }
 window.addEventListener('scroll',scrollAnimation);
 window.addEventListener('load',scrollAnimation);
 
 // Social Proof Popup
-const socialProof = document.getElementById('socialProof');
-const messages = [
-  "John from Germany just bought one!",
-  "Maria from Italy just ordered DUSTED™!",
-  "Alex from Spain got one now!",
-  "Linda from France purchased 2 units!"
-];
-let index = 0;
-setInterval(()=>{
-  socialProof.textContent = messages[index];
-  index = (index+1) % messages.length;
-},5000);
+const socialProof=document.getElementById('socialProof');
+const messages=["John from Germany just bought one!","Maria from Italy just ordered DUSTED™!","Alex from Spain got one now!","Linda from France purchased 2 units!"];
+let index=0;setInterval(()=>{socialProof.textContent=messages[index];index=(index+1)%messages.length;},5000);
 </script>
 </body>
 </html>
