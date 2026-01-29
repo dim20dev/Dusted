@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DUSTED – Dust in the Past</title>
+
+  <!-- Favicon (you can replace later) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3ED%3C/text%3E%3C/svg%3E">
+
+  <style>
+    :root {
+      --black: #111;
+      --gray: #666;
+      --light: #f6f6f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--light);
+      color: var(--black);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--black);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 36px;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    .product {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+    }
+
+    .product img {
+      width: 100%;
+      border-radius: 10px;
+      background: #eee;
+    }
+
+    .details h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .details p {
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+
+    /* TABLE STYLE (YOU CAN EDIT CONTENT) */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    table td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    table td:first-child {
+      font-weight: bold;
+      width: 40%;
+    }
+
+    .price {
+      font-size: 26px;
+      margin: 15px 0;
+    }
+
+    .buy-btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: var(--black);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .buy-btn:hover {
+      opacity: 0.85;
+    }
+
+    .secure {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 30px 20px;
+      background: #fff;
+      text-align: center;
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    footer a {
+      color: var(--gray);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    @media (max-width: 768px) {
+      .product {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>DUSTED</h1>
+    <p>Dust in the past. Clean in minutes.</p>
+  </header>
+
+  <main>
+    <section class="product">
+
+      <!-- PRODUCT IMAGE -->
+      <img src="https://via.placeholder.com/500x400" alt="Dusted Mini Car Vacuum">
+
+      <!-- PRODUCT DETAILS -->
+      <div class="details">
+        <h2>Mini Car Vacuum Cleaner</h2>
+        <p>
+          A compact and powerful vacuum designed to keep your car spotless.
+          Perfect for quick cleanups, tight spaces, and everyday use.
+        </p>
+
+        <!-- PRODUCT INFO TABLE (EDIT THIS) -->
+        <table>
+          <tr>
+            <td>Power</td>
+            <td>High-suction motor</td>
+          </tr>
+          <tr>
+            <td>Design</td>
+            <td>Compact & portable</td>
+          </tr>
+          <tr>
+            <td>Use</td>
+            <td>Cars, seats, corners</td>
+          </tr>
+          <tr>
+            <td>Charging</td>
+            <td>USB rechargeable</td>
+          </tr>
+        </table>
+
+        <!-- PRICE -->
+        <div class="price">€29.99</div>
+
+        <!-- BUY BUTTON (REPLACE STRIPE LINK) -->
+        <a class="buy-btn" href="https://buy.stripe.com/YOUR_LINK_HERE">
+          Buy Now
+        </a>
+
+        <div class="secure">
+          🔒 Secure checkout powered by Stripe
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      © 2026 DUSTED — All rights reserved
+    </p>
+    <p>
+      <a href="#">Shipping</a> |
+      <a href="#">Refunds</a> |
+      <a href="#">Contact</a>
+    </p>
+  </footer>
+
+  <script>
+    // JS kept minimal on purpose
+    // You can add tracking or animations later
+  </script>
+
+</body>
+</html>
