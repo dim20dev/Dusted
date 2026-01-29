@@ -3,236 +3,214 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DUSTED™ – Mini Car Vacuum Cleaner</title>
-
-<!-- Favicon -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Ctext y='0.9em' font-size='90'%3ED%3C/text%3E%3C/svg%3E">
-
+<title>DUSTED™ | Mini Car Vacuum</title>
 <style>
 /* GLOBAL */
-:root {
-  --black: #111;
-  --white: #fff;
-  --gray: #6c6c6c;
-  --lightgray: #f8f8f8;
-  --accent: #4c5ef1;
-  --accent-light: #6179ff;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#f7f7f7;color:#222;line-height:1.5;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* HEADER */
+header{
+  background:#1d3557;color:#f1faee;text-align:center;padding:70px 20px;
+  animation:fadeInDown 1s ease;
 }
+header h1{font-size:56px;font-weight:900;margin-bottom:10px;letter-spacing:2px;}
+header p{font-size:20px;color:#f1faee;}
 
-body {
-  font-family: "Inter", sans-serif;
-  background: var(--lightgray);
-  color: var(--black);
-  line-height: 1.6;
+/* HERO */
+.hero{
+  max-width:1300px;margin:-60px auto 60px;padding:20px;
+  display:grid;grid-template-columns:1.3fr 1fr;gap:50px;
+  background:#fff;border-radius:22px;
+  box-shadow:0 35px 90px rgba(0,0,0,0.15);
+  overflow:hidden;opacity:0;transform:translateY(50px);
+  animation:fadeInUp 1s forwards 0.2s;
 }
+.hero img{border-radius:22px;transition:0.5s;}
+.hero img:hover{transform:scale(1.05);}
+.hero-info h2{font-size:48px;margin-bottom:20px;}
+.hero-info p{font-size:18px;color:#555;margin-bottom:20px;}
+.price{font-size:42px;color:#e63946;font-weight:800;margin-bottom:10px;}
+.old-price{text-decoration:line-through;font-size:18px;color:#999;margin-left:10px;}
+.buy-btn{display:inline-block;background:#e63946;color:#fff;padding:22px 40px;border-radius:12px;font-size:22px;font-weight:700;transition:0.3s;margin-bottom:15px;}
+.buy-btn:hover{background:#d62828;transform:translateY(-2px);}
+.trust{text-align:center;font-size:15px;color:#555;margin-top:8px;}
 
-/* HEADER SECTION */
-.header {
-  background: var(--accent);
-  color: var(--white);
-  padding: 40px 20px;
-  text-align: center;
+/* STICKY BUY */
+.sticky-buy{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  background:#e63946;color:#fff;padding:20px 40px;border-radius:12px;font-size:20px;font-weight:700;
+  z-index:999;box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  display:none;transition:0.3s;
 }
+.sticky-buy:hover{background:#d62828;}
 
-.header h1 {
-  font-size: 42px;
-  letter-spacing: 2px;
+/* FEATURES */
+.features{max-width:1300px;margin:60px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;padding:0 20px;}
+.feature{
+  background:#fff;padding:35px;border-radius:20px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,0.08);
+  opacity:0;transform:translateY(50px);transition:0.6s;
 }
+.feature h3{font-size:22px;margin-bottom:12px;}
+.feature p{font-size:16px;color:#555;}
 
-.header p {
-  margin-top: 8px;
-  font-size: 16px;
+/* REVIEWS */
+.reviews{max-width:1300px;margin:60px auto;padding:0 20px;}
+.review{
+  background:#fff;padding:30px;border-radius:16px;margin-bottom:25px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.08);
+  opacity:0; transform:translateY(50px); transition:0.6s;
 }
+.review h4{font-size:18px;margin-bottom:8px;}
+.review p{font-size:16px;color:#555;}
 
-/* MAIN PRODUCT SECTION */
-.main {
-  max-width: 1100px;
-  margin: -30px auto 0;
-  padding: 20px;
-}
+/* UPSALES */
+.upsell{max-width:1300px;margin:60px auto;padding:0 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+.upsell-item{background:#fff;padding:25px;border-radius:16px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.08);transition:0.3s;}
+.upsell-item img{border-radius:12px;margin-bottom:15px;}
+.upsell-item h4{font-size:18px;margin-bottom:8px;}
+.upsell-item p{font-size:15px;color:#555;}
+.upsell-item:hover{transform:translateY(-5px);}
 
-.product-container {
-  background: var(--white);
-  border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  padding: 50px;
-}
+/* COUNTDOWN */
+.countdown{margin:20px 0;font-size:20px;font-weight:700;color:#e63946;text-align:center;}
 
-.product-container img {
-  width: 100%;
-  border-radius: 14px;
-  background: #eee;
-  padding: 20px;
-}
-
-.product-details h2 {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-
-.product-details p {
-  font-size: 16px;
-  color: var(--gray);
-  margin-bottom: 20px;
-}
-
-.price {
-  font-size: 32px;
-  font-weight: bold;
-  color: var(--accent);
-  margin: 15px 0;
-}
-
-.old-price {
-  text-decoration: line-through;
-  color: #999;
-  font-size: 16px;
-  margin-left: 10px;
-}
-
-/* BUY BUTTON */
-.buy-btn {
-  display: inline-block;
-  background: var(--accent);
-  color: var(--white);
-  padding: 18px 30px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 600;
-  transition: 0.3s;
-  margin-top: 15px;
-}
-
-.buy-btn:hover {
-  background: var(--accent-light);
-  transform: translateY(-2px);
-}
-
-.trust {
-  font-size: 14px;
-  color: var(--gray);
-  margin-top: 8px;
-}
-
-/* FEATURES SECTION */
-.features {
-  margin: 80px auto 40px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  max-width: 1100px;
-  padding: 0 20px;
-}
-
-.feature-box {
-  background: var(--white);
-  padding: 25px;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  text-align: center;
-}
-
-.feature-box h3 {
-  margin-bottom: 10px;
-  font-size: 20px;
-}
-
-.feature-box p {
-  font-size: 15px;
-  color: var(--gray);
+/* SOCIAL PROOF */
+.social-proof{
+  position:fixed;bottom:100px;left:20px;background:#fff;padding:15px 20px;border-radius:12px;
+  box-shadow:0 12px 40px rgba(0,0,0,0.15);font-size:14px;color:#222;opacity:0.95;
+  animation:popUp 0.5s ease infinite alternate;
 }
 
 /* FOOTER */
-footer {
-  margin-top: 80px;
-  text-align: center;
-  padding: 30px 20px;
-  font-size: 14px;
-  color: var(--gray);
-}
+footer{margin-top:80px;background:#1d3557;color:#f1faee;text-align:center;padding:50px 20px;font-size:14px;}
+footer a{color:#f1faee;margin:0 10px;transition:0.2s;}
+footer a:hover{color:#fff;}
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .product-container {
-    grid-template-columns: 1fr;
-  }
-  .features {
-    grid-template-columns: 1fr;
-  }
-  .header h1 {
-    font-size: 32px;
-  }
+/* ANIMATIONS */
+@keyframes fadeInUp{to{opacity:1;transform:translateY(0);}}
+@keyframes fadeInDown{to{opacity:1;transform:translateY(0);}}
+@keyframes popUp{0%{transform:translateY(0);}100%{transform:translateY(-10px);}}
+
+@media(max-width:1000px){
+  .hero{grid-template-columns:1fr;}
+  .features{grid-template-columns:1fr;}
+  .upsell{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<section class="header">
+<header>
   <h1>DUSTED™</h1>
-  <p>Powerful Mini Car Vacuum — Dust in the past</p>
-</section>
+  <p>Mini Car Vacuum – Powerful, Compact & Stylish</p>
+</header>
 
-<!-- MAIN PRODUCT -->
-<section class="main">
-  <div class="product-container">
+<!-- HERO -->
+<div class="hero">
+  <img src="https://via.placeholder.com/600x600" alt="DUSTED Mini Car Vacuum">
+  <div class="hero-info">
+    <h2>Mini Car Vacuum Cleaner</h2>
+    <p>Keep your car spotless with DUSTED™ — ultra-compact, rechargeable, and perfect for all surfaces: seats, floors, mats, and dashboards.</p>
     
-    <!-- IMAGE -->
-    <img src="https://via.placeholder.com/600x600" alt="DUSTED Mini Car Vacuum">
-
-    <!-- DETAILS -->
-    <div class="product-details">
-      <h2>Mini Car Vacuum Cleaner</h2>
-      <p>
-        A high‑power, portable vacuum designed to clean every corner of your car
-        — seats, floors, mats, and dashboards — quickly and effortlessly.
-      </p>
-
-      <!-- PRICE -->
-      <div class="price">
-        €29.99 <span class="old-price">€49.99</span>
-      </div>
-
-      <!-- BUY BUTTON (replace Stripe link) -->
-      <a class="buy-btn" href="https://buy.stripe.com/YOUR_LINK_HERE">
-        Buy Now — Fast & Secure
-      </a>
-      <div class="trust">🔒 Secure checkout • 🚚 Fast shipping • 🔁 14‑day returns</div>
-    </div>
-
+    <div class="countdown" id="countdown">Hurry! Offer ends in: 24:00:00</div>
+    
+    <div class="price">€29.99 <span class="old-price">€49.99</span></div>
+    <a href="https://buy.stripe.com/YOUR_LINK_HERE" class="buy-btn">Buy Now — Fast & Secure</a>
+    <div class="trust">🔒 Secure checkout • 🚚 Fast shipping • 🔁 14-day returns</div>
   </div>
-</section>
+</div>
 
 <!-- FEATURES -->
 <section class="features">
-  <div class="feature-box">
-    <h3>Strong Suction</h3>
-    <p>High‑speed motor removes dirt & debris in seconds.</p>
+  <div class="feature"> <h3>Strong Suction</h3> <p>High-speed motor removes dirt and crumbs instantly.</p> </div>
+  <div class="feature"> <h3>USB Rechargeable</h3> <p>Recharge anywhere — no cables, no hassle.</p> </div>
+  <div class="feature"> <h3>Compact & Portable</h3> <p>Fits easily in glove box or console for convenience.</p> </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <div class="review"> <h4>⭐⭐⭐⭐⭐ John D.</h4> <p>“Amazing little vacuum! My car has never been cleaner.”</p> </div>
+  <div class="review"> <h4>⭐⭐⭐⭐⭐ Sarah L.</h4> <p>“Super convenient and powerful. Perfect for quick cleanups.”</p> </div>
+  <div class="review"> <h4>⭐⭐⭐⭐⭐ Mike R.</h4> <p>“Compact, stylish, and actually works. Totally recommend!”</p> </div>
+</section>
+
+<!-- UPSALES -->
+<section class="upsell">
+  <div class="upsell-item">
+    <img src="https://via.placeholder.com/250x250" alt="Car Air Purifier">
+    <h4>Mini Car Air Purifier</h4>
+    <p>Keep your car smelling fresh & clean</p>
   </div>
-  <div class="feature-box">
-    <h3>Wireless & Portable</h3>
-    <p>Rechargeable battery — use it anywhere without cables.</p>
+  <div class="upsell-item">
+    <img src="https://via.placeholder.com/250x250" alt="Portable Car LED Light">
+    <h4>Portable Car LED Light</h4>
+    <p>Brighten your car interior instantly</p>
   </div>
-  <div class="feature-box">
-    <h3>Compact & Stylish</h3>
-    <p>Fits glove box or car console with ease.</p>
+  <div class="upsell-item">
+    <img src="https://via.placeholder.com/250x250" alt="Phone Holder">
+    <h4>Universal Phone Holder</h4>
+    <p>Secure your phone while driving safely</p>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- STICKY BUY -->
+<a href="https://buy.stripe.com/YOUR_LINK_HERE" class="sticky-buy" id="stickyBuy">Buy Now — Fast & Secure</a>
+
+<!-- SOCIAL PROOF -->
+<div class="social-proof" id="socialProof">John from Germany just bought one!</div>
+
 <footer>
-  © 2026 DUSTED™ — All rights reserved
+  © 2026 DUSTED™ — <a href="#">Shipping</a> | <a href="#">Refunds</a> | <a href="#">Contact</a>
 </footer>
 
+<script>
+// Sticky Buy Button
+const stickyBtn = document.getElementById('stickyBuy');
+window.addEventListener('scroll', ()=> {
+  stickyBtn.style.display = window.scrollY > 400 ? 'block':'none';
+});
+
+// Countdown Timer
+let countdown = 24*60*60;
+const countdownEl = document.getElementById('countdown');
+function updateCountdown(){
+  let h = Math.floor(countdown/3600);
+  let m = Math.floor((countdown%3600)/60);
+  let s = countdown%60;
+  countdownEl.textContent = `Hurry! Offer ends in: ${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+  countdown--;
+  if(countdown<0) countdown=0;
+}
+setInterval(updateCountdown,1000);
+
+// Scroll animations
+function scrollAnimation(){
+  const elements = document.querySelectorAll('.feature, .review, .upsell-item');
+  const triggerBottom = window.innerHeight * 0.85;
+  elements.forEach(el=>{
+    const boxTop = el.getBoundingClientRect().top;
+    if(boxTop < triggerBottom){ el.style.opacity='1'; el.style.transform='translateY(0)'; }
+  });
+}
+window.addEventListener('scroll',scrollAnimation);
+window.addEventListener('load',scrollAnimation);
+
+// Social Proof Popup
+const socialProof = document.getElementById('socialProof');
+const messages = [
+  "John from Germany just bought one!",
+  "Maria from Italy just ordered DUSTED™!",
+  "Alex from Spain got one now!",
+  "Linda from France purchased 2 units!"
+];
+let index = 0;
+setInterval(()=>{
+  socialProof.textContent = messages[index];
+  index = (index+1) % messages.length;
+},5000);
+</script>
 </body>
 </html>
