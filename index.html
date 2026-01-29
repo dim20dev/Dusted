@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DUSTED™ | Official Store</title>
+    <title>DUSTED™ | Official Viral Store</title>
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -12,51 +12,48 @@
     <style>
         :root {
             --primary: #2563eb;
+            --accent: #ff4b2b;
             --dark: #0f172a;
             --light: #f8fafc;
             --gray: #64748b;
-            --white: #ffffff;
             --radius: 20px;
+            --nav-height: 70px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        html { scroll-behavior: smooth; }
+        /* Fixed Scroll Bug Logic */
+        html { scroll-behavior: smooth; scroll-padding-top: var(--nav-height); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--light); color: var(--dark); overflow-x: hidden; }
 
-        /* --- Global Components --- */
-        .page { display: none; width: 100%; }
-        .page.active { display: block; }
-
+        /* Navigation */
         nav {
-            position: fixed; top: 0; width: 100%; height: 70px;
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px);
+            position: fixed; top: 0; width: 100%; height: var(--nav-height);
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px);
             z-index: 1000; display: flex; justify-content: space-between;
             align-items: center; padding: 0 6%; border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .logo { font-weight: 800; font-size: 1.5rem; text-decoration: none; color: var(--dark); letter-spacing: -1px; }
+        .logo { font-weight: 800; font-size: 1.5rem; text-decoration: none; color: var(--dark); }
         .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
 
-        .btn-main {
-            background: var(--dark); color: var(--white); padding: 14px 28px;
-            border-radius: 50px; text-decoration: none; font-weight: 700;
-            display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;
-            border: none; cursor: pointer;
-        }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        /* Page Routing */
+        .page { display: none; }
+        .page.active { display: block; }
 
         /* --- HOME PAGE STYLE --- */
-        .hero-home { padding: 140px 6% 80px; text-align: center; }
+        .hero-home { padding: 140px 6% 60px; text-align: center; }
         .hero-tag { background: #dbeafe; color: var(--primary); padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
-        .hero-home h1 { font-size: 4rem; margin: 20px 0; line-height: 1; letter-spacing: -2px; }
+        .hero-home h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin: 20px 0; letter-spacing: -2px; line-height: 1.1; }
         
-        .product-preview { 
+        .promo-banner { 
             max-width: 1000px; margin: 40px auto; position: relative; cursor: pointer;
-            border-radius: var(--radius); overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            border-radius: var(--radius); overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.15);
         }
-        .product-preview img { width: 100%; display: block; transition: 0.5s; }
-        .product-preview:hover img { transform: scale(1.05); }
-        .preview-overlay {
-            position: absolute; bottom: 30px; left: 30px; background: var(--white);
+        .promo-banner img { width: 100%; display: block; transition: 0.6s; }
+        .promo-banner:hover img { transform: scale(1.05); }
+        .promo-overlay {
+            position: absolute; bottom: 30px; left: 30px; background: white;
             padding: 20px 30px; border-radius: 15px; text-align: left;
         }
 
@@ -65,35 +62,60 @@
             max-width: 1200px; margin: 120px auto 60px;
             display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; padding: 0 5%;
         }
-        .main-img-container { background: var(--white); border-radius: var(--radius); overflow: hidden; position: sticky; top: 100px; }
-        .main-img-container img { width: 100%; display: block; }
+        .gallery-container { position: sticky; top: 100px; }
+        .main-img-box { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .main-img-box img { width: 100%; display: block; cursor: zoom-in; }
         
-        .thumbs { display: flex; gap: 15px; margin-top: 15px; }
-        .thumb { width: 80px; height: 80px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; }
+        .thumb-strip { display: flex; gap: 12px; margin-top: 15px; }
+        .thumb { width: 70px; height: 70px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; object-fit: cover; }
         .thumb.active { border-color: var(--primary); }
 
-        .price-tag { font-size: 2.5rem; font-weight: 800; margin: 20px 0; }
-        .price-tag del { color: var(--gray); font-size: 1.2rem; margin-right: 10px; }
+        .price-row { display: flex; align-items: center; gap: 15px; margin: 20px 0; }
+        .price-now { font-size: 3rem; font-weight: 800; color: var(--dark); }
+        .price-old { text-decoration: line-through; color: var(--gray); font-size: 1.5rem; }
 
-        .stripe-btn {
-            background: #6366f1; width: 100%; padding: 20px; border-radius: 12px;
-            color: white; text-decoration: none; font-weight: 800; display: block;
-            text-align: center; font-size: 1.2rem; margin-top: 20px;
+        .timer-box {
+            background: #000; color: #fff; padding: 12px 20px; border-radius: 12px;
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 25px;
         }
 
-        /* --- Sticky Checkout (Ali Style) --- */
-        .sticky-buy {
-            position: fixed; bottom: 0; width: 100%; background: var(--white);
+        /* Stripe & Formspree Elements */
+        .stripe-btn {
+            background: var(--accent); color: white; width: 100%; padding: 22px;
+            border-radius: 50px; text-decoration: none; font-weight: 800;
+            display: block; text-align: center; font-size: 1.3rem;
+            box-shadow: 0 10px 25px rgba(255, 75, 43, 0.3); transition: 0.3s;
+        }
+        .stripe-btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+        .contact-form {
+            background: white; padding: 30px; border-radius: var(--radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-top: 40px;
+        }
+        .input-f { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit; }
+
+        /* Social Proof Popups */
+        .trust-popup {
+            position: fixed; bottom: 20px; left: 20px; background: white; padding: 12px 20px;
+            border-radius: 50px; display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 3000;
+            transform: translateY(150%); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .trust-popup.show { transform: translateY(0); }
+
+        /* Sticky Bar */
+        .sticky-bar {
+            position: fixed; bottom: 0; width: 100%; background: white;
             padding: 15px 6%; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+            align-items: center; box-shadow: 0 -10px 30px rgba(0,0,0,0.08);
             transform: translateY(100%); transition: 0.4s; z-index: 2000;
         }
-        .sticky-buy.active { transform: translateY(0); }
+        .sticky-bar.active { transform: translateY(0); }
 
         @media (max-width: 768px) {
             .product-grid { grid-template-columns: 1fr; }
-            .hero-home h1 { font-size: 2.5rem; }
             .nav-links { display: none; }
+            .sticky-bar span { display: none; }
         }
     </style>
 </head>
@@ -101,23 +123,47 @@
 
     <nav>
         <a href="#" onclick="showPage('home')" class="logo">DUSTED<span>™</span></a>
-        <div class="nav-links">
-            <a href="#" onclick="showPage('home')" style="margin-right:20px; text-decoration:none; color:var(--dark); font-weight:600;">Home</a>
-            <a href="#" onclick="showPage('product')" class="btn-main">SHOP NOW</a>
-        </div>
+        <ul class="nav-links">
+            <li><a onclick="showPage('home')">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a onclick="showPage('product')" style="color: var(--primary)">Shop</a></li>
+        </ul>
+        <a onclick="showPage('product')" class="btn-main" style="background:var(--dark); color:white; padding:10px 20px; border-radius:50px; text-decoration:none; font-weight:700; cursor:pointer;">BUY NOW</a>
     </nav>
 
     <div id="home-page" class="page active">
         <section class="hero-home">
-            <span class="hero-tag">2026 BESTSELLER</span>
-            <h1>The only vacuum you'll <br> ever need in your car.</h1>
-            <p style="color:var(--gray); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">8000Pa suction. Wireless. Fits in your cup holder.</p>
+            <span class="hero-tag" data-aos="fade-down">TIKTOK VIRAL FIND</span>
+            <h1 data-aos="fade-up">Professional Cleaning <br> In The Palm Of Your Hand.</h1>
+            <p style="color:var(--gray); margin-bottom:40px;">Stop using gas station vacuums. DUSTED™ gives you 8000Pa suction anywhere.</p>
             
-            <div class="product-preview" onclick="showPage('product')" data-aos="zoom-in">
-                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1200" alt="Product">
-                <div class="preview-overlay">
+            <div class="promo-banner" onclick="showPage('product')" data-aos="zoom-in">
+                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1200" alt="Dusted">
+                <div class="promo-overlay">
                     <p style="font-weight: 800; font-size: 1.2rem;">DUSTED™ Mini Vacuum</p>
-                    <p style="color: var(--primary); font-weight: 700;">View Product Details →</p>
+                    <p style="color: var(--primary); font-weight: 700;">Explore Product Details →</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" style="padding: 80px 6%; background: white; text-align: center;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 50px;">Why DUSTED™?</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                <div data-aos="fade-up">
+                    <i data-lucide="zap" color="var(--primary)" size="40"></i>
+                    <h3 style="margin: 15px 0;">8000Pa Power</h3>
+                    <p style="color:var(--gray)">Strong enough to lift coins and deep-clean car carpets.</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <i data-lucide="battery-charging" color="var(--primary)" size="40"></i>
+                    <h3 style="margin: 15px 0;">Fast USB-C Charging</h3>
+                    <p style="color:var(--gray)">Charge in your car or at home. 30+ minutes of use.</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <i data-lucide="wind" color="var(--primary)" size="40"></i>
+                    <h3 style="margin: 15px 0;">HEPA Filter</h3>
+                    <p style="color:var(--gray)">Washable and reusable filter that traps 99.9% of dust.</p>
                 </div>
             </div>
         </section>
@@ -125,52 +171,70 @@
 
     <div id="product-page" class="page">
         <div class="product-grid">
-            <div class="gallery-col">
-                <div class="main-img-container">
-                    <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000" id="current-view">
+            <div class="gallery-container">
+                <div class="main-img-box">
+                    <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000" id="main-view">
                 </div>
-                <div class="thumbs">
-                    <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=200" class="thumb active" onclick="updateImg(this)">
-                    <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=200" class="thumb" onclick="updateImg(this)">
-                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=200" class="thumb" onclick="updateImg(this)">
+                <div class="thumb-strip">
+                    <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=200" class="thumb active" onclick="swap(this)">
+                    <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=200" class="thumb" onclick="swap(this)">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=200" class="thumb" onclick="swap(this)">
                 </div>
             </div>
 
-            <div class="details-col">
-                <p style="color: var(--primary); font-weight: 700; letter-spacing: 1px;">IN STOCK - SHIPS TODAY</p>
-                <h1 style="font-size: 3rem; margin: 10px 0;">DUSTED™ Mini</h1>
-                <p style="color: var(--gray);">Professional grade handheld vacuum with HEPA filtration and USB-C fast charging.</p>
+            <div class="product-details">
+                <h1 style="font-size: 3rem; margin-bottom: 10px;">DUSTED™ Mini</h1>
+                <div style="display: flex; gap: 5px; color: #fbbf24; margin-bottom: 20px;">★★★★★ <span style="color:var(--gray); font-size: 0.9rem;">(12,400+ Reviews)</span></div>
                 
-                <div class="price-tag">
-                    <del>$79.99</del> <span>$39.99</span>
+                <div class="price-row">
+                    <span class="price-now">$39.99</span>
+                    <span class="price-old">$79.99</span>
                 </div>
 
-                <ul style="list-style: none; margin: 30px 0;">
-                    <li style="margin-bottom: 10px;"><i data-lucide="check" size="18" color="green"></i> 8000Pa Brushless Motor</li>
-                    <li style="margin-bottom: 10px;"><i data-lucide="check" size="18" color="green"></i> Washable Filter System</li>
-                    <li style="margin-bottom: 10px;"><i data-lucide="check" size="18" color="green"></i> 30-Min Run Time</li>
-                </ul>
+                <div class="timer-box">
+                    <i data-lucide="clock" size="18"></i>
+                    <span>Offer ends in: <span id="timer">00:00:00</span></span>
+                </div>
 
-                <a href="https://buy.stripe.com/your_link" class="stripe-btn">PAY WITH STRIPE</a>
+                <a href="https://buy.stripe.com/YOUR_LINK" class="stripe-btn">COMPLETE ORDER</a>
                 
-                <div style="margin-top: 40px;">
-                    <h3>Contact Us</h3>
-                    <form action="https://formspree.io/f/your_id" method="POST" style="margin-top: 15px;">
-                        <input type="email" name="email" placeholder="Your Email" style="width:100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px;">
-                        <textarea name="message" placeholder="How can we help?" style="width:100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;" rows="3"></textarea>
-                        <button type="submit" style="margin-top:10px; background:var(--dark); color:white; border:none; padding: 10px 20px; border-radius: 8px; cursor:pointer;">Send</button>
+                <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 30px;">
+                    <h3>Contact Support</h3>
+                    <form action="https://formspree.io/f/YOUR_ID" method="POST" class="contact-form">
+                        <input type="email" name="email" class="input-f" placeholder="Your Email Address" required>
+                        <textarea name="message" class="input-f" rows="4" placeholder="How can we help?" required></textarea>
+                        <button type="submit" style="background:var(--dark); color:white; border:none; padding:12px 25px; border-radius:10px; cursor:pointer; font-weight:700;">Send Message</button>
                     </form>
                 </div>
             </div>
         </div>
+
+        <section id="reviews" style="padding: 60px 6%; max-width: 1000px; margin: 0 auto;">
+            <h2 style="text-align:center; margin-bottom:40px;">Verified Customer Proof</h2>
+            <div style="background:white; padding:30px; border-radius:15px; margin-bottom:20px;" data-aos="fade-up">
+                <p style="color:#fbbf24; margin-bottom:10px;">★★★★★</p>
+                <p>"Best purchase for my car. Shipping was 5 days to Miami. Suction is actually crazy for the size."</p>
+                <p style="margin-top:15px; font-weight:700;">— Jason D.</p>
+            </div>
+            <div style="background:white; padding:30px; border-radius:15px;" data-aos="fade-up">
+                <p style="color:#fbbf24; margin-bottom:10px;">★★★★★</p>
+                <p>"Saw this on TikTok, glad I didn't get a cheap knockoff. The DUSTED one is the real deal."</p>
+                <p style="margin-top:15px; font-weight:700;">— Elena M.</p>
+            </div>
+        </section>
     </div>
 
-    <div class="sticky-buy" id="sticky-buy">
-        <div>
-            <p style="font-weight: 800;">DUSTED™ Mini</p>
-            <p style="color: var(--primary); font-weight: 700;">$39.99</p>
+    <div class="trust-popup" id="popup">
+        <i data-lucide="shopping-cart" size="18" color="var(--primary)"></i>
+        <span id="popup-text">Someone in London just bought DUSTED™</span>
+    </div>
+
+    <div class="sticky-bar" id="sticky-bar">
+        <div style="display:flex; align-items:center; gap:15px;">
+            <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=50" style="border-radius:5px;">
+            <span><strong>DUSTED™ Mini</strong><br><small>$39.99</small></span>
         </div>
-        <a href="https://buy.stripe.com/your_link" class="btn-main" style="background:var(--primary)">CHECKOUT NOW</a>
+        <a href="https://buy.stripe.com/YOUR_LINK" class="stripe-btn" style="width:auto; padding: 12px 30px; font-size: 1rem;">BUY NOW</a>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -178,30 +242,48 @@
         lucide.createIcons();
         AOS.init();
 
-        // 2-Page Router Logic
-        function showPage(pageName) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageName + '-page').classList.add('active');
+        // 2-Page Navigation
+        function showPage(p) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(p + '-page').classList.add('active');
             window.scrollTo(0,0);
         }
 
-        // Gallery Logic
-        function updateImg(el) {
-            document.getElementById('current-view').src = el.src;
+        // Gallery Switcher (Ali Style)
+        function swap(el) {
+            document.getElementById('main-view').src = el.src;
             document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
         }
 
-        // Sticky Bar Logic (Only shows on Product Page)
-        window.onscroll = function() {
-            const bar = document.getElementById('sticky-buy');
-            const isProductPage = document.getElementById('product-page').classList.contains('active');
-            if (isProductPage && window.pageYOffset > 500) {
-                bar.classList.add('active');
-            } else {
-                bar.classList.remove('active');
-            }
+        // Countdown Timer
+        let time = 3600 * 2; // 2 Hours
+        setInterval(() => {
+            let h = Math.floor(time / 3600);
+            let m = Math.floor((time % 3600) / 60);
+            let s = time % 60;
+            document.getElementById('timer').innerText = `${h<10?'0':''}${h}:${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
+            if(time > 0) time--;
+        }, 1000);
+
+        // Sticky Bar Logic
+        window.onscroll = () => {
+            const isProduct = document.getElementById('product-page').classList.contains('active');
+            const bar = document.getElementById('sticky-bar');
+            if(isProduct && window.scrollY > 600) bar.classList.add('active');
+            else bar.classList.remove('active');
         };
+
+        // Social Proof Logic
+        const locs = ["New York", "London", "Berlin", "Dubai", "Sydney", "Toronto"];
+        const names = ["James", "Emma", "Sarah", "Noah", "Chloe", "Lucas"];
+        setInterval(() => {
+            const n = names[Math.floor(Math.random()*6)];
+            const l = locs[Math.floor(Math.random()*6)];
+            document.getElementById('popup-text').innerText = `${n} from ${l} just bought DUSTED™`;
+            document.getElementById('popup').classList.add('show');
+            setTimeout(() => document.getElementById('popup').classList.remove('show'), 4000);
+        }, 12000);
     </script>
 </body>
 </html>
