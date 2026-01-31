@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DUSTED</title>
+    <title>DUSTED™ — Precision Detailing</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +34,10 @@
             overflow-x: hidden; 
             -webkit-font-smoothing: antialiased;
         }
-        img { display: block; max-width: 100%; height: auto; }
+        
+        /* FIX FOR CROPPING: object-fit contain ensures full image is visible */
+        img { display: block; width: 100%; height: 100%; object-fit: contain; }
+        
         a { text-decoration: none; color: inherit; }
         button { cursor: pointer; border: none; font-family: inherit; }
 
@@ -52,12 +55,11 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- NAVIGATION (FIXED TEXT VISIBILITY) --- */
+        /* --- NAVIGATION --- */
         nav {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
-            background: rgba(5, 5, 5, 0.9); 
+            background: rgba(5, 5, 5, 0.95); 
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border); 
             z-index: 9999; 
             display: flex; justify-content: space-between; align-items: center;
@@ -84,7 +86,7 @@
         .hero-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4em; margin-bottom: 15px; display: block; }
         .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(3.5rem, 12vw, 8rem); line-height: 0.85; font-weight: 700; letter-spacing: -0.05em; margin-bottom: 40px; }
         .hero-btn { display: inline-block; padding: 20px 45px; background: var(--accent); color: #000; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.3s; }
-        .hero-visual { position: absolute; bottom: -50px; width: 100%; max-width: 800px; z-index: 1; opacity: 0.8; }
+        .hero-visual { position: absolute; bottom: 0; width: 100%; max-width: 800px; height: 60vh; z-index: 1; }
 
         /* --- MARQUEE --- */
         .marquee { border-bottom: 1px solid var(--border); overflow: hidden; white-space: nowrap; padding: 25px 0; background: var(--surface); }
@@ -96,9 +98,16 @@
         .product-section { display: flex; flex-wrap: wrap; max-width: 1400px; margin: 0 auto; border-bottom: 1px solid var(--border); }
         .p-gallery { flex: 1 1 50%; padding: 80px 60px; border-right: 1px solid var(--border); background: var(--bg); }
         .sticky-wrapper { position: sticky; top: 120px; }
-        .main-image { width: 100%; border-radius: var(--radius); background: var(--surface); margin-bottom: 20px; border: 1px solid var(--border); }
+        
+        .main-image-container { 
+            width: 100%; aspect-ratio: 1/1; 
+            background: var(--surface); /* Fallback background color */
+            margin-bottom: 20px; border: 1px solid var(--border); border-radius: var(--radius);
+            overflow: hidden;
+        }
+
         .thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .thumb { aspect-ratio: 1; background: var(--surface); border: 1px solid var(--border); cursor: pointer; opacity: 0.5; transition: 0.3s; }
+        .thumb { aspect-ratio: 1/1; background: var(--surface); border: 1px solid var(--border); cursor: pointer; opacity: 0.5; transition: 0.3s; overflow: hidden; }
         .thumb.active { opacity: 1; border-color: var(--accent); }
 
         .p-info { flex: 1 1 450px; padding: 100px 80px; background: var(--bg); }
@@ -145,6 +154,7 @@
             .mobile-bar { display: flex; }
             .buy-now-btn { display: none; }
             h2.p-title { font-size: 3rem; }
+            .hero-visual { height: 40vh; }
         }
     </style>
 </head>
@@ -164,12 +174,12 @@
 
     <header class="hero">
         <div class="hero-content">
-            <span class="hero-label">Vacuum Series III</span>
+            <span class="hero-label">Series III Industrial</span>
             <h1 class="hero-title">BEYOND <br> CLEAN.</h1>
-            <a href="product" class="hero-btn">Buy Now — €16.95</a>
+            <a href="#product" class="hero-btn">Buy Now — €16.95</a>
         </div>
         <div class="hero-visual">
-            <img src="7.webp" alt="Main Hero">
+            <img src="1.webp" alt="Dusted Product Shot">
         </div>
     </header>
 
@@ -182,19 +192,21 @@
     <section id="product" class="product-section">
         <div class="p-gallery">
             <div class="sticky-wrapper">
-                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000" class="main-image" id="mainImg">
+                <div class="main-image-container">
+                    <img src="1.webp" id="mainImg">
+                </div>
                 <div class="thumbs">
-                    <div class="thumb active" onclick="setImg(this, 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000')"><img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=200"></div>
-                    <div class="thumb" onclick="setImg(this, 'https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=1000')"><img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=200"></div>
-                    <div class="thumb" onclick="setImg(this, 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1000')"><img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=200"></div>
-                    <div class="thumb" onclick="setImg(this, 'https://images.unsplash.com/photo-1590604518086-53842c525164?q=80&w=1000')"><img src="https://images.unsplash.com/photo-1590604518086-53842c525164?q=80&w=200"></div>
+                    <div class="thumb active" onclick="setImg(this, '1.webp')"><img src="1.webp"></div>
+                    <div class="thumb" onclick="setImg(this, '2.webp')"><img src="2.webp"></div>
+                    <div class="thumb" onclick="setImg(this, '3.webp')"><img src="3.webp"></div>
+                    <div class="thumb" onclick="setImg(this, '4.webp')"><img src="4.webp"></div>
                 </div>
             </div>
         </div>
 
         <div class="p-info">
             <span class="badge">In Stock / Ready to Ship</span>
-            <h2 class="p-title">DUSTED™ <br> Vacuum Series III</h2>
+            <h2 class="p-title">DUSTED™ <br> Series III</h2>
             <div class="p-price"><span>€16.95 EUR</span><del>€34.65</del></div>
             <p class="p-desc">Industrial velocity, portable form. The Series III features a brushless motor designed for automotive detailing and high-end workspaces.</p>
             
@@ -213,8 +225,8 @@
                     <div class="accordion-content"><p>The industrial-grade filter can be rinsed with water. Ensure it is 100% dry before re-inserting.</p></div>
                 </div>
                 <div class="accordion-item">
-                    <button class="accordion-header" onclick="toggleAcc(this)">Global,Free Shipping <i data-lucide="chevron-down"></i></button>
-                    <div class="accordion-content"><p>We deliver for free-worldwide within 10-18 business days.</p></div>
+                    <button class="accordion-header" onclick="toggleAcc(this)">Global Shipping <i data-lucide="chevron-down"></i></button>
+                    <div class="accordion-content"><p>We deliver worldwide within 10-18 business days. Tracking is provided via email immediately after dispatch.</p></div>
                 </div>
             </div>
         </div>
