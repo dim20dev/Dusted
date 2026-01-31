@@ -3,342 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DUSTED™ — Portable Engineering</title>
+    <title>DUSTED™ — Handheld Vacuum Engineering</title>
 
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg: #ffffff;
             --text: #000000;
-            --secondary: #636366;
-            --accent: #0071e3;
+            --secondary: #6e6e73;
+            --accent: #2563eb;
             --surface: #f5f5f7;
-            --border: #d2d2d7;
-            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+            --border: rgba(0,0,0,0.1);
+            --radius-btn: 100px;
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* Base Resets */
+        /* --- Global Reset & Stability --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            overflow-x: hidden;
-            line-height: 1.5;
+        body, html { 
+            width: 100%; height: 100%;
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); color: var(--text);
+            scroll-behavior: smooth;
         }
 
-        /* --- Navigation Layer --- */
+        /* --- Navigation --- */
         nav {
-            position: fixed; top: 0; width: 100%; height: 50px;
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: saturate(180%) blur(20px);
+            position: fixed; top: 0; width: 100%; height: 64px;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: saturate(180%) blur(20px);
             z-index: 9999; display: flex; justify-content: space-between;
-            align-items: center; padding: 0 5%; border-bottom: 0.5px solid var(--border);
+            align-items: center; padding: 0 6%; border-bottom: 0.5px solid var(--border);
         }
-        .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.05em; text-decoration: none; color: var(--text); }
-        .nav-links { display: flex; gap: 40px; }
-        .nav-links a { text-decoration: none; color: var(--text); font-size: 0.75rem; font-weight: 400; transition: opacity 0.3s; cursor: pointer; }
-        .nav-links a:hover { opacity: 0.5; }
-        .nav-cta { background: var(--text); color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; text-decoration: none; }
+        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -1px; text-decoration: none; color: var(--text); }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+        .nav-cta { background: var(--text); color: white; padding: 10px 22px; border-radius: var(--radius-btn); font-size: 0.75rem; font-weight: 700; text-decoration: none; transition: 0.3s; }
+        .nav-cta:hover { transform: scale(1.05); }
 
-        /* --- View System --- */
-        .view { display: none; min-height: 100vh; }
-        .view.active { display: block; animation: view-fade 0.8s var(--easing); }
-        @keyframes view-fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- Home View (The Experience) --- */
-        .hero-cinema {
-            height: 100vh; display: flex; flex-direction: column; align-items: center;
-            justify-content: center; text-align: center; padding-top: 50px;
-        }
-        .hero-title { 
-            font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 12vw, 8rem);
-            font-weight: 700; letter-spacing: -0.06em; line-height: 0.85; margin-bottom: 30px;
-        }
-        .hero-subtitle { font-size: 1.2rem; color: var(--secondary); max-width: 500px; margin-bottom: 50px; font-weight: 400; }
+        /* --- Layout Logic --- */
+        .section { width: 100%; padding: 0 6%; }
         
-        .hero-media { 
-            width: 100%; max-width: 1000px; position: relative; cursor: pointer;
-            transition: transform 1s var(--easing);
+        /* --- Hero: The "Entrance" --- */
+        .hero { 
+            height: 100vh; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; text-align: center;
+            background: radial-gradient(circle at center, #fff 0%, #f9f9fb 100%);
         }
-        .hero-media:hover { transform: scale(1.02); }
-        .hero-media img { width: 100%; height: auto; display: block; }
+        .hero-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--secondary); margin-bottom: 20px; }
+        .hero h1 { font-size: clamp(3rem, 10vw, 7rem); font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; margin-bottom: 32px; }
+        .hero-img { width: 100%; max-width: 800px; transform: translateY(0); transition: 1.2s var(--ease); cursor: pointer; }
+        .hero-img:hover { transform: scale(1.03); }
 
-        /* --- Marquee Section --- */
-        .marquee { background: var(--surface); padding: 40px 0; overflow: hidden; white-space: nowrap; border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); }
-        .marquee-inner { display: inline-block; animation: marquee 30s linear infinite; }
-        .marquee-inner span { font-family: 'Space Grotesk', sans-serif; font-size: 4rem; font-weight: 700; letter-spacing: -0.02em; padding-right: 50px; color: #ebebeb; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-
-        /* --- Product View (The Store) --- */
-        .product-wrap { max-width: 1200px; margin: 0 auto; padding: 120px 5% 60px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 80px; }
+        /* --- Store Grid --- */
+        .store-grid { 
+            max-width: 1200px; margin: 100px auto; 
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px;
+        }
+        .gallery-wrap { position: sticky; top: 100px; height: fit-content; }
+        .main-img-box { background: var(--surface); border-radius: 20px; overflow: hidden; margin-bottom: 20px; }
+        .main-img-box img { width: 100%; display: block; }
         
-        .gallery-stack { position: sticky; top: 100px; }
-        .main-stage { width: 100%; background: var(--surface); border-radius: 4px; overflow: hidden; margin-bottom: 20px; }
-        .main-stage img { width: 100%; height: auto; display: block; }
-        .thumbs-grid { display: flex; gap: 15px; }
-        .thumb-unit { width: 80px; height: 80px; background: var(--surface); border: 1px solid transparent; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
-        .thumb-unit.active { border-color: var(--text); }
-        .thumb-unit img { width: 100%; height: auto; }
+        .thumb-nav { display: flex; gap: 12px; }
+        .thumb { width: 80px; height: 80px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; object-fit: cover; }
+        .thumb.active { border-color: var(--text); }
 
-        .details-panel { padding-top: 10px; }
-        .kicker { text-transform: uppercase; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--secondary); margin-bottom: 10px; }
-        .p-name { font-family: 'Space Grotesk', sans-serif; font-size: 3.5rem; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 20px; line-height: 1; }
-        .p-price-row { font-size: 1.5rem; font-weight: 500; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
-        .p-price-old { text-decoration: line-through; color: var(--secondary); font-weight: 400; font-size: 1.2rem; }
+        /* --- Product Details --- */
+        .details h2 { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
+        .price-row { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; }
+        .current-price { font-size: 2rem; font-weight: 700; }
+        .old-price { font-size: 1.4rem; color: var(--secondary); text-decoration: line-through; }
 
-        .action-area { margin-bottom: 60px; }
-        .buy-trigger { 
-            display: block; width: 100%; background: var(--text); color: white;
-            padding: 24px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.1em; text-decoration: none; text-align: center; border-radius: 2px;
-            transition: var(--transition); margin-bottom: 15px;
+        .feature-points { margin-bottom: 40px; }
+        .point { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; font-weight: 500; font-size: 0.95rem; }
+        .point i { color: var(--accent); }
+
+        /* --- High Trust Checkout --- */
+        .checkout-box { background: #fff; border: 1px solid var(--border); padding: 32px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.03); }
+        .buy-btn { 
+            display: block; width: 100%; background: var(--text); color: white; 
+            padding: 22px; border-radius: var(--radius-btn); text-align: center; 
+            text-decoration: none; font-weight: 700; font-size: 1rem; transition: 0.3s;
         }
-        .buy-trigger:hover { background: #333; }
+        .buy-btn:hover { background: #222; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        
+        .trust-footer { display: flex; justify-content: space-around; margin-top: 20px; }
+        .trust-tag { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--secondary); display: flex; align-items: center; gap: 5px; }
 
-        /* --- Technical Accordion --- */
-        .spec-list { border-top: 0.5px solid var(--border); }
-        .spec-row { border-bottom: 0.5px solid var(--border); padding: 25px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .spec-row span { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-        .spec-row p { font-size: 0.9rem; color: var(--secondary); opacity: 0.8; }
+        /* --- Full Width Features --- */
+        .dark-section { background: #000; color: #fff; padding: 120px 6%; margin-top: 100px; border-radius: 40px 40px 0 0; }
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 60px auto 0; }
+        .bento-card { background: #111; padding: 40px; border-radius: 24px; text-align: left; transition: 0.3s; }
+        .bento-card:hover { background: #1a1a1a; }
+        .bento-card i { margin-bottom: 24px; color: var(--accent); }
+        .bento-card h4 { font-size: 1.4rem; margin-bottom: 12px; }
+        .bento-card p { color: #888; font-size: 0.9rem; line-height: 1.6; }
 
-        /* --- Features Reveal --- */
-        .feature-reveal { padding: 120px 5%; background: #000; color: #fff; text-align: center; }
-        .reveal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1100px; margin: 80px auto 0; }
-        .reveal-unit i { margin-bottom: 25px; opacity: 0.8; }
-        .reveal-unit h4 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 15px; letter-spacing: -0.02em; }
-        .reveal-unit p { font-size: 0.9rem; color: #888; line-height: 1.6; }
-
-        /* --- Institutional Trust --- */
-        .trust-section { padding: 100px 5%; max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
-        .review-card { position: relative; padding-left: 30px; border-left: 2px solid var(--text); }
-        .review-card p { font-size: 1.4rem; font-style: italic; font-weight: 300; margin-bottom: 20px; }
-        .review-author { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- Floating UI --- */
-        .checkout-bar {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: #fff;
-            border-top: 0.5px solid var(--border); padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            transform: translateY(100%); transition: transform 0.5s var(--easing); z-index: 9998;
+        /* --- Support Form --- */
+        .contact-wrap { max-width: 600px; margin: 100px auto; text-align: center; }
+        .contact-wrap h2 { font-size: 2.5rem; margin-bottom: 40px; letter-spacing: -1px; }
+        .input-group { position: relative; margin-bottom: 24px; }
+        .input-group input, .input-group textarea { 
+            width: 100%; padding: 18px; border-radius: 12px; border: 1px solid var(--border);
+            background: var(--surface); outline: none; font-family: inherit; font-size: 1rem;
         }
-        .checkout-bar.active { transform: translateY(0); }
+        .input-group input:focus { border-color: var(--text); background: #fff; }
 
-        /* --- Support Layer --- */
-        .contact-layer { background: var(--surface); padding: 100px 5%; }
-        .contact-container { max-width: 600px; margin: 0 auto; text-align: center; }
-        .input-field { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border); padding: 20px 0; font-size: 1rem; outline: none; margin-bottom: 30px; transition: 0.3s; }
-        .input-field:focus { border-bottom-color: var(--text); }
-
-        /* --- Mobile Adaptivity --- */
-        @media (max-width: 850px) {
-            .product-wrap { grid-template-columns: 1fr; padding-top: 80px; }
-            .hero-title { font-size: 4rem; }
-            .reveal-grid { grid-template-columns: 1fr; }
-            .trust-section { grid-template-columns: 1fr; gap: 60px; }
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 900px) {
+            .store-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hero h1 { font-size: 3.5rem; }
+            .bento-grid { grid-template-columns: 1fr; }
             .nav-links { display: none; }
         }
+
+        /* --- Animations --- */
+        [data-aos] { opacity: 0; transform: translateY(30px); transition: 1s var(--ease); }
+        [data-aos].visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="smooth-scroll">
+<body>
 
     <nav>
-        <a href="#" class="nav-logo" onclick="route('home')">DUSTED™</a>
+        <a href="#" class="logo">DUSTED</a>
         <div class="nav-links">
-            <a onclick="route('product')">Technology</a>
-            <a href="#features">Innovation</a>
-            <a href="#contact">Support</a>
+            <a href="#store">Product</a>
+            <a href="#innovation">Innovation</a>
+            <a href="#support">Support</a>
         </div>
-        <a onclick="route('product')" class="nav-cta">SHOP NOW</a>
+        <a href="#store" class="nav-cta">BUY NOW</a>
     </nav>
 
-    <main id="home" class="view active">
-        <section class="hero-cinema">
-            <div class="kicker">Available Generation 3</div>
-            <h1 class="hero-title">ENGINEERED<br>FOR POWER.</h1>
-            <p class="hero-subtitle">The first handheld vacuum designed with industrial-grade suction in a boutique form factor.</p>
+    <main>
+        <section class="hero">
+            <div class="hero-tag">Design Meets Suction</div>
+            <h1>Engineered <br> to be Essential.</h1>
+            <div class="hero-img" onclick="document.getElementById('store').scrollIntoView()">
+                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1200" alt="Dusted Vacuum">
+            </div>
+            <p style="margin-top: 40px; font-weight: 600; color: var(--secondary);">Scroll to Experience</p>
+        </section>
+
+        <section class="section" id="store">
+            <div class="store-grid">
+                <div class="gallery-wrap">
+                    <div class="main-img-box">
+                        <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000" id="main-view">
+                    </div>
+                    <div class="thumb-nav">
+                        <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=200" class="thumb active" onclick="swap(this)">
+                        <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=200" class="thumb" onclick="swap(this)">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=200" class="thumb" onclick="swap(this)">
+                    </div>
+                </div>
+
+                <div class="details">
+                    <div class="hero-tag" style="color:var(--accent)">In Stock — Worldwide Shipping</div>
+                    <h2>DUSTED™ Handheld</h2>
+                    
+                    <div class="price-row">
+                        <span class="old-price">$79.00</span>
+                        <span class="current-price">$39.00</span>
+                    </div>
+
+                    <div class="feature-points">
+                        <div class="point"><i data-lucide="zap" size="20"></i> 8,000Pa Cyclone Suction</div>
+                        <div class="point"><i data-lucide="battery-charging" size="20"></i> 45-Min USB-C Charge Life</div>
+                        <div class="point"><i data-lucide="wind" size="20"></i> Washable HEPA Filter System</div>
+                        <div class="point"><i data-lucide="feather" size="20"></i> Ultra-Light 350g Chassis</div>
+                    </div>
+
+                    <div class="checkout-box">
+                        <a href="https://buy.stripe.com/YOUR_LINK" class="buy-btn">CHECKOUT WITH STRIPE</a>
+                        <div class="trust-footer">
+                            <span class="trust-tag"><i data-lucide="shield-check" size="14"></i> Secure Payment</span>
+                            <span class="trust-tag"><i data-lucide="truck" size="14"></i> 3-Day Delivery</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border);">
+                        <p style="font-size: 0.9rem; color: var(--secondary); line-height: 1.8;">
+                            Developed for car enthusiasts and minimalist workspaces. DUSTED™ combines a high-torque brushless motor with a proprietary airflow design to lift debris that larger vacuums often miss. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dark-section" id="innovation">
+            <div style="text-align: center;">
+                <div class="hero-tag" style="color: #fff; opacity: 0.5;">Technology</div>
+                <h3 style="font-size: 3rem; font-weight: 800; letter-spacing: -2px;">Unmatched Performance.</h3>
+            </div>
             
-            <div class="hero-media" onclick="route('product')">
-                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1400" alt="Dusted Product">
-                <div style="margin-top: 30px; font-weight: 500; letter-spacing: 0.2em; font-size: 0.7rem; text-transform: uppercase;">
-                    Explore DUSTED™ Series 01 →
+            <div class="bento-grid">
+                <div class="bento-card" data-aos>
+                    <i data-lucide="cpu" size="32"></i>
+                    <h4>SmartSense™ Chip</h4>
+                    <p>Optimizes motor speed in real-time to preserve battery while maintaining peak suction power.</p>
+                </div>
+                <div class="bento-card" data-aos>
+                    <i data-lucide="trash-2" size="32"></i>
+                    <h4>One-Click Empty</h4>
+                    <p>Discard debris without ever touching the dust. High-capacity bin designed for full-car detailing.</p>
+                </div>
+                <div class="bento-card" data-aos>
+                    <i data-lucide="layers" size="32"></i>
+                    <h4>Pro-Grade HEPA</h4>
+                    <p>Captures 99.97% of fine particles. Simply wash with water to restore to factory performance.</p>
                 </div>
             </div>
         </section>
 
-        <div class="marquee">
-            <div class="marquee-inner">
-                <span>8000PA POWER</span>
-                <span>45 MIN RUNTIME</span>
-                <span>USB-C FAST CHARGE</span>
-                <span>HEPA FILTER</span>
-                <span>8000PA POWER</span>
-                <span>45 MIN RUNTIME</span>
-                <span>USB-C FAST CHARGE</span>
-                <span>HEPA FILTER</span>
-            </div>
-        </div>
-
-        <section class="trust-section">
-            <div class="review-card">
-                <p>"The suction is genuinely surprising. It managed to pull debris out of my car's seat rails that my garage vac couldn't touch."</p>
-                <div class="review-author">— JONATHAN W., AUTOMOTIVE DESIGNER</div>
-            </div>
-            <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=800" style="width: 100%; border-radius: 2px;">
-        </section>
-    </main>
-
-    <main id="product" class="view">
-        <div class="product-wrap">
-            <div class="gallery-stack">
-                <div class="main-stage">
-                    <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000" id="main-frame">
-                </div>
-                <div class="thumbs-grid">
-                    <div class="thumb-unit active" onclick="updateGallery(this, 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000')">
-                        <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=100">
-                    </div>
-                    <div class="thumb-unit" onclick="updateGallery(this, 'https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=1000')">
-                        <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=100">
-                    </div>
-                    <div class="thumb-unit" onclick="updateGallery(this, 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1000')">
-                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=100">
-                    </div>
-                </div>
-            </div>
-
-            <div class="details-panel">
-                <div class="kicker">In Stock — Fast Global Shipping</div>
-                <h2 class="p-name">DUSTED™ <br> Series 01</h2>
-                
-                <div class="p-price-row">
-                    <span class="p-price-old">$79.00</span>
-                    <span>$39.00</span>
-                </div>
-
-                <div class="action-area">
-                    <a href="https://buy.stripe.com/YOUR_LINK" class="buy-trigger">Secure Purchase</a>
-                    <p style="font-size: 0.75rem; color: var(--secondary); text-align: center; margin-top: 15px;">
-                        Transaction encrypted by Stripe. 30-Day returns.
-                    </p>
-                </div>
-
-                <div class="spec-list">
-                    <div class="spec-row">
-                        <span>Motor Suction</span>
-                        <p>8,000 Pa</p>
-                    </div>
-                    <div class="spec-row">
-                        <span>Energy</span>
-                        <p>USB-C / 45m</p>
-                    </div>
-                    <div class="spec-row">
-                        <span>Filtration</span>
-                        <p>HEPA Grade</p>
-                    </div>
-                    <div class="spec-row">
-                        <span>Weight</span>
-                        <p>380 Grams</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <section class="feature-reveal" id="features">
-            <h3 style="font-family:'Space Grotesk'; font-size: 3rem; letter-spacing:-0.04em;">TECHNICAL SUPERIORITY.</h3>
-            <div class="reveal-grid">
-                <div class="reveal-unit">
-                    <i data-lucide="zap" size="32"></i>
-                    <h4>Torque-Boost</h4>
-                    <p>Smart motor sensors increase RPM automatically when heavy debris is detected in the intake.</p>
-                </div>
-                <div class="reveal-unit">
-                    <i data-lucide="wind" size="32"></i>
-                    <h4>Vortex Flow</h4>
-                    <p>Internal cyclone technology separates dust from air, maintaining peak suction until the bin is 100% full.</p>
-                </div>
-                <div class="reveal-unit">
-                    <i data-lucide="battery-charging" size="32"></i>
-                    <h4>Quick-Sync</h4>
-                    <p>Recharges to 80% capacity in just 25 minutes via any standard USB-C automotive port.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="contact-layer" id="contact">
-            <div class="contact-container">
-                <h4 style="font-family:'Space Grotesk'; font-size: 2rem; margin-bottom: 20px;">Questions?</h4>
-                <p style="color:var(--secondary); font-size: 0.9rem; margin-bottom: 40px;">Our engineering team is here to assist with technical or shipping inquiries.</p>
+        <section class="section" id="support">
+            <div class="contact-wrap">
+                <h2>Customer Support</h2>
+                <p style="color: var(--secondary); margin-bottom: 40px;">Need help with your order? Our team is available 24/7.</p>
                 <form action="https://formspree.io/f/YOUR_ID" method="POST">
-                    <input type="email" name="email" class="input-field" placeholder="EMAIL ADDRESS" required>
-                    <textarea name="message" class="input-field" placeholder="YOUR MESSAGE" rows="1" required></textarea>
-                    <button type="submit" class="buy-trigger" style="width: auto; padding: 15px 40px;">Send Message</button>
+                    <div class="input-group">
+                        <input type="email" name="email" placeholder="Your Email Address" required>
+                    </div>
+                    <div class="input-group">
+                        <textarea name="message" rows="4" placeholder="How can we help?" required></textarea>
+                    </div>
+                    <button type="submit" class="buy-btn" style="width: auto; padding: 18px 60px;">SEND INQUIRY</button>
                 </form>
             </div>
         </section>
     </main>
 
-    <div class="checkout-bar" id="checkout-bar">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <div style="font-weight: 700; font-size: 0.8rem; letter-spacing: 1px;">SERIES 01</div>
-            <div style="color: var(--secondary); font-size: 0.8rem;">$39.00 USD</div>
-        </div>
-        <a href="https://buy.stripe.com/YOUR_LINK" class="nav-cta" style="padding: 10px 25px;">CHECKOUT</a>
-    </div>
-
     <script>
-        // Initialize Icons
+        // Init Icons
         lucide.createIcons();
 
-        // 1. High-Performance View Engine
-        function route(viewId) {
-            const views = document.querySelectorAll('.view');
-            views.forEach(v => v.classList.remove('active'));
-            
-            const target = document.getElementById(viewId);
-            target.classList.add('active');
-            
-            // Artificial delay for loading-feel
-            window.scrollTo({ top: 0, behavior: 'instant' });
-        }
-
-        // 2. Pro Gallery Logic
-        function updateGallery(trigger, src) {
-            const stage = document.getElementById('main-frame');
-            
-            // Apply fade transition
-            stage.style.opacity = '0.4';
+        // Stable Gallery Logic
+        function swap(el) {
+            const main = document.getElementById('main-view');
+            main.style.opacity = '0.5';
             setTimeout(() => {
-                stage.src = src;
-                stage.style.opacity = '1';
-            }, 150);
-
-            // Update thumbs
-            document.querySelectorAll('.thumb-unit').forEach(t => t.classList.remove('active'));
-            trigger.classList.add('active');
+                main.src = el.src;
+                main.style.opacity = '1';
+            }, 100);
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
         }
 
-        // 3. Scroll-Based UI Triggers (Intersection Observer)
-        window.addEventListener('scroll', () => {
-            const bar = document.getElementById('checkout-bar');
-            const isProductView = document.getElementById('product').classList.contains('active');
-            
-            if (isProductView && window.scrollY > 800) {
-                bar.classList.add('active');
-            } else {
-                bar.classList.remove('active');
-            }
-        });
-
-        // 4. Smooth Interaction (Self-Correction for Scroll Bugs)
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+        // Bug-Free Scroll Animations (Intersection Observer)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+
+        // Navigation Fix
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.height = '56px';
+                nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)';
+            } else {
+                nav.style.height = '64px';
+                nav.style.boxShadow = 'none';
+            }
         });
     </script>
 </body>
