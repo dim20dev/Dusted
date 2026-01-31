@@ -73,10 +73,10 @@
             font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
         }
 
-        /* --- HERO --- */
+        /* --- HERO --- PERFECTED VERSION --- */
         .hero {
             position: relative; 
-            height: 115vh; 
+            min-height: 100vh; 
             width: 100%;
             display: flex; 
             flex-direction: column; 
@@ -84,119 +84,468 @@
             justify-content: center;
             padding: 0 20px;
             overflow: hidden;
-            /* BACKGROUND IMAGE APPROACH - More reliable */
-            background-image: url('4.webp');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            /* FIX: Proper background image with multiple fallbacks */
+            background: 
+                linear-gradient(rgba(5, 5, 5, 0.3), rgba(5, 5, 5, 0.3)), /* Dark overlay for better text contrast */
+                url('5.webp') center center / cover no-repeat,
+                #050505; /* Fallback color if image doesn't load */
         }
+        
         .hero-content { 
             z-index: 10; 
             text-align: center; 
-            padding-top: var(--nav-height);
+            padding: var(--nav-height) 20px 40px; /* Proper padding all around */
             max-width: 1200px;
             width: 100%;
+            margin: 0 auto;
         }
-        .hero-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4em; margin-bottom: 15px; display: block; }
-        .hero-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(3.5rem, 12vw, 8rem); line-height: 0.85; font-weight: 700; letter-spacing: -0.05em; margin-bottom: 40px; }
-        .hero-btn { display: inline-block; padding: 20px 45px; background: var(--accent); color: #000; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.3s; }
         
-        /* REMOVED the old hero-visual styles since we're using background-image */
+        .hero-label { 
+            font-size: 0.75rem; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 0.4em; 
+            margin-bottom: 15px; 
+            display: block; 
+        }
+        
+        .hero-title { 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-size: clamp(3rem, 12vw, 8rem); 
+            line-height: 0.9; 
+            font-weight: 700; 
+            letter-spacing: -0.05em; 
+            margin-bottom: 40px; 
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Better text visibility */
+        }
+        
+        .hero-btn { 
+            display: inline-block; 
+            padding: 20px 45px; 
+            background: var(--accent); 
+            color: #000; 
+            font-weight: 700; 
+            font-size: 0.9rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .hero-btn:hover {
+            background: transparent;
+            color: var(--accent);
+            border-color: var(--accent);
+        }
 
         /* --- MARQUEE --- */
-        .marquee { border-bottom: 1px solid var(--border); overflow: hidden; white-space: nowrap; padding: 25px 0; background: var(--surface); }
-        .track { display: inline-block; animation: marquee 30s linear infinite; }
-        .track span { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--text-muted); margin-right: 80px; text-transform: uppercase; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .marquee { 
+            border-bottom: 1px solid var(--border); 
+            overflow: hidden; 
+            white-space: nowrap; 
+            padding: 25px 0; 
+            background: var(--surface); 
+        }
+        
+        .track { 
+            display: inline-block; 
+            animation: marquee 30s linear infinite; 
+        }
+        
+        .track span { 
+            font-family: 'Space Grotesk', sans-serif; 
+            font-size: 1.2rem; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            margin-right: 80px; 
+            text-transform: uppercase; 
+        }
+        
+        @keyframes marquee { 
+            0% { transform: translateX(0); } 
+            100% { transform: translateX(-50%); } 
+        }
 
         /* --- PRODUCT SECTION --- */
-        .product-section { display: flex; flex-wrap: wrap; max-width: 1400px; margin: 0 auto; border-bottom: 1px solid var(--border); }
-        .p-gallery { flex: 1 1 50%; padding: 80px 60px; border-right: 1px solid var(--border); background: var(--bg); }
-        .sticky-wrapper { position: sticky; top: 120px; }
+        .product-section { 
+            display: flex; 
+            flex-wrap: wrap; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            border-bottom: 1px solid var(--border); 
+        }
+        
+        .p-gallery { 
+            flex: 1 1 50%; 
+            padding: 80px 60px; 
+            border-right: 1px solid var(--border); 
+            background: var(--bg); 
+        }
+        
+        .sticky-wrapper { 
+            position: sticky; 
+            top: 120px; 
+        }
         
         .main-image-container { 
-            width: 100%; aspect-ratio: 1/1; 
+            width: 100%; 
+            aspect-ratio: 1/1; 
             background: var(--surface);
-            margin-bottom: 20px; border: 1px solid var(--border); border-radius: var(--radius);
+            margin-bottom: 20px; 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius);
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        
         .main-image-container img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
 
-        .thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .thumb { aspect-ratio: 1/1; background: var(--surface); border: 1px solid var(--border); cursor: pointer; opacity: 0.5; transition: 0.3s; overflow: hidden; }
-        .thumb.active { opacity: 1; border-color: var(--accent); }
+        .thumbs { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 15px; 
+        }
+        
+        .thumb { 
+            aspect-ratio: 1/1; 
+            background: var(--surface); 
+            border: 1px solid var(--border); 
+            cursor: pointer; 
+            opacity: 0.5; 
+            transition: all 0.3s ease; 
+            overflow: hidden; 
+        }
+        
+        .thumb:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+        
+        .thumb.active { 
+            opacity: 1; 
+            border-color: var(--accent); 
+            transform: translateY(-2px);
+        }
+        
         .thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .p-info { flex: 1 1 450px; padding: 100px 80px; background: var(--bg); }
-        .badge { display: inline-block; padding: 6px 14px; border: 1px solid var(--border); border-radius: 50px; font-size: 0.65rem; text-transform: uppercase; margin-bottom: 25px; color: var(--text-muted); }
-        h2.p-title { font-family: 'Space Grotesk'; font-size: 4rem; line-height: 0.9; margin-bottom: 20px; }
-        .p-price { font-size: 1.8rem; margin-bottom: 40px; display: flex; align-items: center; gap: 20px; font-family: 'Space Grotesk'; font-weight: 600; }
-        .p-price del { color: var(--text-muted); font-size: 1.2rem; font-weight: 400; }
-        .p-desc { color: var(--text-muted); margin-bottom: 50px; font-size: 1.1rem; }
+        .p-info { 
+            flex: 1 1 450px; 
+            padding: 100px 80px; 
+            background: var(--bg); 
+        }
+        
+        .badge { 
+            display: inline-block; 
+            padding: 6px 14px; 
+            border: 1px solid var(--border); 
+            border-radius: 50px; 
+            font-size: 0.65rem; 
+            text-transform: uppercase; 
+            margin-bottom: 25px; 
+            color: var(--text-muted); 
+        }
+        
+        h2.p-title { 
+            font-family: 'Space Grotesk'; 
+            font-size: clamp(2.5rem, 6vw, 4rem); 
+            line-height: 0.9; 
+            margin-bottom: 20px; 
+        }
+        
+        .p-price { 
+            font-size: 1.8rem; 
+            margin-bottom: 40px; 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+            font-family: 'Space Grotesk'; 
+            font-weight: 600; 
+        }
+        
+        .p-price del { 
+            color: var(--text-muted); 
+            font-size: 1.2rem; 
+            font-weight: 400; 
+        }
+        
+        .p-desc { 
+            color: var(--text-muted); 
+            margin-bottom: 50px; 
+            font-size: 1.1rem; 
+            line-height: 1.7;
+        }
 
-        .buy-now-btn { display: block; width: 100%; background: var(--accent); color: #000; padding: 25px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 25px; text-align: center; }
+        .buy-now-btn { 
+            display: block; 
+            width: 100%; 
+            background: var(--accent); 
+            color: #000; 
+            padding: 25px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 0.15em; 
+            margin-bottom: 25px; 
+            text-align: center; 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .buy-now-btn:hover {
+            background: transparent;
+            color: var(--accent);
+            border-color: var(--accent);
+        }
 
         /* SPECS TABLE */
-        .specs-table { width: 100%; border-top: 1px solid var(--border); margin: 50px 0; }
-        .spec-row { display: flex; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
-        .spec-label { color: var(--text-muted); }
-        .spec-val { font-weight: 600; font-family: 'Space Grotesk'; }
+        .specs-table { 
+            width: 100%; 
+            border-top: 1px solid var(--border); 
+            margin: 50px 0; 
+        }
+        
+        .spec-row { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 20px 0; 
+            border-bottom: 1px solid var(--border); 
+            font-size: 0.95rem; 
+        }
+        
+        .spec-label { 
+            color: var(--text-muted); 
+        }
+        
+        .spec-val { 
+            font-weight: 600; 
+            font-family: 'Space Grotesk'; 
+        }
 
         /* ACCORDION */
-        .accordion-item { border-bottom: 1px solid var(--border); }
-        .accordion-header { width: 100%; padding: 25px 0; text-align: left; background: none; color: var(--text-main); font-weight: 600; display: flex; justify-content: space-between; align-items: center; font-size: 1rem; }
-        .accordion-content { max-height: 0; overflow: hidden; transition: 0.4s ease; color: var(--text-muted); }
-        .accordion-content p { padding-bottom: 25px; font-size: 0.95rem; }
+        .accordion-item { 
+            border-bottom: 1px solid var(--border); 
+        }
+        
+        .accordion-header { 
+            width: 100%; 
+            padding: 25px 0; 
+            text-align: left; 
+            background: none; 
+            color: var(--text-main); 
+            font-weight: 600; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 1rem; 
+            transition: color 0.3s ease;
+        }
+        
+        .accordion-header:hover {
+            color: var(--accent);
+        }
+        
+        .accordion-content { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 0.4s ease; 
+            color: var(--text-muted); 
+        }
+        
+        .accordion-content p { 
+            padding-bottom: 25px; 
+            font-size: 0.95rem; 
+            line-height: 1.6;
+        }
 
         /* FEATURES GRID */
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
-        .feature-card { background: var(--bg); padding: 80px 50px; }
-        .feature-card h3 { font-family: 'Space Grotesk'; font-size: 1.8rem; margin: 25px 0 15px; }
+        .features-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 1px; 
+            background: var(--border); 
+            border-bottom: 1px solid var(--border); 
+        }
+        
+        .feature-card { 
+            background: var(--bg); 
+            padding: 80px 50px; 
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h3 { 
+            font-family: 'Space Grotesk'; 
+            font-size: 1.8rem; 
+            margin: 25px 0 15px; 
+        }
+        
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
 
         /* SUPPORT SECTION */
-        .support-section { padding: 120px 5%; text-align: center; border-bottom: 1px solid var(--border); }
-        .support-form { max-width: 500px; margin: 40px auto 0; text-align: left; }
-        .support-form input, .support-form textarea { width: 100%; padding: 20px; background: var(--surface); border: 1px solid var(--border); color: white; margin-bottom: 15px; font-family: inherit; outline: none; }
-        .support-form button { width: 100%; padding: 20px; background: white; color: black; font-weight: 700; text-transform: uppercase; }
+        .support-section { 
+            padding: 120px 5%; 
+            text-align: center; 
+            border-bottom: 1px solid var(--border); 
+        }
+        
+        .support-form { 
+            max-width: 500px; 
+            margin: 40px auto 0; 
+            text-align: left; 
+        }
+        
+        .support-form input, .support-form textarea { 
+            width: 100%; 
+            padding: 20px; 
+            background: var(--surface); 
+            border: 1px solid var(--border); 
+            color: white; 
+            margin-bottom: 15px; 
+            font-family: inherit; 
+            outline: none; 
+            transition: border-color 0.3s ease;
+        }
+        
+        .support-form input:focus, .support-form textarea:focus {
+            border-color: var(--accent);
+        }
+        
+        .support-form button { 
+            width: 100%; 
+            padding: 20px; 
+            background: white; 
+            color: black; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .support-form button:hover {
+            background: transparent;
+            color: white;
+            border-color: white;
+        }
 
         /* MOBILE BAR */
-        .mobile-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(5,5,5,0.95); backdrop-filter: blur(15px); padding: 18px 25px; border-top: 1px solid var(--border); display: none; justify-content: space-between; align-items: center; z-index: 9500; }
-        .mb-btn { background: var(--accent); color: black; padding: 14px 28px; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; }
+        .mobile-bar { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: rgba(5,5,5,0.95); 
+            backdrop-filter: blur(15px); 
+            padding: 18px 25px; 
+            border-top: 1px solid var(--border); 
+            display: none; 
+            justify-content: space-between; 
+            align-items: center; 
+            z-index: 9500; 
+        }
+        
+        .mb-btn { 
+            background: var(--accent); 
+            color: black; 
+            padding: 14px 28px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            font-size: 0.8rem; 
+            transition: all 0.3s ease;
+        }
+        
+        .mb-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
 
-        @media (max-width: 900px) {
-            .nav-items { display: none; }
-            .product-section { flex-direction: column; }
-            .p-gallery { padding: 40px 20px; border-right: none; }
-            .p-info { padding: 60px 25px; }
-            .mobile-bar { display: flex; }
-            .buy-now-btn { display: none; }
-            h2.p-title { font-size: 3rem; }
-            /* Mobile optimization for hero */
-            .hero {
-                background-size: cover;
-                background-position: center;
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 1024px) {
+            .p-gallery {
+                padding: 60px 40px;
             }
-            .hero-content {
-                padding-top: calc(var(--nav-height) + 20px);
+            .p-info {
+                padding: 80px 50px;
             }
         }
 
-        /* Extra small devices */
-        @media (max-width: 480px) {
+        @media (max-width: 900px) {
+            .nav-items { 
+                display: none; 
+            }
+            .product-section { 
+                flex-direction: column; 
+            }
+            .p-gallery { 
+                padding: 40px 20px; 
+                border-right: none; 
+            }
+            .p-info { 
+                padding: 60px 25px; 
+            }
+            .mobile-bar { 
+                display: flex; 
+            }
+            .buy-now-btn { 
+                display: none; 
+            }
+            .hero {
+                min-height: 90vh;
+            }
+            .hero-content {
+                padding: calc(var(--nav-height) + 20px) 15px 30px;
+            }
             .hero-title {
-                font-size: clamp(2.5rem, 10vw, 4rem);
+                font-size: clamp(2.5rem, 10vw, 5rem);
+                margin-bottom: 30px;
             }
             .hero-btn {
-                padding: 15px 30px;
+                padding: 16px 35px;
+                font-size: 0.85rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .feature-card {
+                padding: 60px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+            }
+            .hero-btn {
+                padding: 14px 28px;
                 font-size: 0.8rem;
+            }
+            .thumbs {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .p-title {
+                font-size: clamp(2rem, 5vw, 3rem);
+            }
+            .mobile-bar {
+                padding: 15px 20px;
+            }
+            .mb-btn {
+                padding: 12px 24px;
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -219,9 +568,8 @@
         <div class="hero-content">
             <span class="hero-label">Vacuum Series III</span>
             <h1 class="hero-title">BEYOND <br> CLEAN.</h1>
-            <a href="product" class="hero-btn">Buy Now — €16.95</a>
+            <a href="#product" class="hero-btn">Buy Now — €16.95</a>
         </div>
-        <!-- REMOVED the hero-visual div since we're using background-image -->
     </header>
 
     <div class="marquee">
@@ -234,13 +582,13 @@
         <div class="p-gallery">
             <div class="sticky-wrapper">
                 <div class="main-image-container">
-                    <img src="1.webp" id="mainImg">
+                    <img src="1.webp" id="mainImg" alt="DUSTED Vacuum Series III">
                 </div>
                 <div class="thumbs">
-                    <div class="thumb active" onclick="setImg(this, '1.webp')"><img src="1.webp"></div>
-                    <div class="thumb" onclick="setImg(this, '2.webp')"><img src="2.webp"></div>
-                    <div class="thumb" onclick="setImg(this, '3.webp')"><img src="3.webp"></div>
-                    <div class="thumb" onclick="setImg(this, '6.webp')"><img src="6.webp"></div>
+                    <div class="thumb active" onclick="setImg(this, '1.webp')"><img src="1.webp" alt="Product view 1"></div>
+                    <div class="thumb" onclick="setImg(this, '2.webp')"><img src="2.webp" alt="Product view 2"></div>
+                    <div class="thumb" onclick="setImg(this, '3.webp')"><img src="3.webp" alt="Product view 3"></div>
+                    <div class="thumb" onclick="setImg(this, '6.webp')"><img src="6.webp" alt="Product view 4"></div>
                 </div>
             </div>
         </div>
@@ -274,9 +622,21 @@
     </section>
 
     <section id="features" class="features-grid">
-        <div class="feature-card"><i data-lucide="wind" color="#fff" size="32"></i><h3>Cyclone Tech</h3><p>Proprietary airflow creates a vortex that prevents dust from clogging the filter.</p></div>
-        <div class="feature-card"><i data-lucide="battery" color="#fff" size="32"></i><h3>Lithium Core</h3><p>Dual-cell architecture provides sustained power for deep cleaning sessions.</p></div>
-        <div class="feature-card"><i data-lucide="cpu" color="#fff" size="32"></i><h3>Silent Force</h3><p>Acoustically tuned motor housing reduces noise to under 70dB while maintaining torque.</p></div>
+        <div class="feature-card">
+            <i data-lucide="wind" color="#fff" size="32"></i>
+            <h3>Cyclone Tech</h3>
+            <p>Proprietary airflow creates a vortex that prevents dust from clogging the filter.</p>
+        </div>
+        <div class="feature-card">
+            <i data-lucide="battery" color="#fff" size="32"></i>
+            <h3>Lithium Core</h3>
+            <p>Dual-cell architecture provides sustained power for deep cleaning sessions.</p>
+        </div>
+        <div class="feature-card">
+            <i data-lucide="cpu" color="#fff" size="32"></i>
+            <h3>Silent Force</h3>
+            <p>Acoustically tuned motor housing reduces noise to under 70dB while maintaining torque.</p>
+        </div>
     </section>
 
     <section id="support" class="support-section">
@@ -301,22 +661,77 @@
 
     <script>
         lucide.createIcons();
+        
         window.onload = function() {
             const loader = document.getElementById('loader');
             loader.style.opacity = '0';
-            setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
+            setTimeout(() => { 
+                loader.style.visibility = 'hidden'; 
+            }, 500);
+            
+            // Check if hero image is loaded
+            const heroBg = document.querySelector('.hero');
+            const bgImage = new Image();
+            bgImage.src = '5.webp';
+            bgImage.onload = function() {
+                console.log('Hero background image loaded successfully');
+            };
+            bgImage.onerror = function() {
+                console.error('Hero background image failed to load. Check file path: 5.webp');
+                heroBg.style.background = 'linear-gradient(135deg, #151515 0%, #050505 100%)';
+            };
         }
+        
         function setImg(el, src) {
             document.getElementById('mainImg').src = src;
             document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
         }
+        
         function toggleAcc(btn) {
             const content = btn.nextElementSibling;
             const isOpen = content.style.maxHeight;
-            document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
-            if (!isOpen) content.style.maxHeight = content.scrollHeight + "px";
+            
+            // Close all other accordions
+            document.querySelectorAll('.accordion-content').forEach(c => {
+                if (c !== content) {
+                    c.style.maxHeight = null;
+                }
+            });
+            
+            // Toggle current accordion
+            if (!isOpen || isOpen === '0px') {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } else {
+                content.style.maxHeight = null;
+            }
+            
+            // Rotate icon
+            const icon = btn.querySelector('svg');
+            if (icon) {
+                icon.style.transform = content.style.maxHeight ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
         }
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
