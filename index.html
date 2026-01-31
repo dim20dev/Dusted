@@ -2,172 +2,166 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DUSTED™ — The Original Handheld</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>DUSTED™ — Portable Power</title>
     
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --accent: #000000;
-            --secondary: #6e6e73;
             --bg: #ffffff;
-            --surface: #f5f5f7;
-            --border: #d2d2d7;
-            --radius: 14px;
+            --text: #111111;
+            --secondary: #666666;
+            --surface: #fafafa;
+            --border: #e5e5e5;
+            --radius: 0px; /* Arxon uses sharp or very minimal radius for premium look */
         }
 
-        /* Essential Reset - Prevents "Breaking" on Scroll */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body, html { width: 100%; overflow-x: hidden; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--accent); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* Navigation */
+        /* Smooth Transition Engine */
+        .page { display: none; opacity: 0; transition: opacity 0.6s ease; }
+        .page.active { display: block; opacity: 1; }
+
+        /* Navigation - Minimalist */
         nav {
-            position: fixed; top: 0; width: 100%; height: 54px;
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: saturate(180%) blur(20px);
-            z-index: 10000; display: flex; justify-content: space-between;
-            align-items: center; padding: 0 8%; border-bottom: 0.5px solid var(--border);
+            position: fixed; top: 0; width: 100%; height: 60px;
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);
+            z-index: 9999; display: flex; justify-content: space-between;
+            align-items: center; padding: 0 4%; border-bottom: 1px solid var(--border);
         }
-        .logo { font-weight: 700; font-size: 1.1rem; text-decoration: none; color: var(--accent); letter-spacing: -0.03em; }
+        .logo { font-weight: 700; font-size: 1.1rem; text-decoration: none; color: var(--text); letter-spacing: 2px; text-transform: uppercase; }
+        .nav-right { display: flex; gap: 30px; align-items: center; }
+        .nav-right a { text-decoration: none; color: var(--text); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* The "Two-Page" Logic (Zero Lag) */
-        #product-view { display: none; }
-        body.showing-product #home-view { display: none; }
-        body.showing-product #product-view { display: block; }
+        /* Home Page - The "Arxon" Hero */
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 5%; }
+        .hero-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; color: var(--secondary); margin-bottom: 20px; text-transform: uppercase; }
+        .hero h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 500; letter-spacing: -0.05em; line-height: 0.9; margin-bottom: 40px; }
+        .hero-img { width: 100%; max-width: 900px; cursor: pointer; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .hero-img:hover { transform: scale(1.02); }
 
-        /* Home View Styles */
-        .hero { padding: 140px 8% 80px; text-align: center; }
-        .hero h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1; margin-bottom: 20px; }
-        .hero p { color: var(--secondary); font-size: 1.2rem; margin-bottom: 40px; }
+        /* Product Page - Professional Layout */
+        .product-grid { display: grid; grid-template-columns: 1fr 450px; min-height: 100vh; }
+        .gallery { background: var(--surface); padding: 100px 5%; display: flex; flex-direction: column; gap: 20px; align-items: center; }
+        .gallery img { width: 100%; max-width: 700px; display: block; }
         
-        .product-card { 
-            max-width: 900px; margin: 0 auto; background: var(--surface); 
-            border-radius: 24px; padding: 40px; cursor: pointer; transition: transform 0.4s ease;
-        }
-        .product-card:hover { transform: scale(0.99); }
-        .product-card img { width: 100%; height: auto; border-radius: 12px; }
-
-        /* Product View Styles */
-        .p-container { max-width: 1100px; margin: 0 auto; padding: 100px 20px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
+        .product-info { padding: 120px 10% 60px 5%; border-left: 1px solid var(--border); background: white; }
+        .p-sticky { position: sticky; top: 120px; }
+        .p-title { font-size: 2.5rem; font-weight: 500; letter-spacing: -0.03em; margin-bottom: 10px; }
+        .p-price { font-size: 1.2rem; color: var(--secondary); margin-bottom: 40px; }
         
-        .gallery-sticky { position: sticky; top: 100px; }
-        .main-img { width: 100%; border-radius: var(--radius); background: var(--surface); margin-bottom: 12px; }
-        .thumbs { display: flex; gap: 10px; }
-        .thumb { width: 70px; height: 70px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; object-fit: cover; background: var(--surface); }
-        .thumb.active { border-color: var(--accent); }
-
-        /* Trust & Conversion */
-        .price { font-size: 1.8rem; font-weight: 600; margin: 20px 0; }
-        .price span { text-decoration: line-through; color: var(--secondary); font-size: 1.2rem; margin-right: 10px; }
-        
-        .buy-now { 
-            display: block; width: 100%; background: var(--accent); color: white; 
-            padding: 20px; border-radius: 50px; text-align: center; text-decoration: none;
-            font-weight: 600; margin-bottom: 20px; transition: 0.3s;
+        .buy-btn {
+            display: block; width: 100%; background: var(--text); color: white;
+            padding: 20px; text-align: center; text-decoration: none;
+            font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 40px; transition: 0.3s;
         }
-        .buy-now:hover { opacity: 0.8; }
+        .buy-btn:hover { opacity: 0.8; }
 
-        .trust-badge { 
-            display: flex; items-center: center; gap: 10px; padding: 15px; 
-            background: #fdfdfd; border: 1px solid #eee; border-radius: 10px; font-size: 0.8rem;
+        /* Features List */
+        .feature-item { border-top: 1px solid var(--border); padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
+        .feature-item span { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Mobile Fixes */
+        @media (max-width: 900px) {
+            .product-grid { grid-template-columns: 1fr; }
+            .product-info { border-left: none; padding: 40px 5%; }
+            .hero h1 { font-size: 3.5rem; }
         }
 
-        /* Mobile Adjustments */
-        @media (max-width: 800px) {
-            .p-container { grid-template-columns: 1fr; padding-top: 80px; }
-            .hero h1 { font-size: 3rem; }
-        }
-
-        /* Animations */
-        .fade-in { animation: fadeIn 0.6s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Loading Animation */
+        .fade { animation: fadeIn 0.8s forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="javascript:void(0)" onclick="goHome()" class="logo">DUSTED™</a>
-        <div style="display: flex; gap: 20px; font-size: 0.8rem; font-weight: 500;">
-            <a href="javascript:void(0)" onclick="goProduct()" style="text-decoration:none; color:var(--accent)">Shop</a>
-            <a href="#contact" style="text-decoration:none; color:var(--secondary)">Support</a>
+        <a href="#" class="logo" onclick="show('home')">DUSTED</a>
+        <div class="nav-right">
+            <a href="#" onclick="show('product')">Shop</a>
+            <a href="#contact">Contact</a>
         </div>
     </nav>
 
-    <main id="home-view" class="fade-in">
+    <div id="home" class="page active">
         <section class="hero">
-            <h1>Clean everything. <br> Everywhere.</h1>
-            <p>The 8000Pa wireless vacuum that redefines portable power.</p>
-            
-            <div class="product-card" onclick="goProduct()">
-                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1200" alt="Dusted Mini">
-                <div style="margin-top:20px; text-align:left; display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <h3 style="font-size:1.5rem;">DUSTED™ Pro Series</h3>
-                        <p style="color:var(--secondary)">8000Pa • USB-C • 45m Runtime</p>
-                    </div>
-                    <span style="font-weight:600;">$39.00 — Explore →</span>
-                </div>
+            <p class="hero-label">Available Now</p>
+            <h1>Pure Power.<br>Pure Design.</h1>
+            <div onclick="show('product')" style="cursor: pointer; margin-top: 40px;">
+                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1200" class="hero-img">
+                <p style="margin-top: 20px; font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px;">Discover DUSTED™ Mini — $39.00</p>
             </div>
         </section>
-    </main>
+    </div>
 
-    <main id="product-view" class="fade-in">
-        <div class="p-container">
-            <div class="gallery-sticky">
-                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000" id="main-view" class="main-img">
-                <div class="thumbs">
-                    <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=200" class="thumb active" onclick="swap(this)">
-                    <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=200" class="thumb" onclick="swap(this)">
-                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=200" class="thumb" onclick="swap(this)">
-                </div>
+    <div id="product" class="page">
+        <div class="product-grid">
+            <div class="gallery">
+                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000">
+                <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=1000">
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1000">
             </div>
 
-            <div class="p-details">
-                <p style="text-transform:uppercase; font-size:0.7rem; font-weight:700; letter-spacing:1px; color:var(--secondary);">New Release</p>
-                <h2 style="font-size:3rem; letter-spacing:-0.03em; margin:10px 0;">DUSTED™ Pro</h2>
-                <div class="price"><span>$79.00</span> $39.00</div>
-                
-                <p style="color:var(--secondary); margin-bottom:30px; line-height:1.6;">Designed for high-performance cleaning. The DUSTED™ Pro features a brushless motor capable of lifting dirt from the deepest crevices of your vehicle or workspace.</p>
+            <div class="product-info">
+                <div class="p-sticky">
+                    <p class="hero-label">Handheld Series</p>
+                    <h2 class="p-title">DUSTED™ Mini Vacuum</h2>
+                    <p class="p-price">$39.00 USD <span style="text-decoration: line-through; margin-left: 10px; font-size: 0.9rem;">$79.00</span></p>
+                    
+                    <a href="https://buy.stripe.com/YOUR_LINK" class="buy-btn">Add to Cart</a>
 
-                <a href="https://buy.stripe.com/YOUR_LINK" class="buy-now">Order with Stripe</a>
+                    <div class="feature-item">
+                        <span>Suction Power</span>
+                        <p style="font-size: 0.8rem; color: var(--secondary);">8000 Pa</p>
+                    </div>
+                    <div class="feature-item">
+                        <span>Charge Type</span>
+                        <p style="font-size: 0.8rem; color: var(--secondary);">USB-C Fast</p>
+                    </div>
+                    <div class="feature-item">
+                        <span>Run Time</span>
+                        <p style="font-size: 0.8rem; color: var(--secondary);">45 Minutes</p>
+                    </div>
+                    <div class="feature-item">
+                        <span>Filter</span>
+                        <p style="font-size: 0.8rem; color: var(--secondary);">Washable HEPA</p>
+                    </div>
 
-                <div class="trust-badge">
-                    <i data-lucide="shield-check" size="20"></i>
-                    <span><strong>100% Money Back Guarantee.</strong> If you aren't satisfied with the power, we'll refund you instantly. No questions asked.</span>
-                </div>
-
-                <div style="margin-top:40px; border-top: 1px solid #eee; padding-top:40px;" id="contact">
-                    <h3 style="margin-bottom:20px;">Support</h3>
-                    <form action="https://formspree.io/f/YOUR_ID" method="POST">
-                        <input type="email" name="email" placeholder="Email" style="width:100%; padding:15px; border-radius:8px; border:1px solid #ddd; margin-bottom:10px;">
-                        <textarea name="message" placeholder="How can we help?" style="width:100%; padding:15px; border-radius:8px; border:1px solid #ddd; margin-bottom:10px;"></textarea>
-                        <button type="submit" style="background:#000; color:#fff; border:none; padding:12px 30px; border-radius:50px; cursor:pointer;">Send</button>
-                    </form>
+                    <div id="contact" style="margin-top: 60px;">
+                        <p style="font-size: 0.7rem; font-weight: 700; margin-bottom: 20px; text-transform: uppercase;">Inquiries</p>
+                        <form action="https://formspree.io/f/YOUR_ID" method="POST">
+                            <input type="email" name="email" placeholder="YOUR EMAIL" style="width: 100%; padding: 15px 0; border: none; border-bottom: 1px solid var(--border); font-size: 0.8rem; margin-bottom: 20px; outline: none;">
+                            <button type="submit" style="background: none; border: none; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; cursor: pointer; text-transform: uppercase;">Send Message →</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         lucide.createIcons();
 
-        // The Ultimate Page Logic (No Lag)
-        function goProduct() {
-            document.body.classList.add('showing-product');
-            window.scrollTo(0, 0);
-        }
+        // Arxon-Style Page Switcher
+        function show(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => {
+                p.classList.remove('active');
+            });
+            
+            const activePage = document.getElementById(pageId);
+            activePage.style.display = 'block';
+            
+            // Short delay for fade effect
+            setTimeout(() => {
+                activePage.classList.add('active');
+            }, 10);
 
-        function goHome() {
-            document.body.classList.remove('showing-product');
             window.scrollTo(0, 0);
-        }
-
-        // Gallery Logic
-        function swap(el) {
-            document.getElementById('main-view').src = el.src;
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
         }
     </script>
 </body>
