@@ -13,19 +13,29 @@
 
     <style>
         :root {
-            --bg: #050505;
-            --surface: #111111;
-            --border: #262626;
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --border: #2a2a2a;
             --text-main: #ffffff;
-            --text-muted: #888888;
+            --text-muted: #a0a0a0;
             --accent: #ffffff;
             --nav-height: 70px;
-            --radius: 4px;
+            --radius: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* --- CORE RESET --- */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; background: var(--bg); }
+        *, *::before, *::after { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        html { 
+            scroll-behavior: smooth; 
+            background: var(--bg); 
+        }
+        
         body { 
             font-family: 'Inter', sans-serif; 
             background: var(--bg); 
@@ -35,703 +45,1088 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        img { display: block; max-width: 100%; }
+        img { 
+            display: block; 
+            max-width: 100%; 
+            height: auto; 
+        }
         
-        a { text-decoration: none; color: inherit; }
-        button { cursor: pointer; border: none; font-family: inherit; }
+        a { 
+            text-decoration: none; 
+            color: inherit; 
+            transition: var(--transition);
+        }
+        
+        button { 
+            cursor: pointer; 
+            border: none; 
+            font-family: inherit; 
+            background: none;
+            transition: var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
         /* --- PRELOADER --- */
         #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); z-index: 10000; display: flex;
-            align-items: center; justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: opacity 0.5s ease, visibility 0.5s;
         }
-        .spinner {
-            width: 30px; height: 30px; border: 2px solid var(--border);
-            border-top: 2px solid var(--accent); border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
-            background: rgba(5, 5, 5, 0.95); 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            background: rgba(10, 10, 10, 0.98);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border); 
-            z-index: 9999; 
-            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 0 5%;
         }
-        .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.4rem; letter-spacing: -0.05em; text-transform: uppercase; }
-        .nav-items { display: flex; gap: 40px; align-items: center; }
-        .nav-link { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-        .nav-link:hover { color: var(--text-main); }
-        .nav-btn-sm {
-            background: var(--accent); color: #000; padding: 10px 20px; 
-            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.05em;
+        }
+        
+        .logo span {
+            color: var(--text-muted);
+        }
+        
+        .nav-items {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-main);
+        }
+        
+        .nav-btn {
+            background: var(--accent);
+            color: #000;
+            padding: 10px 24px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: var(--radius);
         }
 
-        /* --- HERO --- PERFECTED VERSION --- */
+        /* --- MOBILE MENU --- */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            color: var(--text-main);
+            padding: 8px;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            width: 100%;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 999;
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        /* --- HERO --- */
         .hero {
-            position: relative; 
-            min-height: 100vh; 
-            width: 100%;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            padding: 0 20px;
+            padding: var(--nav-height) 20px 80px;
             overflow: hidden;
-            /* FIX: Proper background image with multiple fallbacks */
             background: 
-                linear-gradient(rgba(5, 5, 5, 0.3), rgba(5, 5, 5, 0.3)), /* Dark overlay for better text contrast */
-                url('5.webp') center center / cover no-repeat,
-                #050505; /* Fallback color if image doesn't load */
+                radial-gradient(circle at 50% 50%, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 1) 100%),
+                url('5.webp') center center / cover no-repeat;
         }
         
-        .hero-content { 
-            z-index: 10; 
-            text-align: center; 
-            padding: var(--nav-height) 20px 40px; /* Proper padding all around */
-            max-width: 1200px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            margin: 0 auto;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(10, 10, 10, 0.2) 0%,
+                rgba(10, 10, 10, 0.8) 100%
+            );
+            z-index: 1;
         }
         
-        .hero-label { 
-            font-size: 0.75rem; 
-            color: var(--text-muted); 
-            text-transform: uppercase; 
-            letter-spacing: 0.4em; 
-            margin-bottom: 15px; 
-            display: block; 
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
         }
         
-        .hero-title { 
-            font-family: 'Space Grotesk', sans-serif; 
-            font-size: clamp(3rem, 12vw, 8rem); 
-            line-height: 0.9; 
-            font-weight: 700; 
-            letter-spacing: -0.05em; 
-            margin-bottom: 40px; 
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Better text visibility */
+        .hero-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 24px;
+            display: block;
         }
         
-        .hero-btn { 
-            display: inline-block; 
-            padding: 20px 45px; 
-            background: var(--accent); 
-            color: #000; 
-            font-weight: 700; 
-            font-size: 0.9rem; 
-            text-transform: uppercase; 
-            letter-spacing: 0.1em; 
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            line-height: 0.9;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 40px;
+        }
+        
+        .hero-title br {
+            display: none;
+        }
+        
+        .hero-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 18px 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: var(--radius);
+            transition: var(--transition);
         }
         
         .hero-btn:hover {
-            background: transparent;
-            color: var(--accent);
-            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
         }
 
         /* --- MARQUEE --- */
-        .marquee { 
-            border-bottom: 1px solid var(--border); 
-            overflow: hidden; 
-            white-space: nowrap; 
-            padding: 25px 0; 
-            background: var(--surface); 
+        .marquee-wrapper {
+            position: relative;
+            overflow: hidden;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
         }
         
-        .track { 
-            display: inline-block; 
-            animation: marquee 30s linear infinite; 
+        .marquee {
+            display: flex;
+            align-items: center;
+            padding: 24px 0;
         }
         
-        .track span { 
-            font-family: 'Space Grotesk', sans-serif; 
-            font-size: 1.2rem; 
-            font-weight: 600; 
-            color: var(--text-muted); 
-            margin-right: 80px; 
-            text-transform: uppercase; 
+        .marquee-track {
+            display: flex;
+            animation: marquee 40s linear infinite;
         }
         
-        @keyframes marquee { 
-            0% { transform: translateX(0); } 
-            100% { transform: translateX(-50%); } 
+        .marquee-item {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-right: 60px;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
         /* --- PRODUCT SECTION --- */
-        .product-section { 
-            display: flex; 
-            flex-wrap: wrap; 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            border-bottom: 1px solid var(--border); 
+        .product-section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
         }
         
-        .p-gallery { 
-            flex: 1 1 50%; 
-            padding: 80px 60px; 
-            border-right: 1px solid var(--border); 
-            background: var(--bg); 
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
-        .sticky-wrapper { 
-            position: sticky; 
-            top: 120px; 
+        .product-gallery {
+            padding: 40px;
+            border-right: 1px solid var(--border);
         }
         
-        .main-image-container { 
-            width: 100%; 
-            aspect-ratio: 1/1; 
+        .main-image {
+            width: 100%;
+            aspect-ratio: 1/1;
             background: var(--surface);
-            margin-bottom: 20px; 
-            border: 1px solid var(--border); 
             border-radius: var(--radius);
+            margin-bottom: 20px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
-        .main-image-container img {
+        .main-image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
-
-        .thumbs { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 15px; 
+        
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
         }
         
-        .thumb { 
-            aspect-ratio: 1/1; 
-            background: var(--surface); 
-            border: 1px solid var(--border); 
-            cursor: pointer; 
-            opacity: 0.5; 
-            transition: all 0.3s ease; 
-            overflow: hidden; 
+        .thumbnail {
+            aspect-ratio: 1/1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--radius) - 4px);
+            cursor: pointer;
+            opacity: 0.6;
+            transition: var(--transition);
+            overflow: hidden;
         }
         
-        .thumb:hover {
-            opacity: 0.8;
-            transform: translateY(-2px);
+        .thumbnail:hover,
+        .thumbnail.active {
+            opacity: 1;
+            border-color: var(--accent);
         }
         
-        .thumb.active { 
-            opacity: 1; 
-            border-color: var(--accent); 
-            transform: translateY(-2px);
-        }
-        
-        .thumb img {
+        .thumbnail img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
-        .p-info { 
-            flex: 1 1 450px; 
-            padding: 100px 80px; 
-            background: var(--bg); 
+        
+        .product-info {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
-        .badge { 
-            display: inline-block; 
-            padding: 6px 14px; 
-            border: 1px solid var(--border); 
-            border-radius: 50px; 
-            font-size: 0.65rem; 
-            text-transform: uppercase; 
-            margin-bottom: 25px; 
-            color: var(--text-muted); 
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            color: var(--text-muted);
+            align-self: flex-start;
         }
         
-        h2.p-title { 
-            font-family: 'Space Grotesk'; 
-            font-size: clamp(2.5rem, 6vw, 4rem); 
-            line-height: 0.9; 
-            margin-bottom: 20px; 
+        .product-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 0.95;
+            margin-bottom: 20px;
         }
         
-        .p-price { 
-            font-size: 1.8rem; 
-            margin-bottom: 40px; 
-            display: flex; 
-            align-items: center; 
-            gap: 20px; 
-            font-family: 'Space Grotesk'; 
-            font-weight: 600; 
+        .product-price {
+            font-size: 1.8rem;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
         }
         
-        .p-price del { 
-            color: var(--text-muted); 
-            font-size: 1.2rem; 
-            font-weight: 400; 
+        .product-price del {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 400;
         }
         
-        .p-desc { 
-            color: var(--text-muted); 
-            margin-bottom: 50px; 
-            font-size: 1.1rem; 
+        .product-description {
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
             line-height: 1.7;
         }
-
-        .buy-now-btn { 
-            display: block; 
-            width: 100%; 
-            background: var(--accent); 
-            color: #000; 
-            padding: 25px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            letter-spacing: 0.15em; 
-            margin-bottom: 25px; 
-            text-align: center; 
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+        
+        .buy-button {
+            display: block;
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            padding: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-bottom: 32px;
+            transition: var(--transition);
         }
         
-        .buy-now-btn:hover {
-            background: transparent;
-            color: var(--accent);
-            border-color: var(--accent);
-        }
-
-        /* SPECS TABLE */
-        .specs-table { 
-            width: 100%; 
-            border-top: 1px solid var(--border); 
-            margin: 50px 0; 
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
         }
         
-        .spec-row { 
-            display: flex; 
-            justify-content: space-between; 
-            padding: 20px 0; 
-            border-bottom: 1px solid var(--border); 
-            font-size: 0.95rem; 
+        .specs-grid {
+            display: grid;
+            gap: 1px;
+            background: var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 40px 0;
         }
         
-        .spec-label { 
-            color: var(--text-muted); 
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: var(--surface);
         }
         
-        .spec-val { 
-            font-weight: 600; 
-            font-family: 'Space Grotesk'; 
-        }
-
-        /* ACCORDION */
-        .accordion-item { 
-            border-bottom: 1px solid var(--border); 
+        .spec-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
         }
         
-        .accordion-header { 
-            width: 100%; 
-            padding: 25px 0; 
-            text-align: left; 
-            background: none; 
-            color: var(--text-main); 
-            font-weight: 600; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            font-size: 1rem; 
-            transition: color 0.3s ease;
+        .spec-value {
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
         }
         
-        .accordion-header:hover {
-            color: var(--accent);
+        .accordion {
+            margin-top: 40px;
         }
         
-        .accordion-content { 
-            max-height: 0; 
-            overflow: hidden; 
-            transition: max-height 0.4s ease; 
-            color: var(--text-muted); 
+        .accordion-item {
+            border-bottom: 1px solid var(--border);
         }
         
-        .accordion-content p { 
-            padding-bottom: 25px; 
-            font-size: 0.95rem; 
-            line-height: 1.6;
-        }
-
-        /* FEATURES GRID */
-        .features-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 1px; 
-            background: var(--border); 
-            border-bottom: 1px solid var(--border); 
+        .accordion-header {
+            width: 100%;
+            padding: 24px 0;
+            text-align: left;
+            color: var(--text-main);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
         }
         
-        .feature-card { 
-            background: var(--bg); 
-            padding: 80px 50px; 
+        .accordion-header .icon {
             transition: transform 0.3s ease;
         }
         
+        .accordion-item.active .icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            color: var(--text-muted);
+        }
+        
+        .accordion-content p {
+            padding-bottom: 24px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        
+        .feature-card {
+            background: var(--surface);
+            padding: 60px 40px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
         .feature-card:hover {
-            transform: translateY(-5px);
+            background: var(--bg);
         }
         
-        .feature-card h3 { 
-            font-family: 'Space Grotesk'; 
-            font-size: 1.8rem; 
-            margin: 25px 0 15px; 
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .feature-card p {
+        .feature-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .feature-description {
             color: var(--text-muted);
             line-height: 1.6;
         }
 
-        /* SUPPORT SECTION */
-        .support-section { 
-            padding: 120px 5%; 
-            text-align: center; 
-            border-bottom: 1px solid var(--border); 
+        /* --- SUPPORT --- */
+        .support {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
         }
         
-        .support-form { 
-            max-width: 500px; 
-            margin: 40px auto 0; 
-            text-align: left; 
+        .support-header {
+            text-align: center;
+            margin-bottom: 40px;
         }
         
-        .support-form input, .support-form textarea { 
-            width: 100%; 
-            padding: 20px; 
-            background: var(--surface); 
-            border: 1px solid var(--border); 
-            color: white; 
-            margin-bottom: 15px; 
-            font-family: inherit; 
-            outline: none; 
-            transition: border-color 0.3s ease;
+        .support-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
         }
         
-        .support-form input:focus, .support-form textarea:focus {
+        .support-subtitle {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .support-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
             border-color: var(--accent);
         }
         
-        .support-form button { 
-            width: 100%; 
-            padding: 20px; 
-            background: white; 
-            color: black; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
         }
         
-        .support-form button:hover {
-            background: transparent;
-            color: white;
-            border-color: white;
+        .submit-button {
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            padding: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
         }
 
-        /* MOBILE BAR */
-        .mobile-bar { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            background: rgba(5,5,5,0.95); 
-            backdrop-filter: blur(15px); 
-            padding: 18px 25px; 
-            border-top: 1px solid var(--border); 
-            display: none; 
-            justify-content: space-between; 
-            align-items: center; 
-            z-index: 9500; 
+        /* --- FOOTER --- */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
         }
         
-        .mb-btn { 
-            background: var(--accent); 
-            color: black; 
-            padding: 14px 28px; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            font-size: 0.8rem; 
-            transition: all 0.3s ease;
-        }
-        
-        .mb-btn:hover {
-            background: rgba(255, 255, 255, 0.9);
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
 
-        /* --- RESPONSIVE DESIGN --- */
+        /* --- MOBILE BAR --- */
+        .mobile-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 16px 20px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+        }
+        
+        .mobile-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .mobile-buy-btn {
+            background: var(--accent);
+            color: #000;
+            padding: 12px 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            border-radius: var(--radius);
+        }
+
+        /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
-            .p-gallery {
-                padding: 60px 40px;
+            .product-grid {
+                grid-template-columns: 1fr;
+                max-width: 600px;
             }
-            .p-info {
-                padding: 80px 50px;
+            
+            .product-gallery {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
             }
         }
-
-        @media (max-width: 900px) {
-            .nav-items { 
-                display: none; 
+        
+        @media (max-width: 768px) {
+            /* Navigation */
+            .nav-items {
+                display: none;
             }
-            .product-section { 
-                flex-direction: column; 
+            
+            .mobile-menu-btn {
+                display: block;
             }
-            .p-gallery { 
-                padding: 40px 20px; 
-                border-right: none; 
+            
+            /* Hero */
+            .hero-title br {
+                display: block;
             }
-            .p-info { 
-                padding: 60px 25px; 
-            }
-            .mobile-bar { 
-                display: flex; 
-            }
-            .buy-now-btn { 
-                display: none; 
-            }
+            
             .hero {
+                padding: var(--nav-height) 20px 60px;
                 min-height: 90vh;
             }
-            .hero-content {
-                padding: calc(var(--nav-height) + 20px) 15px 30px;
+            
+            /* Product */
+            .product-gallery,
+            .product-info {
+                padding: 30px 20px;
             }
-            .hero-title {
-                font-size: clamp(2.5rem, 10vw, 5rem);
-                margin-bottom: 30px;
+            
+            .thumbnail-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .hero-btn {
-                padding: 16px 35px;
-                font-size: 0.85rem;
-            }
+            
+            /* Features */
             .features-grid {
                 grid-template-columns: 1fr;
             }
+            
             .feature-card {
-                padding: 60px 30px;
+                padding: 40px 30px;
+            }
+            
+            /* Mobile Bar */
+            .mobile-bar {
+                display: flex;
+            }
+            
+            .buy-button {
+                display: none;
+            }
+            
+            /* Footer */
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
             }
         }
-
+        
         @media (max-width: 480px) {
             .hero-title {
-                font-size: clamp(2rem, 8vw, 3.5rem);
+                font-size: clamp(2.5rem, 8vw, 4rem);
             }
+            
             .hero-btn {
-                padding: 14px 28px;
-                font-size: 0.8rem;
+                padding: 16px 32px;
+                font-size: 0.85rem;
             }
-            .thumbs {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+            
+            .marquee-item {
+                font-size: 0.9rem;
+                margin-right: 40px;
             }
-            .p-title {
-                font-size: clamp(2rem, 5vw, 3rem);
+            
+            .product-title {
+                font-size: clamp(2rem, 6vw, 3rem);
             }
-            .mobile-bar {
-                padding: 15px 20px;
+            
+            .product-price {
+                font-size: 1.5rem;
             }
-            .mb-btn {
-                padding: 12px 24px;
-                font-size: 0.75rem;
+            
+            .support-title {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <div id="loader"><div class="spinner"></div></div>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
 
+    <!-- Navigation -->
     <nav>
-        <a href="#" class="logo">DUSTED<span style="color:var(--text-muted)">.</span></a>
+        <a href="#" class="logo">DUSTED<span>.</span></a>
+        
         <div class="nav-items">
-            <a href="#product" class="nav-link">Specifications</a>
-            <a href="#features" class="nav-link">Technology</a>
+            <a href="#product" class="nav-link">Product</a>
+            <a href="#features" class="nav-link">Features</a>
             <a href="#support" class="nav-link">Support</a>
-            <a href="https://buy.stripe.com/YOUR_LINK" class="nav-btn-sm">BUY NOW</a>
+            <a href="https://buy.stripe.com/YOUR_LINK" class="nav-btn">Buy Now</a>
         </div>
+        
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i data-lucide="menu"></i>
+        </button>
     </nav>
 
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#product" class="nav-link" onclick="toggleMobileMenu()">Product</a>
+        <a href="#features" class="nav-link" onclick="toggleMobileMenu()">Features</a>
+        <a href="#support" class="nav-link" onclick="toggleMobileMenu()">Support</a>
+        <a href="https://buy.stripe.com/YOUR_LINK" class="nav-btn">Buy Now</a>
+    </div>
+
+    <!-- Hero Section -->
     <header class="hero">
         <div class="hero-content">
             <span class="hero-label">Vacuum Series III</span>
-            <h1 class="hero-title">BEYOND <br> CLEAN.</h1>
+            <h1 class="hero-title">BEYOND <br>CLEAN</h1>
             <a href="#product" class="hero-btn">Buy Now — €16.95</a>
         </div>
     </header>
 
-    <div class="marquee">
-        <div class="track">
-            <span>15000Pa Suction</span><span>Brushless Motor</span><span>HEPA Matrix</span><span>45-Min Runtime</span><span>USB-C Rapid</span><span>15000Pa Suction</span><span>Brushless Motor</span><span>HEPA Matrix</span>
+    <!-- Marquee -->
+    <div class="marquee-wrapper">
+        <div class="marquee">
+            <div class="marquee-track">
+                <span class="marquee-item">15000Pa Suction</span>
+                <span class="marquee-item">Brushless Motor</span>
+                <span class="marquee-item">HEPA Matrix</span>
+                <span class="marquee-item">45-Min Runtime</span>
+                <span class="marquee-item">USB-C Rapid</span>
+                <span class="marquee-item">15000Pa Suction</span>
+                <span class="marquee-item">Brushless Motor</span>
+                <span class="marquee-item">HEPA Matrix</span>
+            </div>
         </div>
     </div>
 
+    <!-- Product Section -->
     <section id="product" class="product-section">
-        <div class="p-gallery">
-            <div class="sticky-wrapper">
-                <div class="main-image-container">
-                    <img src="1.webp" id="mainImg" alt="DUSTED Vacuum Series III">
+        <div class="product-grid">
+            <div class="product-gallery">
+                <div class="main-image">
+                    <img src="1.webp" id="mainImage" alt="DUSTED Vacuum Series III">
                 </div>
-                <div class="thumbs">
-                    <div class="thumb active" onclick="setImg(this, '1.webp')"><img src="1.webp" alt="Product view 1"></div>
-                    <div class="thumb" onclick="setImg(this, '2.webp')"><img src="2.webp" alt="Product view 2"></div>
-                    <div class="thumb" onclick="setImg(this, '3.webp')"><img src="3.webp" alt="Product view 3"></div>
-                    <div class="thumb" onclick="setImg(this, '6.webp')"><img src="6.webp" alt="Product view 4"></div>
+                
+                <div class="thumbnail-grid">
+                    <div class="thumbnail active" onclick="changeImage('1.webp', this)">
+                        <img src="1.webp" alt="Product View 1">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('2.webp', this)">
+                        <img src="2.webp" alt="Product View 2">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('3.webp', this)">
+                        <img src="3.webp" alt="Product View 3">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('6.webp', this)">
+                        <img src="6.webp" alt="Product View 4">
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div class="p-info">
-            <span class="badge">In Stock / Ready to Ship</span>
-            <h2 class="p-title">DUSTED™ <br>Vacuum Series III</h2>
-            <div class="p-price"><span>€16.95 EUR</span><del>€34.65</del></div>
-            <p class="p-desc">Industrial velocity, portable form. The Series III features a brushless motor designed for automotive detailing and high-end workspaces.</p>
             
-            <a href="https://buy.stripe.com/YOUR_LINK" class="buy-now-btn">Secure Purchase</a>
-
-            <div class="specs-table">
-                <div class="spec-row"><span class="spec-label">Suction Power</span><span class="spec-val">15000 Pa</span></div>
-                <div class="spec-row"><span class="spec-label">Battery Architecture</span><span class="spec-val">4000mAh Dual-Cell</span></div>
-                <div class="spec-row"><span class="spec-label">Motor RPM</span><span class="spec-val">35,000 RPM</span></div>
-                <div class="spec-row"><span class="spec-label">Weight</span><span class="spec-val">0.36kg</span></div>
-            </div>
-
-            <div class="accordion">
-                <div class="accordion-item">
-                    <button class="accordion-header" onclick="toggleAcc(this)">Washable HEPA Filter <i data-lucide="chevron-down"></i></button>
-                    <div class="accordion-content"><p>The industrial-grade filter can be rinsed with water. Ensure it is 100% dry before re-inserting.</p></div>
+            <div class="product-info">
+                <span class="badge">In Stock • Ready to Ship</span>
+                
+                <h2 class="product-title">DUSTED™<br>Vacuum Series III</h2>
+                
+                <div class="product-price">
+                    <span>€16.95 EUR</span>
+                    <del>€34.65</del>
                 </div>
-                <div class="accordion-item">
-                    <button class="accordion-header" onclick="toggleAcc(this)">Global Shipping <i data-lucide="chevron-down"></i></button>
-                    <div class="accordion-content"><p>We deliver worldwide-free within 10-18 business days.</p></div>
+                
+                <p class="product-description">
+                    Industrial velocity, portable form. The Series III features a brushless motor designed for automotive detailing and high-end workspaces.
+                </p>
+                
+                <a href="https://buy.stripe.com/YOUR_LINK" class="buy-button">Secure Purchase</a>
+                
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-label">Suction Power</span>
+                        <span class="spec-value">15000 Pa</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Battery</span>
+                        <span class="spec-value">4000mAh Dual-Cell</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Motor RPM</span>
+                        <span class="spec-value">35,000 RPM</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Weight</span>
+                        <span class="spec-value">0.36kg</span>
+                    </div>
+                </div>
+                
+                <div class="accordion">
+                    <div class="accordion-item" onclick="toggleAccordion(this)">
+                        <button class="accordion-header">
+                            Washable HEPA Filter
+                            <i data-lucide="chevron-down" class="icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>The industrial-grade filter can be rinsed with water. Ensure it is 100% dry before re-inserting.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item" onclick="toggleAccordion(this)">
+                        <button class="accordion-header">
+                            Global Shipping
+                            <i data-lucide="chevron-down" class="icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>We deliver worldwide-free within 10-18 business days.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="features" class="features-grid">
-        <div class="feature-card">
-            <i data-lucide="wind" color="#fff" size="32"></i>
-            <h3>Cyclone Tech</h3>
-            <p>Proprietary airflow creates a vortex that prevents dust from clogging the filter.</p>
-        </div>
-        <div class="feature-card">
-            <i data-lucide="battery" color="#fff" size="32"></i>
-            <h3>Lithium Core</h3>
-            <p>Dual-cell architecture provides sustained power for deep cleaning sessions.</p>
-        </div>
-        <div class="feature-card">
-            <i data-lucide="cpu" color="#fff" size="32"></i>
-            <h3>Silent Force</h3>
-            <p>Acoustically tuned motor housing reduces noise to under 70dB while maintaining torque.</p>
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="wind" color="#fff" size="32"></i>
+                    </div>
+                    <h3 class="feature-title">Cyclone Tech</h3>
+                    <p class="feature-description">
+                        Proprietary airflow creates a vortex that prevents dust from clogging the filter.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="battery" color="#fff" size="32"></i>
+                    </div>
+                    <h3 class="feature-title">Lithium Core</h3>
+                    <p class="feature-description">
+                        Dual-cell architecture provides sustained power for deep cleaning sessions.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="cpu" color="#fff" size="32"></i>
+                    </div>
+                    <h3 class="feature-title">Silent Force</h3>
+                    <p class="feature-description">
+                        Acoustically tuned motor housing reduces noise to under 70dB while maintaining torque.
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="support" class="support-section">
-        <h2 style="font-family:'Space Grotesk'; font-size:2.5rem;">Direct Support</h2>
-        <p style="color:var(--text-muted);">Have a technical question? Our team responds within 24 hours.</p>
-        <form class="support-form" action="https://formspree.io/f/YOUR_ID" method="POST">
-            <input type="email" name="email" placeholder="Email Address" required>
-            <textarea name="message" placeholder="Technical Inquiry" rows="4" required></textarea>
-            <button type="submit">Submit Request</button>
-        </form>
+    <!-- Support -->
+    <section id="support" class="support">
+        <div class="container">
+            <div class="support-header">
+                <h2 class="support-title">Direct Support</h2>
+                <p class="support-subtitle">Have a technical question? Our team responds within 24 hours.</p>
+            </div>
+            
+            <form class="support-form" action="https://formspree.io/f/YOUR_ID" method="POST">
+                <div class="form-group">
+                    <input type="email" name="email" class="form-input" placeholder="Email Address" required>
+                </div>
+                
+                <div class="form-group">
+                    <textarea name="message" class="form-textarea" placeholder="Technical Inquiry" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button">Submit Request</button>
+            </form>
+        </div>
     </section>
 
-    <footer style="padding: 60px 5%; display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border);">
-        <div>&copy; 2026 DUSTED INC.</div>
-        <div>DESIGNED IN CYPRUS</div>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>&copy; 2026 DUSTED INC.</div>
+                <div>DESIGNED IN CYPRUS</div>
+            </div>
+        </div>
     </footer>
 
+    <!-- Mobile Bar -->
     <div class="mobile-bar">
-        <div class="mb-price">€16.95</div>
-        <a href="https://buy.stripe.com/YOUR_LINK" class="mb-btn">BUY NOW</a>
+        <div class="mobile-price">€16.95</div>
+        <a href="https://buy.stripe.com/YOUR_LINK" class="mobile-buy-btn">BUY NOW</a>
     </div>
 
     <script>
+        // Initialize Lucide icons
         lucide.createIcons();
         
-        window.onload = function() {
+        // Preloader
+        window.addEventListener('load', function() {
             const loader = document.getElementById('loader');
-            loader.style.opacity = '0';
-            setTimeout(() => { 
-                loader.style.visibility = 'hidden'; 
+            setTimeout(() => {
+                loader.classList.add('hidden');
             }, 500);
             
-            // Check if hero image is loaded
-            const heroBg = document.querySelector('.hero');
+            // Check hero background image
+            const hero = document.querySelector('.hero');
             const bgImage = new Image();
             bgImage.src = '5.webp';
-            bgImage.onload = function() {
-                console.log('Hero background image loaded successfully');
-            };
             bgImage.onerror = function() {
-                console.error('Hero background image failed to load. Check file path: 5.webp');
-                heroBg.style.background = 'linear-gradient(135deg, #151515 0%, #050505 100%)';
+                console.error('Hero background image failed to load');
+                hero.style.background = 'radial-gradient(circle at 50% 50%, #141414 0%, #0a0a0a 100%)';
             };
-        }
+        });
         
-        function setImg(el, src) {
-            document.getElementById('mainImg').src = src;
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-        }
-        
-        function toggleAcc(btn) {
-            const content = btn.nextElementSibling;
-            const isOpen = content.style.maxHeight;
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('active');
             
-            // Close all other accordions
-            document.querySelectorAll('.accordion-content').forEach(c => {
-                if (c !== content) {
-                    c.style.maxHeight = null;
-                }
+            // Toggle menu icon
+            const menuBtn = document.querySelector('.mobile-menu-btn i');
+            if (mobileMenu.classList.contains('active')) {
+                menuBtn.setAttribute('data-lucide', 'x');
+            } else {
+                menuBtn.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+        
+        // Image gallery
+        function changeImage(src, element) {
+            // Update main image
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = src;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+        
+        // Accordion
+        function toggleAccordion(element) {
+            const isActive = element.classList.contains('active');
+            
+            // Close all accordions
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                item.classList.remove('active');
+                const content = item.querySelector('.accordion-content');
+                content.style.maxHeight = null;
             });
             
-            // Toggle current accordion
-            if (!isOpen || isOpen === '0px') {
-                content.style.maxHeight = content.scrollHeight + "px";
-            } else {
-                content.style.maxHeight = null;
-            }
-            
-            // Rotate icon
-            const icon = btn.querySelector('svg');
-            if (icon) {
-                icon.style.transform = content.style.maxHeight ? 'rotate(180deg)' : 'rotate(0deg)';
+            // Open clicked accordion if it wasn't active
+            if (!isActive) {
+                element.classList.add('active');
+                const content = element.querySelector('.accordion-content');
+                content.style.maxHeight = content.scrollHeight + 'px';
             }
         }
         
-        // Add smooth scrolling for anchor links
+        // Initialize accordions
+        document.querySelectorAll('.accordion-item').forEach(item => {
+            const content = item.querySelector('.accordion-content');
+            content.style.maxHeight = null;
+        });
+        
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
+                
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
                 
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     const navHeight = document.querySelector('nav').offsetHeight;
-                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + 
+                                         window.pageYOffset - navHeight;
                     
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
                     });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobileMenu');
+                    if (mobileMenu.classList.contains('active')) {
+                        toggleMobileMenu();
+                    }
                 }
             });
         });
+        
+        // Mobile bar visibility on scroll
+        let lastScroll = 0;
+        const mobileBar = document.querySelector('.mobile-bar');
+        
+        window.addEventListener('scroll', function() {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > lastScroll && currentScroll > 200) {
+                // Scrolling down
+                mobileBar.style.transform = 'translateY(100%)';
+            } else {
+                // Scrolling up
+                mobileBar.style.transform = 'translateY(0)';
+            }
+            
+            lastScroll = currentScroll;
+        });
+        
+        // Form submission
+        const contactForm = document.querySelector('.support-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = new FormData(this);
+                
+                // Simulate form submission (replace with actual Formspree submission)
+                const submitBtn = this.querySelector('.submit-button');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    submitBtn.textContent = 'Message Sent!';
+                    submitBtn.style.background = '#10b981';
+                    
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        submitBtn.style.background = '';
+                        this.reset();
+                    }, 2000);
+                }, 1500);
+            });
+        }
     </script>
 </body>
 </html>
