@@ -3,251 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DUSTED™ | The World's Most Powerful Car Vacuum</title>
+    <title>DUSTED™ — The Original Handheld</title>
     
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #2563eb;
-            --dark: #0f172a;
-            --accent: #ff4757;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --radius: 16px;
-            --nav-h: 75px;
+            --accent: #000000;
+            --secondary: #6e6e73;
+            --bg: #ffffff;
+            --surface: #f5f5f7;
+            --border: #d2d2d7;
+            --radius: 12px;
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Essential UX */
-        html { scroll-behavior: smooth; scroll-padding-top: 90px; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--light); color: var(--dark); overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', -apple-system, sans-serif; 
+            background: var(--bg); 
+            color: var(--accent); 
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
 
-        /* Modern Navigation */
+        /* Navigation */
         nav {
-            position: fixed; top: 0; width: 100%; height: var(--nav-h);
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+            position: fixed; top: 0; width: 100%; height: 52px;
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: saturate(180%) blur(20px);
             z-index: 9999; display: flex; justify-content: space-between;
-            align-items: center; padding: 0 6%; border-bottom: 1px solid rgba(0,0,0,0.05);
+            align-items: center; padding: 0 10%; border-bottom: 0.5px solid var(--border);
         }
-        .logo { font-weight: 800; font-size: 1.5rem; text-decoration: none; color: var(--dark); letter-spacing: -1.5px; }
-        .logo span { color: var(--primary); }
+        .logo { font-weight: 700; font-size: 1.1rem; text-decoration: none; color: var(--accent); letter-spacing: -0.02em; }
         .nav-links { display: flex; gap: 30px; }
-        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
-        .nav-links a:hover { color: var(--primary); }
+        .nav-links a { text-decoration: none; color: var(--secondary); font-size: 0.75rem; font-weight: 400; transition: 0.2s; }
+        .nav-links a:hover { color: var(--accent); }
 
-        /* Main Store Layout */
-        .store-container { max-width: 1250px; margin: calc(var(--nav-h) + 40px) auto 80px; padding: 0 24px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; }
+        /* Product Section */
+        .container { max-width: 1080px; margin: 0 auto; padding: 80px 20px; }
+        .store-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: start; padding-top: 40px; }
 
-        /* Product Gallery (AliExpress Style) */
-        .p-gallery { position: sticky; top: 110px; height: fit-content; }
-        .p-main-wrap { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
-        .p-main-wrap img { width: 100%; display: block; transition: 0.5s ease; cursor: crosshair; }
-        .p-main-wrap:hover img { transform: scale(1.05); }
-        .p-thumbs { display: flex; gap: 12px; margin-top: 15px; }
-        .thumb { width: 85px; height: 85px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; object-fit: cover; background: white; }
-        .thumb.active { border-color: var(--primary); transform: translateY(-3px); }
+        /* Gallery */
+        .gallery-wrap { position: sticky; top: 100px; }
+        .main-viewer { 
+            width: 100%; border-radius: var(--radius); overflow: hidden; 
+            background: var(--surface); display: flex; align-items: center; justify-content: center;
+        }
+        .main-viewer img { width: 100%; height: auto; transition: transform 0.8s ease; display: block; }
+        .thumbs { display: flex; gap: 12px; margin-top: 15px; justify-content: center; }
+        .thumb-btn { 
+            width: 64px; height: 64px; border-radius: 8px; cursor: pointer; 
+            border: 1px solid transparent; overflow: hidden; padding: 2px;
+            transition: var(--transition); background: var(--surface);
+        }
+        .thumb-btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+        .thumb-btn.active { border-color: var(--accent); transform: scale(1.05); }
 
-        /* Product Details */
-        .p-details h1 { font-size: 3.5rem; line-height: 1; letter-spacing: -3px; margin-bottom: 10px; }
-        .stars { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #fbbf24; font-weight: 700; font-size: 0.9rem; }
+        /* Details */
+        .details { padding-top: 10px; }
+        .tag { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--secondary); margin-bottom: 8px; display: block; }
+        h1 { font-size: 3rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 12px; }
+        .price { font-size: 1.5rem; font-weight: 500; margin-bottom: 24px; color: var(--accent); }
+        .price span { color: var(--secondary); text-decoration: line-through; margin-right: 10px; font-weight: 400; font-size: 1.1rem; }
+
+        .specs { margin-bottom: 32px; border-top: 1px solid #e5e5e7; padding-top: 24px; }
+        .spec-item { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 0.9rem; color: var(--accent); }
+        .spec-item i { color: var(--secondary); }
+
+        /* Call to Action */
+        .buy-button {
+            display: block; width: 100%; padding: 18px; background: var(--accent);
+            color: white; text-align: center; text-decoration: none; border-radius: 50px;
+            font-weight: 600; font-size: 1rem; transition: var(--transition);
+            margin-bottom: 16px; border: none; cursor: pointer;
+        }
+        .buy-button:hover { opacity: 0.85; transform: translateY(-1px); }
         
-        .price-card { background: white; padding: 25px; border-radius: var(--radius); border: 1px solid #eef2f6; margin-bottom: 25px; }
-        .p-now { font-size: 3.2rem; font-weight: 800; color: var(--dark); }
-        .p-old { text-decoration: line-through; color: var(--gray); font-size: 1.4rem; margin-left: 10px; }
-
-        .scarcity-bar { margin: 20px 0; }
-        .bar-bg { width: 100%; height: 8px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: 8px; }
-        .bar-fill { width: 85%; height: 100%; background: var(--accent); animation: pulse 2s infinite; }
-
-        /* High-Conversion Buttons */
-        .btn-cta {
-            background: linear-gradient(135deg, var(--primary), #1e40af);
-            color: white; padding: 22px; border-radius: 50px; font-weight: 800;
-            text-decoration: none; display: block; text-align: center;
-            font-size: 1.3rem; box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none; cursor: pointer;
+        /* Contact Section */
+        .contact-section { background: var(--surface); border-radius: var(--radius); padding: 40px; margin-top: 60px; }
+        .contact-section h3 { font-size: 1.5rem; margin-bottom: 20px; letter-spacing: -0.02em; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        input, textarea { 
+            width: 100%; padding: 14px; border-radius: 8px; border: 1px solid var(--border);
+            font-family: inherit; font-size: 0.9rem; outline: none; transition: 0.2s;
         }
-        .btn-cta:hover { transform: translateY(-4px); box-shadow: 0 20px 45px rgba(37, 99, 235, 0.4); }
+        input:focus, textarea:focus { border-color: var(--accent); }
 
-        /* Info Sections */
-        section { padding: 80px 6%; max-width: 1200px; margin: 0 auto; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .f-card { background: white; padding: 40px; border-radius: var(--radius); border: 1px solid #f1f5f9; transition: 0.3s; }
-        .f-card:hover { border-color: var(--primary); }
-
-        /* Forms */
-        .contact-box { max-width: 600px; margin: 40px auto; background: white; padding: 40px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        .inp { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; }
-
-        /* Floating Notifications */
-        .p-notif {
-            position: fixed; bottom: 30px; left: 30px; background: white; padding: 12px 20px;
-            border-radius: 50px; display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1); z-index: 9999;
-            transform: translateX(-150%); transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        /* Success & Notifications */
+        .sticky-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px); padding: 16px 10%; display: flex; justify-content: space-between;
+            align-items: center; border-top: 0.5px solid var(--border); transform: translateY(100%);
+            transition: transform 0.4s ease; z-index: 9998;
         }
-        .p-notif.active { transform: translateX(0); }
+        .sticky-footer.visible { transform: translateY(0); }
 
-        /* Sticky Footer Ali-Style */
-        .sticky-foot {
-            position: fixed; bottom: 0; width: 100%; background: white; padding: 15px 6%;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.05); z-index: 9000;
-            transform: translateY(100%); transition: 0.4s;
-        }
-        .sticky-foot.active { transform: translateY(0); }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-
-        @media (max-width: 900px) {
-            .store-container { grid-template-columns: 1fr; }
+        @media (max-width: 850px) {
+            .store-grid { grid-template-columns: 1fr; gap: 40px; }
+            h1 { font-size: 2.2rem; }
+            nav { padding: 0 5%; }
             .nav-links { display: none; }
-            .p-details h1 { font-size: 2.5rem; }
-            .sticky-foot span { display: none; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="#" class="logo">DUSTED<span>™</span></a>
+        <a href="#" class="logo">DUSTED™</a>
         <div class="nav-links">
-            <a href="#about">The Tech</a>
-            <a href="#reviews">Reviews</a>
+            <a href="#about">The Product</a>
             <a href="#contact">Support</a>
         </div>
-        <a href="https://buy.stripe.com/YOUR_LINK" class="btn-cta" style="padding: 10px 25px; font-size: 0.85rem;">ORDER NOW</a>
+        <a href="https://buy.stripe.com/your_link" style="font-size: 0.75rem; font-weight: 600; color: white; background: #000; padding: 6px 14px; border-radius: 20px; text-decoration: none;">Order Now</a>
     </nav>
 
-    <div class="store-container">
-        <div class="p-gallery">
-            <div class="p-main-wrap">
-                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000" id="v-main">
-            </div>
-            <div class="p-thumbs">
-                <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=200" class="thumb active" onclick="updateV(this)">
-                <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=200" class="thumb" onclick="updateV(this)">
-                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=200" class="thumb" onclick="updateV(this)">
-                <img src="https://images.unsplash.com/photo-1590604518086-53842c525164?q=80&w=200" class="thumb" onclick="updateV(this)">
-            </div>
-        </div>
-
-        <div class="p-details">
-            <div class="stars"><i data-lucide="star" fill="#fbbf24"></i> Verified 2026 Bestseller</div>
-            <h1>DUSTED™ Pro Car Vacuum</h1>
-            <p style="color: var(--gray); font-size: 1.15rem; margin-bottom: 25px;">The only handheld vacuum with 8000Pa industrial-grade suction. Engineered for car interiors, laptops, and hard-to-reach places.</p>
+    <div class="container">
+        <div class="store-grid">
             
-            <div class="price-card">
-                <div style="display: flex; align-items: baseline;">
-                    <span class="p-now">$39.99</span>
-                    <span class="p-old">$79.99</span>
+            <div class="gallery-wrap">
+                <div class="main-viewer">
+                    <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000" id="current-img">
                 </div>
-                <div class="scarcity-bar">
-                    <p style="font-size: 0.8rem; font-weight: 700; color: var(--accent);">HURRY! ONLY 14 UNITS LEFT IN STOCK</p>
-                    <div class="bar-bg"><div class="bar-fill"></div></div>
+                <div class="thumbs">
+                    <div class="thumb-btn active" onclick="updateImage(this, 'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=1000')">
+                        <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=100">
+                    </div>
+                    <div class="thumb-btn" onclick="updateImage(this, 'https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=1000')">
+                        <img src="https://images.unsplash.com/photo-1520116467324-c1597239c20f?q=80&w=100">
+                    </div>
+                    <div class="thumb-btn" onclick="updateImage(this, 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1000')">
+                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=100">
+                    </div>
                 </div>
             </div>
 
-            <a href="https://buy.stripe.com/YOUR_LINK" class="btn-cta">CLAIM YOUR 50% DISCOUNT</a>
-            
-            <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div style="font-size: 0.8rem; display: flex; align-items: center; gap: 8px;"><i data-lucide="truck" size="18" color="var(--primary)"></i> Free Global Shipping</div>
-                <div style="font-size: 0.8rem; display: flex; align-items: center; gap: 8px;"><i data-lucide="shield-check" size="18" color="var(--primary)"></i> Stripe Secure Payment</div>
+            <div class="details" id="about">
+                <span class="tag">Global Bestseller</span>
+                <h1>Powerful cleaning, <br> portable design.</h1>
+                <div class="price"><span>$79.00</span>$39.00</div>
+                
+                <p style="color: var(--secondary); margin-bottom: 24px; font-size: 0.95rem; line-height: 1.6;">
+                    Engineering meets simplicity. The DUSTED™ Mini is the only handheld vacuum designed to provide industrial-grade suction (8000Pa) within a chassis that fits in your glovebox.
+                </p>
+
+                <div class="specs">
+                    <div class="spec-item"><i data-lucide="zap" size="18"></i> 8000Pa Brushless Motor</div>
+                    <div class="spec-item"><i data-lucide="battery" size="18"></i> 45-Min Continuous Use</div>
+                    <div class="spec-item"><i data-lucide="wind" size="18"></i> HEPA Multi-stage Filter</div>
+                    <div class="spec-item"><i data-lucide="package" size="18"></i> Free Express Shipping</div>
+                </div>
+
+                <a href="https://buy.stripe.com/your_link" class="buy-button">Checkout with Stripe</a>
+                <p style="text-align:center; font-size: 0.7rem; color: var(--secondary);">Secure payment via Stripe. Money back guarantee.</p>
             </div>
         </div>
-    </div>
 
-    <section id="about" style="background: white;">
-        <h2 style="text-align:center; font-size: 2.5rem; margin-bottom: 50px;">Why DUSTED™ beats the rest.</h2>
-        <div class="grid-3">
-            <div class="f-card">
-                <i data-lucide="wind" color="var(--primary)" size="40"></i>
-                <h3 style="margin: 20px 0;">Hyper-Suction</h3>
-                <p style="color:var(--gray)">8000Pa motor spins at 32,000 RPM. If it fits in the nozzle, it's gone.</p>
-            </div>
-            <div class="f-card">
-                <i data-lucide="battery-charging" color="var(--primary)" size="40"></i>
-                <h3 style="margin: 20px 0;">USB-C Rapid Charge</h3>
-                <p style="color:var(--gray)">Charges in your car's 12V port. 45 minutes of cleaning power per charge.</p>
-            </div>
-            <div class="f-card">
-                <i data-lucide="filter" color="var(--primary)" size="40"></i>
-                <h3 style="margin: 20px 0;">Infinite HEPA Filter</h3>
-                <p style="color:var(--gray)">Never buy filters again. Just wash, dry, and reuse. Environmentally friendly.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="reviews">
-        <h2 style="text-align:center; margin-bottom: 50px;">Real Results from Real Drivers</h2>
-        <div style="display: grid; gap: 20px; max-width: 800px; margin: 0 auto;">
-            <div style="background: white; padding: 30px; border-radius: 15px; border: 1px solid #eee;">
-                <p style="color:#fbbf24; margin-bottom:10px;">★★★★★</p>
-                <p><strong>"Actually works on dog hair!"</strong> I was skeptical but this pulls hair out of the car mats that my Dyson misses. Best $40 I've spent.</p>
-                <p style="margin-top:15px; font-size: 0.8rem; font-weight: 700;">— David K.</p>
-            </div>
-            <div style="background: white; padding: 30px; border-radius: 15px; border: 1px solid #eee;">
-                <p style="color:#fbbf24; margin-bottom:10px;">★★★★★</p>
-                <p><strong>"Perfect for detailers."</strong> I use this for the tight spots between the seats. It's so small it fits anywhere.</p>
-                <p style="margin-top:15px; font-size: 0.8rem; font-weight: 700;">— Sarah L.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2 style="text-align:center;">Customer Support</h2>
-        <div class="contact-box">
-            <form action="https://formspree.io/f/YOUR_ID" method="POST">
-                <input type="text" name="name" placeholder="Full Name" class="inp" required>
-                <input type="email" name="email" placeholder="Email Address" class="inp" required>
-                <textarea name="message" rows="5" placeholder="How can we help you today?" class="inp" required></textarea>
-                <button type="submit" class="btn-cta" style="width: 100%; border-radius: 10px;">SEND MESSAGE</button>
+        <div class="contact-section" id="contact">
+            <h3>Support</h3>
+            <p style="color: var(--secondary); margin-bottom: 20px; font-size: 0.9rem;">Questions about your delivery? Our team replies within 12 hours.</p>
+            <form action="https://formspree.io/f/your_id" method="POST">
+                <div class="form-row">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <textarea name="message" placeholder="Message" rows="4" required style="margin-bottom: 15px;"></textarea>
+                <button type="submit" class="buy-button" style="width: auto; padding: 12px 30px; border-radius: 8px; font-size: 0.9rem;">Send Inquiry</button>
             </form>
         </div>
-    </section>
-
-    <div class="p-notif" id="notif">
-        <i data-lucide="check-circle" color="var(--primary)"></i>
-        <span id="notif-text">Someone in London just bought!</span>
     </div>
 
-    <div class="sticky-foot" id="sticky">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <img src="https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?q=80&w=50" style="border-radius: 8px;">
-            <span><strong>DUSTED™ Pro</strong><br><small style="color:var(--primary)">$39.99 Special Offer</small></span>
+    <div class="sticky-footer" id="sticky-bar">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="font-weight: 600; font-size: 0.9rem;">DUSTED™ Mini</div>
+            <div style="font-size: 0.9rem; color: var(--secondary);">$39.00</div>
         </div>
-        <a href="https://buy.stripe.com/YOUR_LINK" class="btn-cta" style="padding: 12px 30px; font-size: 1rem;">BUY NOW</a>
+        <a href="https://buy.stripe.com/your_link" style="background: #000; color: #fff; padding: 10px 24px; border-radius: 50px; text-decoration: none; font-size: 0.8rem; font-weight: 600;">Buy Now</a>
     </div>
 
     <script>
         lucide.createIcons();
 
-        // High-Performance Gallery
-        function updateV(el) {
-            document.getElementById('v-main').src = el.src;
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
+        // Smooth Gallery
+        function updateImage(btn, src) {
+            const mainImg = document.getElementById('current-img');
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = src;
+                mainImg.style.opacity = '1';
+            }, 150);
+            
+            document.querySelectorAll('.thumb-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         }
 
-        // Optimized Sticky Bar
+        // Minimalist Scroll Bar
         window.addEventListener('scroll', () => {
-            const s = document.getElementById('sticky');
-            window.scrollY > 800 ? s.classList.add('active') : s.classList.remove('active');
+            const bar = document.getElementById('sticky-bar');
+            if (window.scrollY > 600) {
+                bar.classList.add('visible');
+            } else {
+                bar.classList.remove('visible');
+            }
         });
-
-        // Dynamic Sales Proof
-        const names = ["James", "Emma", "Sarah", "Michael", "Linda", "Tom"];
-        const cities = ["New York", "London", "Dubai", "Sydney", "Berlin", "Toronto"];
-        setInterval(() => {
-            const n = names[Math.floor(Math.random()*6)];
-            const c = cities[Math.floor(Math.random()*6)];
-            document.getElementById('notif-text').innerHTML = `<b>${n}</b> from <b>${c}</b> just ordered DUSTED™`;
-            const pop = document.getElementById('notif');
-            pop.classList.add('active');
-            setTimeout(() => pop.classList.remove('active'), 4000);
-        }, 15000);
     </script>
 </body>
 </html>
