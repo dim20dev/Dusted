@@ -622,7 +622,7 @@
 
         /* --- FOOTER --- */
         footer {
-            padding: 60px 0;
+            padding: 80px 0 100px; /* Extra padding at bottom for mobile bar */
             border-top: 1px solid var(--border);
         }
         
@@ -634,7 +634,7 @@
             font-size: 0.85rem;
         }
 
-        /* --- MOBILE BAR --- */
+        /* --- MOBILE BAR - SIMPLE ALWAYS VISIBLE --- */
         .mobile-bar {
             position: fixed;
             bottom: 0;
@@ -718,9 +718,12 @@
                 padding: 40px 30px;
             }
             
-            /* Mobile Bar */
+            /* Mobile Bar - ALWAYS VISIBLE ON MOBILE */
             .mobile-bar {
-                display: flex;
+                display: flex !important;
+                transform: translateY(0) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
             }
             
             .buy-button {
@@ -949,19 +952,24 @@
                 <p class="support-subtitle">Have a technical question? Our team responds within 24 hours.</p>
             </div>
             
-            <form class="support-form" action="https://formspree.io/f/mojwokqj" method="POST">
-    <input type="hidden" name="_subject" value="New Support Request from Dusted">
-
-    <div class="form-group">
-        <input type="email" name="email" class="form-input" placeholder="Email Address" required>
-    </div>
-    
-    <div class="form-group">
-        <textarea name="message" class="form-textarea" placeholder="Technical Inquiry" rows="4" required></textarea>
-    </div>
-    
-    <button type="submit" class="submit-button">Submit Request</button>
-</form>
+            <form class="support-form" id="supportForm" action="https://formspree.io/f/mojwokqj" method="POST">
+                <input type="hidden" name="_subject" value="New Support Request from Dusted">
+                <input type="hidden" name="_replyto" id="replyTo">
+                <input type="hidden" name="_language" value="en">
+                
+                <div class="form-group">
+                    <input type="email" name="email" id="email" class="form-input" placeholder="Email Address" required>
+                </div>
+                
+                <div class="form-group">
+                    <textarea name="message" id="message" class="form-textarea" placeholder="Technical Inquiry" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button" id="submitBtn">Submit Request</button>
+            </form>
+            
+            <!-- Success/Error Message -->
+            <div id="formMessage" style="display: none; text-align: center; margin-top: 20px; padding: 15px; border-radius: var(--radius); background: var(--surface); color: #10b981; border: 1px solid #10b981;"></div>
         </div>
     </section>
 
@@ -976,7 +984,7 @@
     </footer>
 
     <!-- Mobile Bar -->
-    <div class="mobile-bar">
+    <div class="mobile-bar" id="mobileBar">
         <div class="mobile-price">€16.95</div>
         <a href="https://buy.stripe.com/YOUR_LINK" class="mobile-buy-btn">BUY NOW</a>
     </div>
@@ -1000,6 +1008,9 @@
                 console.error('Hero background image failed to load');
                 hero.style.background = 'radial-gradient(circle at 50% 50%, #141414 0%, #0a0a0a 100%)';
             };
+            
+            // Initialize mobile bar
+            initMobileBar();
         });
         
         // Mobile menu toggle
@@ -1055,20 +1066,20 @@
             content.style.maxHeight = null;
         });
         
-        // Smooth scrolling for anchor links
+        // SIMPLE SMOOTH SCROLLING - No lag
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
                 
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    const navHeight = document.querySelector('nav').offsetHeight;
-                    const targetPosition = targetElement.getBoundingClientRect().top + 
-                                         window.pageYOffset - navHeight;
+                    e.preventDefault();
                     
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - navHeight;
+                    
+                    // Simple scroll
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
@@ -1083,53 +1094,113 @@
             });
         });
         
-        // Mobile bar visibility on scroll
-        let lastScroll = 0;
-        const mobileBar = document.querySelector('.mobile-bar');
-        
-        window.addEventListener('scroll', function() {
-            const currentScroll = window.pageYOffset;
+        // MOBILE BAR - ALWAYS VISIBLE ON MOBILE
+        function initMobileBar() {
+            const mobileBar = document.getElementById('mobileBar');
             
-            if (currentScroll > lastScroll && currentScroll > 200) {
-                // Scrolling down
-                mobileBar.style.transform = 'translateY(100%)';
-            } else {
-                // Scrolling up
+            // Check if mobile
+            if (window.innerWidth <= 768) {
+                mobileBar.style.display = 'flex';
+                mobileBar.style.opacity = '1';
+                mobileBar.style.visibility = 'visible';
                 mobileBar.style.transform = 'translateY(0)';
+                
+                // REMOVE ALL SCROLL EVENT LISTENERS - No lag
+                // Mobile bar is always visible, no hide/show logic
+            } else {
+                mobileBar.style.display = 'none';
             }
-            
-            lastScroll = currentScroll;
+        }
+        
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(initMobileBar, 250);
         });
         
-        // Form submission
-        const contactForm = document.querySelector('.support-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
+        // FORMSPREE FIX - Working version
+        const supportForm = document.getElementById('supportForm');
+        const formMessage = document.getElementById('formMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        if (supportForm) {
+            supportForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                // Get form data
-                const formData = new FormData(this);
+                // Set reply-to field
+                const email = document.getElementById('email').value;
+                document.getElementById('replyTo').value = email;
                 
-                // Simulate form submission (replace with actual Formspree submission)
-                const submitBtn = this.querySelector('.submit-button');
+                // Show loading state
                 const originalText = submitBtn.textContent;
-                
                 submitBtn.textContent = 'Sending...';
                 submitBtn.disabled = true;
                 
-                setTimeout(() => {
-                    submitBtn.textContent = 'Message Sent!';
-                    submitBtn.style.background = '#10b981';
+                try {
+                    // Send to Formspree using XHR (more compatible)
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', this.action, true);
+                    xhr.setRequestHeader('Accept', 'application/json');
                     
-                    setTimeout(() => {
+                    const formData = new FormData(this);
+                    
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            // Success
+                            showFormMessage('✓ Message sent! We\'ll reply within 24 hours.', 'success');
+                            submitBtn.textContent = 'Sent!';
+                            submitBtn.style.background = '#10b981';
+                            supportForm.reset();
+                            
+                            // Reset button after 3 seconds
+                            setTimeout(() => {
+                                submitBtn.textContent = originalText;
+                                submitBtn.disabled = false;
+                                submitBtn.style.background = '';
+                                formMessage.style.display = 'none';
+                            }, 3000);
+                        } else {
+                            // Error
+                            showFormMessage('✗ Failed to send. Please try again.', 'error');
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                        }
+                    };
+                    
+                    xhr.onerror = function() {
+                        showFormMessage('✗ Network error. Check connection.', 'error');
                         submitBtn.textContent = originalText;
                         submitBtn.disabled = false;
-                        submitBtn.style.background = '';
-                        this.reset();
-                    }, 2000);
-                }, 1500);
+                    };
+                    
+                    xhr.send(formData);
+                    
+                } catch (error) {
+                    console.error('Form error:', error);
+                    showFormMessage('✗ Something went wrong.', 'error');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
             });
         }
+        
+        function showFormMessage(message, type) {
+            formMessage.textContent = message;
+            formMessage.style.display = 'block';
+            formMessage.style.color = type === 'success' ? '#10b981' : '#ef4444';
+            formMessage.style.borderColor = type === 'success' ? '#10b981' : '#ef4444';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                formMessage.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initMobileBar();
+        });
     </script>
 </body>
 </html>
