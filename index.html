@@ -620,9 +620,32 @@
             box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
         }
 
+        /* Message styles */
+        .form-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--radius);
+            background: var(--surface);
+            font-size: 0.9rem;
+        }
+        
+        .form-message.success {
+            display: block;
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+        
+        .form-message.error {
+            display: block;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
         /* --- FOOTER --- */
         footer {
-            padding: 80px 0 100px; /* Extra padding at bottom for mobile bar */
+            padding: 80px 0 100px;
             border-top: 1px solid var(--border);
         }
         
@@ -634,7 +657,7 @@
             font-size: 0.85rem;
         }
 
-        /* --- MOBILE BAR - SIMPLE ALWAYS VISIBLE --- */
+        /* --- MOBILE BAR --- */
         .mobile-bar {
             position: fixed;
             bottom: 0;
@@ -718,12 +741,10 @@
                 padding: 40px 30px;
             }
             
-            /* Mobile Bar - ALWAYS VISIBLE ON MOBILE */
+            /* Mobile Bar */
             .mobile-bar {
                 display: flex !important;
                 transform: translateY(0) !important;
-                opacity: 1 !important;
-                visibility: visible !important;
             }
             
             .buy-button {
@@ -952,24 +973,27 @@
                 <p class="support-subtitle">Have a technical question? Our team responds within 24 hours.</p>
             </div>
             
-            <form class="support-form" id="supportForm" action="https://formspree.io/f/mzdvzwrk" method="POST">
-                <input type="hidden" name="_subject" value="New Support Request from Dusted">
+            <!-- FORMSPREE FORM - SIMPLIFIED WORKING VERSION -->
+            <form class="support-form" id="supportForm" action="https://formspree.io/f/mojwokqj" method="POST">
+                <input type="hidden" name="_subject" value="New Support Request from DUSTED">
                 <input type="hidden" name="_replyto" id="replyTo">
                 <input type="hidden" name="_language" value="en">
+                <input type="hidden" name="_format" value="plain">
+                <input type="text" name="_gotcha" style="display:none">
                 
                 <div class="form-group">
-                    <input type="email" name="email" id="email" class="form-input" placeholder="Email Address" required>
+                    <input type="email" name="email" id="email" class="form-input" placeholder="Your Email Address" required>
                 </div>
                 
                 <div class="form-group">
-                    <textarea name="message" id="message" class="form-textarea" placeholder="Technical Inquiry" rows="4" required></textarea>
+                    <textarea name="message" id="message" class="form-textarea" placeholder="Your technical inquiry or question..." rows="4" required></textarea>
                 </div>
                 
                 <button type="submit" class="submit-button" id="submitBtn">Submit Request</button>
             </form>
             
-            <!-- Success/Error Message -->
-            <div id="formMessage" style="display: none; text-align: center; margin-top: 20px; padding: 15px; border-radius: var(--radius); background: var(--surface); color: #10b981; border: 1px solid #10b981;"></div>
+            <!-- Message Display -->
+            <div id="formMessage" class="form-message"></div>
         </div>
     </section>
 
@@ -1066,7 +1090,7 @@
             content.style.maxHeight = null;
         });
         
-        // SIMPLE SMOOTH SCROLLING - No lag
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const targetId = this.getAttribute('href');
@@ -1079,7 +1103,6 @@
                     const navHeight = document.querySelector('nav').offsetHeight;
                     const targetPosition = targetElement.offsetTop - navHeight;
                     
-                    // Simple scroll
                     window.scrollTo({
                         top: targetPosition,
                         behavior: 'smooth'
@@ -1094,32 +1117,23 @@
             });
         });
         
-        // MOBILE BAR - ALWAYS VISIBLE ON MOBILE
+        // MOBILE BAR - Always visible on mobile
         function initMobileBar() {
             const mobileBar = document.getElementById('mobileBar');
             
-            // Check if mobile
             if (window.innerWidth <= 768) {
                 mobileBar.style.display = 'flex';
-                mobileBar.style.opacity = '1';
-                mobileBar.style.visibility = 'visible';
-                mobileBar.style.transform = 'translateY(0)';
-                
-                // REMOVE ALL SCROLL EVENT LISTENERS - No lag
-                // Mobile bar is always visible, no hide/show logic
             } else {
                 mobileBar.style.display = 'none';
             }
         }
         
         // Handle window resize
-        let resizeTimer;
         window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(initMobileBar, 250);
+            setTimeout(initMobileBar, 250);
         });
         
-        // FORMSPREE FIX - Working version
+        // FORMSPREE FIX - WORKING VERSION
         const supportForm = document.getElementById('supportForm');
         const formMessage = document.getElementById('formMessage');
         const submitBtn = document.getElementById('submitBtn');
@@ -1128,7 +1142,7 @@
             supportForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                // Set reply-to field
+                // Get form data
                 const email = document.getElementById('email').value;
                 document.getElementById('replyTo').value = email;
                 
@@ -1138,47 +1152,45 @@
                 submitBtn.disabled = true;
                 
                 try {
-                    // Send to Formspree using XHR (more compatible)
-                    const xhr = new XMLHttpRequest();
-                    xhr.open('POST', this.action, true);
-                    xhr.setRequestHeader('Accept', 'application/json');
-                    
+                    // Create form data
                     const formData = new FormData(this);
                     
-                    xhr.onload = function() {
-                        if (xhr.status === 200) {
-                            // Success
-                            showFormMessage('✓ Message sent! We\'ll reply within 24 hours.', 'success');
-                            submitBtn.textContent = 'Sent!';
-                            submitBtn.style.background = '#10b981';
-                            supportForm.reset();
-                            
-                            // Reset button after 3 seconds
-                            setTimeout(() => {
-                                submitBtn.textContent = originalText;
-                                submitBtn.disabled = false;
-                                submitBtn.style.background = '';
-                                formMessage.style.display = 'none';
-                            }, 3000);
-                        } else {
-                            // Error
-                            showFormMessage('✗ Failed to send. Please try again.', 'error');
+                    // Send using fetch
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        // Success
+                        showFormMessage('✓ Message sent successfully! We\'ll reply within 24 hours.', 'success');
+                        submitBtn.textContent = 'Sent!';
+                        submitBtn.style.background = '#10b981';
+                        
+                        // Reset form
+                        this.reset();
+                        
+                        // Reset button after 3 seconds
+                        setTimeout(() => {
                             submitBtn.textContent = originalText;
                             submitBtn.disabled = false;
-                        }
-                    };
-                    
-                    xhr.onerror = function() {
-                        showFormMessage('✗ Network error. Check connection.', 'error');
+                            submitBtn.style.background = '';
+                            formMessage.className = 'form-message';
+                        }, 3000);
+                    } else {
+                        // Error from Formspree
+                        const error = await response.json();
+                        showFormMessage('✗ Error: ' + (error.error || 'Failed to send message'), 'error');
                         submitBtn.textContent = originalText;
                         submitBtn.disabled = false;
-                    };
-                    
-                    xhr.send(formData);
-                    
+                    }
                 } catch (error) {
+                    // Network error
                     console.error('Form error:', error);
-                    showFormMessage('✗ Something went wrong.', 'error');
+                    showFormMessage('✗ Network error. Please check your connection.', 'error');
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
                 }
@@ -1187,13 +1199,11 @@
         
         function showFormMessage(message, type) {
             formMessage.textContent = message;
-            formMessage.style.display = 'block';
-            formMessage.style.color = type === 'success' ? '#10b981' : '#ef4444';
-            formMessage.style.borderColor = type === 'success' ? '#10b981' : '#ef4444';
+            formMessage.className = 'form-message ' + type;
             
             // Auto-hide after 5 seconds
             setTimeout(() => {
-                formMessage.style.display = 'none';
+                formMessage.className = 'form-message';
             }, 5000);
         }
         
