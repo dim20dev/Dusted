@@ -1014,203 +1014,165 @@
     </div>
 
     <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-        
-        // Preloader
-        window.addEventListener('load', function() {
-            const loader = document.getElementById('loader');
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Preloader
+    window.addEventListener('load', function () {
+        const loader = document.getElementById('loader');
+        if (loader) {
             setTimeout(() => {
                 loader.classList.add('hidden');
             }, 500);
-            
-            // Check hero background image
-            const hero = document.querySelector('.hero');
+        }
+
+        // Hero background fallback
+        const hero = document.querySelector('.hero');
+        if (hero) {
             const bgImage = new Image();
             bgImage.src = '5.webp';
-            bgImage.onerror = function() {
-                console.error('Hero background image failed to load');
-                hero.style.background = 'radial-gradient(circle at 50% 50%, #141414 0%, #0a0a0a 100%)';
+            bgImage.onerror = function () {
+                hero.style.background =
+                    'radial-gradient(circle at 50% 50%, #141414 0%, #0a0a0a 100%)';
             };
-            
-            // Initialize mobile bar
-            initMobileBar();
-        });
-        
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('active');
-            
-            // Toggle menu icon
-            const menuBtn = document.querySelector('.mobile-menu-btn i');
-            if (mobileMenu.classList.contains('active')) {
-                menuBtn.setAttribute('data-lucide', 'x');
-            } else {
-                menuBtn.setAttribute('data-lucide', 'menu');
-            }
+        }
+
+        initMobileBar();
+    });
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (!mobileMenu) return;
+
+        mobileMenu.classList.toggle('active');
+
+        const menuBtnIcon = document.querySelector('.mobile-menu-btn i');
+        if (menuBtnIcon) {
+            menuBtnIcon.setAttribute(
+                'data-lucide',
+                mobileMenu.classList.contains('active') ? 'x' : 'menu'
+            );
             lucide.createIcons();
         }
-        
-        // Image gallery
-        function changeImage(src, element) {
-            // Update main image
-            const mainImage = document.getElementById('mainImage');
-            mainImage.src = src;
-            
-            // Update active thumbnail
-            document.querySelectorAll('.thumbnail').forEach(thumb => {
-                thumb.classList.remove('active');
-            });
-            element.classList.add('active');
-        }
-        
-        // Accordion
-        function toggleAccordion(element) {
-            const isActive = element.classList.contains('active');
-            
-            // Close all accordions
-            document.querySelectorAll('.accordion-item').forEach(item => {
-                item.classList.remove('active');
-                const content = item.querySelector('.accordion-content');
-                content.style.maxHeight = null;
-            });
-            
-            // Open clicked accordion if it wasn't active
-            if (!isActive) {
-                element.classList.add('active');
-                const content = element.querySelector('.accordion-content');
-                content.style.maxHeight = content.scrollHeight + 'px';
-            }
-        }
-        
-        // Initialize accordions
+    }
+
+    // Image gallery
+    function changeImage(src, element) {
+        const mainImage = document.getElementById('mainImage');
+        if (mainImage) mainImage.src = src;
+
+        document.querySelectorAll('.thumbnail').forEach(t =>
+            t.classList.remove('active')
+        );
+        if (element) element.classList.add('active');
+    }
+
+    // Accordion
+    function toggleAccordion(element) {
+        const isActive = element.classList.contains('active');
+
         document.querySelectorAll('.accordion-item').forEach(item => {
+            item.classList.remove('active');
             const content = item.querySelector('.accordion-content');
-            content.style.maxHeight = null;
+            if (content) content.style.maxHeight = null;
         });
-        
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    e.preventDefault();
-                    
-                    const navHeight = document.querySelector('nav').offsetHeight;
-                    const targetPosition = targetElement.offsetTop - navHeight;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    const mobileMenu = document.getElementById('mobileMenu');
-                    if (mobileMenu.classList.contains('active')) {
-                        toggleMobileMenu();
-                    }
-                }
-            });
-        });
-        
-        // MOBILE BAR - Always visible on mobile
-        function initMobileBar() {
-            const mobileBar = document.getElementById('mobileBar');
-            
-            if (window.innerWidth <= 768) {
-                mobileBar.style.display = 'flex';
-            } else {
-                mobileBar.style.display = 'none';
-            }
+
+        if (!isActive) {
+            element.classList.add('active');
+            const content = element.querySelector('.accordion-content');
+            if (content) content.style.maxHeight = content.scrollHeight + 'px';
         }
-        
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            setTimeout(initMobileBar, 250);
-        });
-        
-        // FORMSPREE FIX - WORKING VERSION
-        const supportForm = document.getElementById('supportForm');
-        const formMessage = document.getElementById('formMessage');
-        const submitBtn = document.getElementById('submitBtn');
-        
-        if (supportForm) {
-            supportForm.addEventListener('submit', async function(e) {
+    }
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
                 e.preventDefault();
-                
-                // Get form data
-                const email = document.getElementById('email').value;
-                document.getElementById('replyTo').value = email;
-                
-                // Show loading state
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'Sending...';
-                submitBtn.disabled = true;
-                
-                try {
-                    // Create form data
-                    const formData = new FormData(this);
-                    
-                    // Send using fetch
-                    const response = await fetch(this.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    });
-                    
-                    if (response.ok) {
-                        // Success
-                        showFormMessage('✓ Message sent successfully! We\'ll reply within 24 hours.', 'success');
-                        submitBtn.textContent = 'Sent!';
-                        submitBtn.style.background = '#10b981';
-                        
-                        // Reset form
-                        this.reset();
-                        
-                        // Reset button after 3 seconds
-                        setTimeout(() => {
-                            submitBtn.textContent = originalText;
-                            submitBtn.disabled = false;
-                            submitBtn.style.background = '';
-                            formMessage.className = 'form-message';
-                        }, 3000);
-                    } else {
-                        // Error from Formspree
-                        const error = await response.json();
-                        showFormMessage('✗ Error: ' + (error.error || 'Failed to send message'), 'error');
+
+                const nav = document.querySelector('nav');
+                const navHeight = nav ? nav.offsetHeight : 0;
+
+                window.scrollTo({
+                    top: targetElement.offsetTop - navHeight,
+                    behavior: 'smooth'
+                });
+
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
+                    toggleMobileMenu();
+                }
+            }
+        });
+    });
+
+    // Mobile bar
+    function initMobileBar() {
+        const mobileBar = document.getElementById('mobileBar');
+        if (!mobileBar) return;
+
+        mobileBar.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+    }
+
+    window.addEventListener('resize', () => {
+        setTimeout(initMobileBar, 250);
+    });
+
+    // ===== FORMSPREE (FIXED, NO HTML CHANGES) =====
+    const supportForm = document.querySelector('.support-form');
+
+    if (supportForm) {
+        supportForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = supportForm.querySelector('button[type="submit"]');
+            const emailInput = supportForm.querySelector('input[name="email"]');
+            const textarea = supportForm.querySelector('textarea[name="message"]');
+
+            if (!emailInput || !textarea) return;
+
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            try {
+                const formData = new FormData(supportForm);
+
+                const response = await fetch(supportForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    submitBtn.textContent = 'Sent ✓';
+                    supportForm.reset();
+
+                    setTimeout(() => {
                         submitBtn.textContent = originalText;
                         submitBtn.disabled = false;
-                    }
-                } catch (error) {
-                    // Network error
-                    console.error('Form error:', error);
-                    showFormMessage('✗ Network error. Please check your connection.', 'error');
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
+                    }, 2500);
+                } else {
+                    throw new Error('Formspree error');
                 }
-            });
-        }
-        
-        function showFormMessage(message, type) {
-            formMessage.textContent = message;
-            formMessage.className = 'form-message ' + type;
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                formMessage.className = 'form-message';
-            }, 5000);
-        }
-        
-        // Initialize everything
-        document.addEventListener('DOMContentLoaded', function() {
-            initMobileBar();
+            } catch (err) {
+                console.error(err);
+                submitBtn.textContent = 'Error';
+                submitBtn.disabled = false;
+
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                }, 2000);
+            }
         });
-    </script>
+    }
+
+    document.addEventListener('DOMContentLoaded', initMobileBar);
+</script>
 </body>
 </html>
