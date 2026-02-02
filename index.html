@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="referrer" content="origin">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="DUSTED™ Vacuum Series III — Precision Detailing, Industrial Suction, Brushless Motor, HEPA Filter. Order now!">
-    <meta property="og:title" content="DUSTED™ — Precision Detailing">
-    <meta property="og:description" content="Upgrade your cleaning game with the DUSTED Vacuum Series III. Limited stock. Order now!">
-    <meta property="og:image" content="5.webp">
-    <meta property="og:url" content="https://dim20dev.github.io/Dusted">
-    <meta name="referrer" content="origin">
     <title>DUSTED™ — Precision Detailing</title>
 
-    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Styles -->
     <style>
         :root {
             --bg: #0a0a0a;
@@ -29,341 +23,1771 @@
             --nav-height: 70px;
             --radius: 8px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --shadow: 0 8px 32px rgba(0,0,0,0.3);
-            --shadow-hover: 0 12px 48px rgba(255,255,255,0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 12px 48px rgba(255, 255, 255, 0.05);
         }
 
-        /* --- RESET --- */
-        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior: smooth; background: var(--bg); }
-        body { font-family:'Inter', sans-serif; color:var(--text-main); line-height:1.6; overflow-x:hidden; -webkit-font-smoothing: antialiased; background: var(--bg);}
-        img { display:block; max-width:100%; height:auto;}
-        a { text-decoration:none; color:inherit; transition: var(--transition);}
-        button { cursor:pointer; border:none; font-family:inherit; background:none; transition: var(--transition); }
+        /* --- CORE RESET --- */
+        *, *::before, *::after { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        html { 
+            scroll-behavior: smooth; 
+            background: var(--bg); 
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        img { 
+            display: block; 
+            max-width: 100%; 
+            height: auto; 
+        }
+        
+        a { 
+            text-decoration: none; 
+            color: inherit; 
+            transition: var(--transition);
+        }
+        
+        button { 
+            cursor: pointer; 
+            border: none; 
+            font-family: inherit; 
+            background: none;
+            transition: var(--transition);
+        }
 
-        .container { width:100%; max-width:1200px; margin:0 auto; padding:0 20px; }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
         /* --- ANIMATIONS --- */
-        @keyframes fadeInUp { from {opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
-        @keyframes float {0%,100%{transform:translateY(0px);}50%{transform:translateY(-10px);}}
-        .fade-in { animation: fadeInUp 0.8s ease forwards; }
-        @keyframes spin {to {transform:rotate(360deg);} }
-        @keyframes pulse {0%,100%{opacity:1;}50%{opacity:0.8;}}
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-        /* --- LOADER --- */
-        #loader { position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999; transition: opacity 0.5s ease, visibility 0.5s;}
-        #loader.hidden { opacity:0; visibility:hidden; pointer-events:none;}
-        .spinner { width:40px; height:40px; border:3px solid var(--border); border-top:3px solid var(--accent); border-radius:50%; animation: spin 1s linear infinite;}
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
 
-        /* --- NAVIGATION --- */
-        nav { position:fixed; top:0; left:0; width:100%; height:var(--nav-height); background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); border-bottom:1px solid var(--border); z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:0 5%; box-shadow: var(--shadow); transform:translateY(0); transition: transform 0.3s ease; }
-        nav.hidden { transform: translateY(-100%);}
-        .logo { font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:1.4rem; letter-spacing:-0.05em;}
-        .logo span { color:var(--text-muted);}
-        .nav-items { display:flex; gap:32px; align-items:center; }
-        .nav-link { font-size:0.8rem; color:var(--text-muted); font-weight:500; text-transform:uppercase; letter-spacing:1px; position:relative; padding:8px 0;}
-        .nav-link::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:var(--accent); transition: width 0.3s ease;}
-        .nav-link:hover { color:var(--text-main);}
-        .nav-link:hover::after { width:100%; }
-        .nav-btn { background: var(--accent); color:#000; padding:10px 24px; font-size:0.8rem; font-weight:700; text-transform:uppercase; border-radius: var(--radius); transition: var(--transition); box-shadow:0 4px 12px rgba(255,255,255,0.1);}
-        .nav-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,255,255,0.15); }
+        .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* --- PRELOADER --- */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- FIXED NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--nav-height);
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            box-shadow: var(--shadow);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        nav.hidden {
+            transform: translateY(-100%);
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.05em;
+        }
+        
+        .logo span {
+            color: var(--text-muted);
+        }
+        
+        .nav-items {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 8px 0;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-main);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-btn {
+            background: var(--accent);
+            color: #000;
+            padding: 10px 24px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+        }
 
         /* --- MOBILE MENU --- */
-        .mobile-menu-btn { display:none; background:none; color:var(--text-main); padding:8px; }
-        .mobile-menu { position:fixed; top:var(--nav-height); left:0; width:100%; background:var(--bg); border-bottom:1px solid var(--border); padding:20px; display:none; flex-direction:column; gap:20px; z-index:999; box-shadow:var(--shadow);}
-        .mobile-menu.active { display:flex; }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            color: var(--text-main);
+            padding: 8px;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            width: 100%;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 999;
+            box-shadow: var(--shadow);
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+        }
 
         /* --- HERO --- */
-        .hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; padding: var(--nav-height) 20px 80px; overflow:hidden; background: radial-gradient(circle at 50% 50%, rgba(20,20,20,0.8) 0%, rgba(10,10,10,1) 100%), url('5.webp') center center / cover no-repeat;}
-        .hero::before { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.8) 100%); z-index:1;}
-        .hero-content { position:relative; z-index:2; text-align:center; max-width:800px; width:100%; animation:fadeInUp 1s ease-out 0.3s both;}
-        .hero-label { font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.3em; margin-bottom:24px; display:block; opacity:0.9;}
-        .hero-title { font-family:'Space Grotesk', sans-serif; font-size:clamp(3rem,10vw,6rem); line-height:0.9; font-weight:700; letter-spacing:-0.03em; margin-bottom:40px; text-shadow:0 4px 20px rgba(0,0,0,0.5);}
-        .hero-title br { display:none; }
-        .hero-btn { display:inline-block; background:var(--accent); color:#000; padding:18px 40px; font-weight:700; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.1em; border-radius:var(--radius); transition:var(--transition); box-shadow:var(--shadow); animation:float 3s ease-in-out infinite; position:relative; overflow:hidden;}
-        .hero-btn::after { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition:left 0.5s ease;}
-        .hero-btn:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover);}
-        .hero-btn:hover::after { left:100%; }
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--nav-height) 20px 80px;
+            overflow: hidden;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 1) 100%),
+                url('5.webp') center center / cover no-repeat;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(10, 10, 10, 0.2) 0%,
+                rgba(10, 10, 10, 0.8) 100%
+            );
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+        
+        .hero-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 24px;
+            display: block;
+            opacity: 0.9;
+        }
+        
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            line-height: 0.9;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 40px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-title br {
+            display: none;
+        }
+        
+        .hero-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 18px 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .hero-btn:hover::after {
+            left: 100%;
+        }
 
         /* --- MARQUEE --- */
-        .marquee-wrapper { position:relative; overflow:hidden; background:var(--surface); border-bottom:1px solid var(--border); box-shadow:0 4px 20px rgba(0,0,0,0.2);}
-        .marquee { display:flex; align-items:center; padding:24px 0;}
-        .marquee-track { display:flex; animation: marquee 40s linear infinite;}
-        .marquee-item { font-family:'Space Grotesk', sans-serif; font-size:1rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; white-space:nowrap; margin-right:60px; transition:color 0.3s ease;}
-        .marquee-item:hover { color:var(--accent);}
-        @keyframes marquee {0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+        .marquee-wrapper {
+            position: relative;
+            overflow: hidden;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .marquee {
+            display: flex;
+            align-items: center;
+            padding: 24px 0;
+        }
+        
+        .marquee-track {
+            display: flex;
+            animation: marquee 40s linear infinite;
+        }
+        
+        .marquee-item {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-right: 60px;
+            transition: color 0.3s ease;
+        }
+        
+        .marquee-item:hover {
+            color: var(--accent);
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
 
-        /* --- TRUST SECTION --- */
-        .trust-section { padding:60px 0; background:var(--surface); border-bottom:1px solid var(--border);}
-        .trust-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; max-width:800px; margin:0 auto;}
-        .trust-card { text-align:center; padding:30px 20px; background:var(--bg); border-radius:var(--radius); border:1px solid var(--border); transition:var(--transition);}
-        .trust-card:hover { transform:translateY(-5px); border-color:var(--accent); box-shadow: var(--shadow);}
-        .trust-icon { width:48px; height:48px; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.05); border-radius:50%; padding:12px;}
-        .trust-title { font-family:'Space Grotesk', sans-serif; font-size:1.1rem; margin-bottom:8px; color:var(--text-main);}
-        .trust-description { color:var(--text-muted); font-size:0.9rem; line-height:1.5;}
+        /* --- TRUST & SAFETY SECTION --- */
+        .trust-section {
+            padding: 60px 0;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .trust-card {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .trust-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+        
+        .trust-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            padding: 12px;
+        }
+        
+        .trust-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+        
+        .trust-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
 
         /* --- PRODUCT SECTION --- */
-        .product-section { padding:80px 0; border-bottom:1px solid var(--border); position:relative;}
-        .product-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; max-width:1400px; margin:0 auto;}
-        .product-gallery { padding:40px; border-right:1px solid var(--border);}
-        .main-image { width:100%; aspect-ratio:1/1; background:var(--surface); border-radius:var(--radius); margin-bottom:20px; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow); transition:var(--transition);}
-        .main-image:hover { transform:scale(1.01); box-shadow:var(--shadow-hover);}
-        .main-image img { width:100%; height:100%; object-fit:contain; transition:transform 0.5s ease;}
-        .main-image:hover img { transform:scale(1.05);}
-        .thumbnail-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
-        .thumbnail { aspect-ratio:1/1; background:var(--surface); border:1px solid var(--border); border-radius:calc(var(--radius)-4px); cursor:pointer; opacity:0.6; transition:var(--transition); overflow:hidden; position:relative;}
-        .thumbnail::before { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent); transform:translateX(-100%); transition:transform 0.6s ease;}
-        .thumbnail:hover::before { transform:translateX(100%);}
-        .thumbnail:hover, .thumbnail.active { opacity:1; border-color:var(--accent); transform:translateY(-2px);}
-        .thumbnail img { width:100%; height:100%; object-fit:cover;}
-
-        .product-info { padding:40px; display:flex; flex-direction:column; justify-content:center;}
-        .badge { display:inline-block; padding:6px 16px; border:1px solid var(--border); border-radius:50px; font-size:0.7rem; text-transform:uppercase; margin-bottom:24px; color:var(--text-muted); align-self:flex-start; background:rgba(255,255,255,0.05); transition:var(--transition);}
-        .badge:hover { border-color:var(--accent); color:var(--accent);}
-        .product-title { font-family:'Space Grotesk', sans-serif; font-size:clamp(2.5rem,5vw,4rem); line-height:0.95; margin-bottom:20px;}
-        .product-price { font-size:1.8rem; margin-bottom:32px; display:flex; align-items:center; gap:16px; font-family:'Space Grotesk', sans-serif; font-weight:600;}
-        .product-price del { color:var(--text-muted); font-size:1.2rem; font-weight:400; text-decoration-color:#ef4444;}
-        .urgency-badge { display:inline-block; background:linear-gradient(135deg,#ef4444,#dc2626); color:white; padding:6px 16px; border-radius:50px; font-size:0.8rem; font-weight:600; margin-left:12px; animation:pulse 2s infinite;}
-        .product-description { color:var(--text-muted); margin-bottom:40px; font-size:1.1rem; line-height:1.7;}
-        .buy-button { display:block; width:100%; background:linear-gradient(135deg, var(--accent), #f0f0f0); color:#000; padding:22px; font-weight:800; text-transform:uppercase; letter-spacing:0.15em; border-radius:var(--radius); text-align:center; margin-bottom:32px; transition:var(--transition); box-shadow:var(--shadow); font-size:1.1rem; position:relative; overflow:hidden; border:none;}
-        .buy-button::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition:left 0.5s ease;}
-        .buy-button:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover);}
-        .buy-button:hover::before { left:100%; }
-
-        .specs-grid { display:grid; gap:1px; background:var(--border); border-radius:var(--radius); overflow:hidden; margin:40px 0; box-shadow:0 4px 20px rgba(0,0,0,0.2);}
-        .spec-item { display:flex; justify-content:space-between; padding:20px 24px; background:var(--surface); transition:var(--transition);}
-        .spec-item:hover { background:rgba(255,255,255,0.02);}
-        .spec-label { color:var(--text-muted); font-size:0.9rem;}
-        .spec-value { font-weight:600; font-family:'Space Grotesk', sans-serif;}
-
-        .accordion { margin-top:40px;}
-        .accordion-item { border-bottom:1px solid var(--border); transition:var(--transition);}
-        .accordion-item:hover { border-color:var(--accent);}
-        .accordion-header { width:100%; padding:24px 0; text-align:left; color:var(--text-main); font-weight:600; display:flex; justify-content:space-between; align-items:center; font-size:1rem; transition:color 0.3s ease; cursor:pointer;}
-        .accordion-header:hover { color:var(--accent);}
-        .accordion-header .icon { transition: transform 0.3s ease;}
-        .accordion-item.active .icon { transform:rotate(180deg);}
-        .accordion-content { max-height:0; overflow:hidden; transition:max-height 0.4s ease; color:var(--text-muted);}
-        .accordion-content p { padding-bottom:24px; font-size:0.95rem; line-height:1.6;}
+        .product-section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .product-gallery {
+            padding: 40px;
+            border-right: 1px solid var(--border);
+        }
+        
+        .main-image {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: var(--surface);
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .main-image:hover {
+            transform: scale(1.01);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+        
+        .main-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        
+        .thumbnail {
+            aspect-ratio: 1/1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--radius) - 4px);
+            cursor: pointer;
+            opacity: 0.6;
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .thumbnail:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .thumbnail:hover,
+        .thumbnail.active {
+            opacity: 1;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            color: var(--text-muted);
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+        
+        .badge:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .product-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 0.95;
+            margin-bottom: 20px;
+        }
+        
+        .product-price {
+            font-size: 1.8rem;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        }
+        
+        .product-price del {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 400;
+            text-decoration-color: #ef4444;
+        }
+        
+        .urgency-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 12px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        .product-description {
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .buy-button {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), #f0f0f0);
+            color: #000;
+            padding: 22px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-bottom: 32px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+        
+        .buy-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .buy-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .buy-button:hover::before {
+            left: 100%;
+        }
+        
+        .specs-grid {
+            display: grid;
+            gap: 1px;
+            background: var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 40px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: var(--surface);
+            transition: var(--transition);
+        }
+        
+        .spec-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .spec-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .spec-value {
+            font-weight: 600;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .accordion {
+            margin-top: 40px;
+        }
+        
+        .accordion-item {
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .accordion-item:hover {
+            border-color: var(--accent);
+        }
+        
+        .accordion-header {
+            width: 100%;
+            padding: 24px 0;
+            text-align: left;
+            color: var(--text-main);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .accordion-header:hover {
+            color: var(--accent);
+        }
+        
+        .accordion-header .icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-item.active .icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            color: var(--text-muted);
+        }
+        
+        .accordion-content p {
+            padding-bottom: 24px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
 
         /* --- REVIEWS SECTION --- */
-        .reviews-section { padding:80px 0; background:var(--surface); border-bottom:1px solid var(--border);}
-        .section-header { text-align:center; margin-bottom:60px;}
-        .section-title { font-family:'Space Grotesk', sans-serif; font-size:2.5rem; margin-bottom:16px; color:var(--text-main);}
-        .section-subtitle { color:var(--text-muted); max-width:600px; margin:0 auto; font-size:1.1rem;}
-        .reviews-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px; max-width:1200px; margin:0 auto;}
-        .review-card { background:var(--bg); border-radius:var(--radius); padding:32px; border:1px solid var(--border); transition:var(--transition); opacity:0; transform:translateY(30px);}
-        .review-card.visible { opacity:1; transform:translateY(0);}
-        .review-card:hover { transform:translateY(-5px); border-color:var(--accent); box-shadow:var(--shadow);}
-        .stars { display:flex; gap:4px; margin-bottom:16px; color:#facc15;}
-        .review-text { color:var(--text-muted); font-size:0.95rem; line-height:1.5; margin-bottom:16px;}
-        .reviewer { font-weight:600; font-size:0.9rem; color:var(--text-main);}
+        .reviews-section {
+            padding: 80px 0;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: var(--text-main);
+        }
+        
+        .section-subtitle {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .review-card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 32px;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .review-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+        
+        .stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .star {
+            color: #fbbf24;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .review-text {
+            color: var(--text-main);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+        
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .author-info h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        
+        .author-info p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .feature-card {
+            background: var(--surface);
+            padding: 60px 40px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+        
+        .feature-card:hover {
+            background: var(--bg);
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            padding: 14px;
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* --- SUPPORT --- */
+        .support {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .support-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .support-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .support-subtitle {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .support-form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--surface);
+            padding: 40px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            padding: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Message styles */
+        .form-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--radius);
+            background: var(--surface);
+            font-size: 0.9rem;
+        }
+        
+        .form-message.success {
+            display: block;
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+        
+        .form-message.error {
+            display: block;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
 
         /* --- FOOTER --- */
-        footer { padding:60px 0; text-align:center; background:var(--bg); border-top:1px solid var(--border);}
-        .footer-links { display:flex; justify-content:center; gap:32px; flex-wrap:wrap; margin-bottom:24px;}
-        .footer-links a { color:var(--text-muted); font-size:0.8rem; transition:color 0.3s;}
-        .footer-links a:hover { color:var(--accent);}
-        .footer-copy { font-size:0.75rem; color:var(--text-muted);}
+        footer {
+            padding: 80px 0 100px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
 
-        /* --- STICKY BUY BAR --- */
-        .sticky-buy { position:fixed; bottom:0; left:0; width:100%; background:var(--surface); border-top:1px solid var(--border); padding:16px 20px; display:flex; justify-content:space-between; align-items:center; z-index:999; display:none;}
-        .sticky-buy.active { display:flex; animation:fadeInUp 0.5s ease forwards;}
-        .sticky-buy-price { font-weight:700; font-size:1rem;}
-        .sticky-buy-btn { background:var(--accent); color:#000; padding:12px 20px; border-radius:var(--radius); font-weight:700; text-transform:uppercase; font-size:0.9rem; transition:var(--transition);}
-        .sticky-buy-btn:hover { transform:translateY(-2px); box-shadow:var(--shadow-hover);}
-        @media(max-width:1024px) { .product-grid { grid-template-columns:1fr; } .hero-title br { display:block; } .mobile-menu-btn { display:block;} .nav-items { display:none;} }
+        /* --- STICKY MOBILE BUY BAR --- */
+        .sticky-buy-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 14px 20px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .sticky-buy-bar.hidden {
+            transform: translateY(100%);
+        }
+        
+        .sticky-product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .sticky-product-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+        
+        .sticky-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+        
+        .sticky-buy-btn {
+            background: linear-gradient(135deg, var(--accent), #f0f0f0);
+            color: #000;
+            padding: 12px 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            border-radius: var(--radius);
+            letter-spacing: 0.05em;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+        
+        .sticky-buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+            
+            .product-gallery {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .trust-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            /* Navigation */
+            .nav-items {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            /* Hero */
+            .hero-title br {
+                display: block;
+            }
+            
+            .hero {
+                padding: var(--nav-height) 20px 60px;
+                min-height: 90vh;
+            }
+            
+            .hero-btn {
+                padding: 16px 32px;
+                font-size: 0.9rem;
+            }
+            
+            /* Product */
+            .product-gallery,
+            .product-info {
+                padding: 30px 20px;
+            }
+            
+            .thumbnail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            /* Trust & Safety */
+            .trust-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            /* Reviews */
+            .reviews-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            /* Features */
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feature-card {
+                padding: 40px 30px;
+            }
+            
+            /* Sticky Mobile Buy Bar */
+            .sticky-buy-bar {
+                display: flex;
+            }
+            
+            .buy-button {
+                display: none;
+            }
+            
+            /* Footer */
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: clamp(2.5rem, 8vw, 4rem);
+            }
+            
+            .hero-btn {
+                padding: 14px 28px;
+                font-size: 0.85rem;
+            }
+            
+            .marquee-item {
+                font-size: 0.9rem;
+                margin-right: 40px;
+            }
+            
+            .product-title {
+                font-size: clamp(2rem, 6vw, 3rem);
+            }
+            
+            .product-price {
+                font-size: 1.5rem;
+            }
+            
+            .support-title,
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .support-form {
+                padding: 30px 20px;
+            }
+            
+            .sticky-buy-bar {
+                padding: 12px 16px;
+            }
+            
+            .sticky-buy-btn {
+                padding: 10px 20px;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- LOADER -->
-    <div id="loader"><div class="spinner"></div></div>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
 
-    <!-- NAVIGATION -->
-    <nav id="navbar">
-        <div class="logo">DUSTED<span>™</span></div>
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <a href="#" class="logo">DUSTED<span>.</span></a>
+        
         <div class="nav-items">
             <a href="#product" class="nav-link">Product</a>
+            <a href="#features" class="nav-link">Features</a>
             <a href="#reviews" class="nav-link">Reviews</a>
-            <a href="#faq" class="nav-link">FAQ</a>
-            <a href="#buy" class="nav-btn">Buy Now</a>
+            <a href="#support" class="nav-link">Support</a>
+            <a href="https://buy.stripe.com/5kQfZh4RWa0Aehu8oE5Rm00" class="nav-btn">Buy Now</a>
         </div>
-        <button class="mobile-menu-btn" id="mobile-menu-btn"><i data-lucide="menu"></i></button>
+        
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i data-lucide="menu"></i>
+        </button>
     </nav>
-    <div class="mobile-menu" id="mobile-menu">
-        <a href="#product" class="nav-link">Product</a>
-        <a href="#reviews" class="nav-link">Reviews</a>
-        <a href="#faq" class="nav-link">FAQ</a>
-        <a href="#buy" class="nav-btn">Buy Now</a>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#product" class="nav-link" onclick="toggleMobileMenu()">Product</a>
+        <a href="#features" class="nav-link" onclick="toggleMobileMenu()">Features</a>
+        <a href="#reviews" class="nav-link" onclick="toggleMobileMenu()">Reviews</a>
+        <a href="#support" class="nav-link" onclick="toggleMobileMenu()">Support</a>
+        <a href="https://buy.stripe.com/5kQfZh4RWa0Aehu8oE5Rm00" class="nav-btn">Buy Now</a>
     </div>
 
-    <!-- HERO -->
-    <section class="hero">
+    <!-- Hero Section -->
+    <header class="hero">
         <div class="hero-content">
-            <span class="hero-label">Limited Stock</span>
-            <h1 class="hero-title">DUSTED™ Vacuum Series III<br>Industrial Suction</h1>
-            <a href="YOUR_STRIPE_LINK_HERE" class="hero-btn">Order Now €16,95</a>
+            <span class="hero-label">Vacuum Series III</span>
+            <h1 class="hero-title">BEYOND <br>CLEAN</h1>
+            <a href="#product" class="hero-btn">Buy Now — €16.95</a>
         </div>
-    </section>
+    </header>
 
-    <!-- TRUST SECTION -->
+    <!-- Marquee -->
+    <div class="marquee-wrapper">
+        <div class="marquee">
+            <div class="marquee-track">
+                <span class="marquee-item">15000Pa Suction</span>
+                <span class="marquee-item">Brushless Motor</span>
+                <span class="marquee-item">HEPA Matrix</span>
+                <span class="marquee-item">45-Min Runtime</span>
+                <span class="marquee-item">USB-C Rapid</span>
+                <span class="marquee-item">15000Pa Suction</span>
+                <span class="marquee-item">Brushless Motor</span>
+                <span class="marquee-item">HEPA Matrix</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust & Safety Section -->
     <section class="trust-section">
-        <div class="container trust-grid">
-            <div class="trust-card fade-in">
-                <div class="trust-icon"><i data-lucide="shield"></i></div>
-                <h3 class="trust-title">Secure Payment</h3>
-                <p class="trust-description">All transactions are encrypted and secure via Stripe.</p>
-            </div>
-            <div class="trust-card fade-in">
-                <div class="trust-icon"><i data-lucide="package"></i></div>
-                <h3 class="trust-title">Fast Shipping</h3>
-                <p class="trust-description">Ships directly from our warehouse in Cyprus to you.</p>
-            </div>
-            <div class="trust-card fade-in">
-                <div class="trust-icon"><i data-lucide="clock"></i></div>
-                <h3 class="trust-title">24/7 Support</h3>
-                <p class="trust-description">Need help? Reach us anytime at <a href="mailto:dusted.help@hotmail.com">dusted.help@hotmail.com</a>.</p>
+        <div class="container">
+            <div class="trust-grid">
+                <div class="trust-card">
+                    <div class="trust-icon">
+                        <i data-lucide="shield-check" color="#fff" size="24"></i>
+                    </div>
+                    <h3 class="trust-title">Secure Checkout</h3>
+                    <p class="trust-description">Protected by Stripe with 256-bit encryption</p>
+                </div>
+                <div class="trust-card">
+                    <div class="trust-icon">
+                        <i data-lucide="truck" color="#fff" size="24"></i>
+                    </div>
+                    <h3 class="trust-title">Fast Shipping</h3>
+                    <p class="trust-description">Free worldwide delivery in 10-18 days</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- PRODUCT SECTION -->
-    <section class="product-section" id="product">
+    <!-- Product Section -->
+    <section id="product" class="product-section">
         <div class="product-grid">
             <div class="product-gallery">
-                <div class="main-image"><img src="5.webp" alt="DUSTED Vacuum"></div>
+                <div class="main-image">
+                    <img src="5.webp" id="mainImage" alt="DUSTED Vacuum Series III">
+                </div>
+                
                 <div class="thumbnail-grid">
-                    <div class="thumbnail active"><img src="5.webp" alt="DUSTED Vacuum"></div>
-                    <div class="thumbnail"><img src="6.webp" alt="DUSTED Vacuum"></div>
-                    <div class="thumbnail"><img src="7.webp" alt="DUSTED Vacuum"></div>
-                    <div class="thumbnail"><img src="8.webp" alt="DUSTED Vacuum"></div>
+                    <div class="thumbnail active" onclick="changeImage('5.webp', this)">
+                        <img src="5.webp" alt="Product View 1">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('4.webp', this)">
+                        <img src="4.webp" alt="Product View 2">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('2.webp', this)">
+                        <img src="2.webp" alt="Product View 3">
+                    </div>
+                    <div class="thumbnail" onclick="changeImage('1.webp', this)">
+                        <img src="1.webp" alt="Product View 4">
+                    </div>
                 </div>
             </div>
+            
             <div class="product-info">
-                <span class="badge">Limited Stock</span>
-                <h2 class="product-title">DUSTED™ Vacuum Series III</h2>
-                <div class="product-price">€16,95<span class="urgency-badge">Hurry!</span></div>
-                <p class="product-description">Industrial suction with brushless motor, HEPA filtration, and precise detailing. Perfect for home or workshop.</p>
-                <button class="buy-button" onclick="location.href='YOUR_STRIPE_LINK_HERE'">Buy Now</button>
-
+                <span class="badge">In Stock • Ready to Ship</span>
+                
+                <h2 class="product-title">DUSTED™<br>Vacuum Series III</h2>
+                
+                <div class="product-price">
+                    <span>€16.95 EUR</span>
+                    <del>€34.65</del>
+                    <span class="urgency-badge">Limited Stock</span>
+                </div>
+                
+                <p class="product-description">
+                    Industrial velocity, portable form. The Series III features a brushless motor designed for automotive detailing and high-end workspaces.
+                </p>
+                
+                <a href="https://buy.stripe.com/5kQfZh4RWa0Aehu8oE5Rm00" class="buy-button">Secure Purchase</a>
+                
                 <div class="specs-grid">
-                    <div class="spec-item"><span class="spec-label">Motor</span><span class="spec-value">Brushless</span></div>
-                    <div class="spec-item"><span class="spec-label">Filter</span><span class="spec-value">HEPA</span></div>
-                    <div class="spec-item"><span class="spec-label">Voltage</span><span class="spec-value">220-240V</span></div>
-                    <div class="spec-item"><span class="spec-label">Power</span><span class="spec-value">1200W</span></div>
+                    <div class="spec-item">
+                        <span class="spec-label">Suction Power</span>
+                        <span class="spec-value">15000 Pa</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Battery</span>
+                        <span class="spec-value">4000mAh Dual-Cell</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Motor RPM</span>
+                        <span class="spec-value">35,000 RPM</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Weight</span>
+                        <span class="spec-value">365g</span>
+                    </div>
                 </div>
-
-                <!-- FAQ ACCORDION -->
-                <div class="accordion" id="faq">
-                    <div class="accordion-item">
-                        <div class="accordion-header"><span>Shipping Time</span><i data-lucide="chevron-down" class="icon"></i></div>
-                        <div class="accordion-content"><p>Delivery takes 3-5 business days in Cyprus.</p></div>
+                
+                <div class="accordion">
+                    <div class="accordion-item" onclick="toggleAccordion(this)">
+                        <button class="accordion-header">
+                            Washable HEPA Filter
+                            <i data-lucide="chevron-down" class="icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>The industrial-grade filter can be rinsed with water. Ensure it is 100% dry before re-inserting.</p>
+                        </div>
                     </div>
-                    <div class="accordion-item">
-                        <div class="accordion-header"><span>Warranty</span><i data-lucide="chevron-down" class="icon"></i></div>
-                        <div class="accordion-content"><p>1-year warranty included for defects and malfunctions.</p></div>
-                    </div>
-                    <div class="accordion-item">
-                        <div class="accordion-header"><span>Support</span><i data-lucide="chevron-down" class="icon"></i></div>
-                        <div class="accordion-content"><p>Contact us anytime at <a href="mailto:dusted.help@hotmail.com">dusted.help@hotmail.com</a>.</p></div>
+                    
+                    <div class="accordion-item" onclick="toggleAccordion(this)">
+                        <button class="accordion-header">
+                            Global Shipping
+                            <i data-lucide="chevron-down" class="icon"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <p>We deliver worldwide-free within 10-18 business days.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- REVIEWS SECTION -->
-    <section class="reviews-section" id="reviews">
-        <div class="section-header">
-            <h2 class="section-title">Customer Reviews</h2>
-            <p class="section-subtitle">See what our satisfied customers say about the DUSTED™ Vacuum Series III.</p>
-        </div>
-        <div class="reviews-grid">
-            <div class="review-card fade-in">
-                <div class="stars">★★★★★</div>
-                <p class="review-text">Absolutely amazing vacuum! Powerful and quiet.</p>
-                <div class="reviewer">— Alex P.</div>
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Customer Reviews</h2>
+                <p class="section-subtitle">Join thousands of satisfied customers who have upgraded their cleaning game</p>
             </div>
-            <div class="review-card fade-in">
-                <div class="stars">★★★★★</div>
-                <p class="review-text">Fast delivery and excellent quality. Highly recommend!</p>
-                <div class="reviewer">— Maria K.</div>
-            </div>
-            <div class="review-card fade-in">
-                <div class="stars">★★★★★</div>
-                <p class="review-text">Perfect for my workshop. Suction is strong and consistent.</p>
-                <div class="reviewer">— George L.</div>
+            
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="stars">
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                    </div>
+                    <p class="review-text">"This vacuum changed how I clean my car. The suction power is unreal for something so compact. Worth every penny!"</p>
+                    <div class="review-author">
+                        <div class="author-avatar">MJ</div>
+                        <div class="author-info">
+                            <h4>Michael J.</h4>
+                            <p>Auto Detailer • Verified Purchase</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="stars">
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                    </div>
+                    <p class="review-text">"As a tech enthusiast, I appreciate the thoughtful design. Battery life is excellent, and it's surprisingly quiet."</p>
+                    <div class="review-author">
+                        <div class="author-avatar">SR</div>
+                        <div class="author-info">
+                            <h4>Sarah R.</h4>
+                            <p>Product Designer • Verified Purchase</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-card">
+                    <div class="stars">
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                        <i data-lucide="star" class="star" fill="#fbbf24" stroke="#fbbf24"></i>
+                    </div>
+                    <p class="review-text">"Perfect for my small apartment and workshop. The washable filter saves so much money on replacements."</p>
+                    <div class="review-author">
+                        <div class="author-avatar">TK</div>
+                        <div class="author-info">
+                            <h4>Thomas K.</h4>
+                            <p>Woodworker • Verified Purchase</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="wind" color="#fff" size="32"></i>
+                    </div>
+                    <h3 class="feature-title">Cyclone Tech</h3>
+                    <p class="feature-description">
+                        Proprietary airflow creates a vortex that prevents dust from clogging the filter.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="battery" color="#fff" size="32"></i>
+                    </div>
+                    <h3 class="feature-title">Lithium Core</h3>
+                    <p class="feature-description">
+                        Dual-cell architecture provides sustained power for deep cleaning sessions.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="cpu" color="#fff" size="32"></i>
+                    </div>
+                    <h3 class="feature-title">Silent Force</h3>
+                    <p class="feature-description">
+                        Acoustically tuned motor housing reduces noise to under 70dB while maintaining torque.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support -->
+    <section id="support" class="support">
+        <div class="container">
+            <div class="support-header">
+                <h2 class="support-title">Direct Support</h2>
+                <p class="support-subtitle">Have a technical question? Our team responds within 24 hours.</p>
+            </div>
+            
+            <!-- FORMSPREE FORM - SIMPLIFIED WORKING VERSION -->
+            <form class="support-form" id="supportForm" action="https://formspree.io/f/xzdvewen" method="POST" >
+                <input type="hidden" name="_subject" value="New Support Request from DUSTED">
+                <input type="hidden" name="_replyto" id="replyTo">
+                <input type="hidden" name="_language" value="en">
+                <input type="hidden" name="_format" value="plain">
+                <input type="text" name="_gotcha" style="display:none">
+                
+                <div class="form-group">
+                    <input type="email" name="email" id="email" class="form-input" placeholder="Your Email Address" required>
+                </div>
+                
+                <div class="form-group">
+                    <textarea name="message" id="message" class="form-textarea" placeholder="Your technical inquiry or question..." rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button" id="submitBtn">Submit Request</button>
+            </form>
+            
+            <!-- Message Display -->
+            <div id="formMessage" class="form-message"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-        <div class="footer-links">
-            <a href="#">Terms & Conditions</a>
-            <a href="#">Privacy Policy</a>
+        <div class="container">
+            <div class="footer-content">
+                <div>&copy; 2026 DUSTED INC.</div>
+                <div>DESIGNED IN CYPRUS</div>
+            </div>
         </div>
-        <div class="footer-copy">&copy; 2026 DUSTED™. All rights reserved.</div>
     </footer>
 
-    <!-- STICKY BUY BAR -->
-    <div class="sticky-buy" id="sticky-buy">
-        <div class="sticky-buy-price">€16,95</div>
-        <button class="sticky-buy-btn" onclick="location.href='YOUR_STRIPE_LINK_HERE'">Buy Now</button>
+    <!-- Sticky Mobile Buy Bar -->
+    <div class="sticky-buy-bar" id="stickyBuyBar">
+        <div class="sticky-product-info">
+            <div class="sticky-product-name">DUSTED Vacuum Series III</div>
+            <div class="sticky-price">€16.95</div>
+        </div>
+        <a href="https://buy.stripe.com/5kQfZh4RWa0Aehu8oE5Rm00" class="sticky-buy-btn">BUY NOW</a>
     </div>
 
-    <!-- SCRIPTS -->
     <script>
-        // Loader
-        window.addEventListener('load', () => { document.getElementById('loader').classList.add('hidden'); });
+    // Initialize Lucide icons
+    lucide.createIcons();
 
-        // Mobile Menu
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => { mobileMenu.classList.toggle('active'); });
+    // Preloader
+    window.addEventListener('load', function () {
+        const loader = document.getElementById('loader');
+        if (loader) {
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 500);
+        }
 
-        // Accordion
-        document.querySelectorAll('.accordion-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const item = header.parentElement;
-                item.classList.toggle('active');
-                const content = header.nextElementSibling;
-                content.style.maxHeight = item.classList.contains('active') ? content.scrollHeight + 'px' : '0';
-            });
+        // Hero background fallback
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            const bgImage = new Image();
+            bgImage.src = '5.webp';
+            bgImage.onerror = function () {
+                hero.style.background =
+                    'radial-gradient(circle at 50% 50%, #141414 0%, #0a0a0a 100%)';
+            };
+        }
+
+        initMobileBar();
+        initReviewsAnimation();
+        initNavbarScroll();
+    });
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (!mobileMenu) return;
+
+        mobileMenu.classList.toggle('active');
+
+        const menuBtnIcon = document.querySelector('.mobile-menu-btn i');
+        if (menuBtnIcon) {
+            menuBtnIcon.setAttribute(
+                'data-lucide',
+                mobileMenu.classList.contains('active') ? 'x' : 'menu'
+            );
+            lucide.createIcons();
+        }
+    }
+
+    // Image gallery
+    function changeImage(src, element) {
+        const mainImage = document.getElementById('mainImage');
+        if (mainImage) mainImage.src = src;
+
+        document.querySelectorAll('.thumbnail').forEach(t =>
+            t.classList.remove('active')
+        );
+        if (element) element.classList.add('active');
+    }
+
+    // Accordion
+    function toggleAccordion(element) {
+        const isActive = element.classList.contains('active');
+
+        document.querySelectorAll('.accordion-item').forEach(item => {
+            item.classList.remove('active');
+            const content = item.querySelector('.accordion-content');
+            if (content) content.style.maxHeight = null;
         });
 
-        // Sticky Buy Bar
-        const stickyBuy = document.getElementById('sticky-buy');
-        window.addEventListener('scroll', () => {
-            stickyBuy.classList.toggle('active', window.scrollY > 600);
-        });
+        if (!isActive) {
+            element.classList.add('active');
+            const content = element.querySelector('.accordion-content');
+            if (content) content.style.maxHeight = content.scrollHeight + 'px';
+        }
+    }
 
-        // Thumbnail switching
-        const mainImg = document.querySelector('.main-image img');
-        document.querySelectorAll('.thumbnail').forEach(thumb => {
-            thumb.addEventListener('click', () => {
-                document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-                thumb.classList.add('active');
-                mainImg.src = thumb.querySelector('img').src;
-            });
-        });
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
 
-        // Navbar hide on scroll
-        let lastScroll = 0;
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            if(currentScroll > lastScroll && currentScroll > 100){
-                navbar.classList.add('hidden');
-            } else {
-                navbar.classList.remove('hidden');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                e.preventDefault();
+
+                const nav = document.querySelector('nav');
+                const navHeight = nav ? nav.offsetHeight : 0;
+
+                window.scrollTo({
+                    top: targetElement.offsetTop - navHeight,
+                    behavior: 'smooth'
+                });
+
+                const mobileMenu = document.getElementById('mobileMenu');
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
+                    toggleMobileMenu();
+                }
             }
-            lastScroll = currentScroll;
+        });
+    });
+
+    // Reviews scroll animation
+    function initReviewsAnimation() {
+        const reviewCards = document.querySelectorAll('.review-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 200);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         });
 
-        // Lucide icons
-        lucide.createIcons();
-    </script>
+        reviewCards.forEach(card => observer.observe(card));
+    }
+
+    // FIXED: Stable navbar scroll behavior
+    let lastScroll = 0;
+    const navbar = document.getElementById('mainNav');
+    
+    function initNavbarScroll() {
+        if (!navbar) return;
+        
+        // Reset navbar to always be visible
+        navbar.classList.remove('hidden');
+        
+        // Remove any problematic scroll event listeners
+        window.addEventListener('scroll', handleNavbarScroll, { passive: true });
+    }
+    
+    function handleNavbarScroll() {
+        const currentScroll = window.pageYOffset;
+        
+        // Only hide navbar when scrolling down fast past hero section
+        if (currentScroll > 100 && currentScroll > lastScroll + 50) {
+            navbar.classList.add('hidden');
+        } else {
+            navbar.classList.remove('hidden');
+        }
+        
+        lastScroll = currentScroll;
+    }
+
+    // Sticky mobile buy bar
+    const stickyBar = document.getElementById('stickyBuyBar');
+    
+    function initMobileBar() {
+        if (window.innerWidth <= 768) {
+            if (stickyBar) {
+                stickyBar.style.display = 'flex';
+                stickyBar.classList.remove('hidden');
+                
+                // Simple show/hide for mobile bar
+                let lastStickyScroll = 0;
+                window.addEventListener('scroll', function() {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    
+                    if (scrollTop > lastStickyScroll && scrollTop > 300) {
+                        stickyBar.classList.add('hidden');
+                    } else {
+                        stickyBar.classList.remove('hidden');
+                    }
+                    
+                    lastStickyScroll = scrollTop <= 0 ? 0 : scrollTop;
+                }, { passive: true });
+            }
+        } else {
+            if (stickyBar) {
+                stickyBar.style.display = 'none';
+            }
+        }
+    }
+
+    // Window resize handler
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(initMobileBar, 250);
+    });
+
+    // ===== FORMSPREE (FIXED, NO HTML CHANGES) =====
+    const supportForm = document.querySelector('.support-form');
+
+    if (supportForm) {
+        supportForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = supportForm.querySelector('button[type="submit"]');
+            const emailInput = supportForm.querySelector('input[name="email"]');
+            const textarea = supportForm.querySelector('textarea[name="message"]');
+
+            if (!emailInput || !textarea) return;
+
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            try {
+                const formData = new FormData(supportForm);
+
+                const response = await fetch(supportForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    submitBtn.textContent = 'Sent ✓';
+                    supportForm.reset();
+
+                    setTimeout(() => {
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                    }, 2500);
+                } else {
+                    throw new Error('Formspree error');
+                }
+            } catch (err) {
+                console.error(err);
+                submitBtn.textContent = 'Error';
+                submitBtn.disabled = false;
+
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                }, 2000);
+            }
+        });
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+        initMobileBar();
+        initReviewsAnimation();
+        initNavbarScroll();
+        
+        // Create star icons for reviews
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            lucide.createIcons({ icons: { star: star.outerHTML } });
+        });
+    });
+</script>
 </body>
 </html>
