@@ -1174,7 +1174,7 @@
 
         /* --- FOOTER --- */
         footer {
-            padding: 60px 0 80px;
+            padding: 80px 0 30px;
             border-top: 1px solid var(--border);
             background: var(--surface);
         }
@@ -1182,7 +1182,7 @@
         .footer-content {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 40px;
         }
         
         .footer-top {
@@ -1201,11 +1201,31 @@
         
         .footer-links a {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: color 0.3s ease;
         }
         
         .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .legal-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            padding: 25px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .legal-links a {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            transition: color 0.3s ease;
+        }
+        
+        .legal-links a:hover {
             color: var(--accent);
         }
         
@@ -1216,9 +1236,8 @@
             flex-wrap: wrap;
             gap: 20px;
             color: var(--text-muted);
-            font-size: 0.85rem;
-            padding-top: 30px;
-            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            padding-top: 20px;
         }
 
         /* --- STICKY MOBILE BUY BAR --- */
@@ -1372,18 +1391,25 @@
             /* Footer */
             .footer-top {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
+                text-align: center;
                 gap: 15px;
             }
             
             .footer-links {
-                flex-direction: column;
+                justify-content: center;
+                gap: 20px;
+            }
+            
+            .legal-links {
                 gap: 15px;
+                padding: 20px 0;
             }
             
             .footer-bottom {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: center;
+                text-align: center;
                 gap: 10px;
             }
             
@@ -1429,6 +1455,18 @@
                 padding: 30px 20px;
             }
             
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .legal-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            
             .sticky-buy-bar {
                 padding: 12px 16px;
             }
@@ -1456,7 +1494,6 @@
             <a href="#features" class="nav-link">Features</a>
             <a href="#reviews" class="nav-link">Reviews</a>
             <a href="#support" class="nav-link">Support</a>
-            <a href="javascript:void(0)" onclick="showLegalModal('privacy')" class="nav-link">Privacy</a>
             <a href="https://buy.stripe.com/5kQfZh4RWa0Aehu8oE5Rm00" class="nav-btn">Buy Now</a>
         </div>
         
@@ -1471,8 +1508,6 @@
         <a href="#features" class="nav-link" onclick="toggleMobileMenu()">Features</a>
         <a href="#reviews" class="nav-link" onclick="toggleMobileMenu()">Reviews</a>
         <a href="#support" class="nav-link" onclick="toggleMobileMenu()">Support</a>
-        <a href="javascript:void(0)" onclick="showLegalModal('privacy'); toggleMobileMenu()" class="nav-link">Privacy Policy</a>
-        <a href="javascript:void(0)" onclick="showLegalModal('terms'); toggleMobileMenu()" class="nav-link">Terms</a>
         <a href="https://buy.stripe.com/5kQfZh4RWa0Aehu8oE5Rm00" class="nav-btn">Buy Now</a>
     </div>
 
@@ -1783,13 +1818,17 @@
                         <a href="#features">Features</a>
                         <a href="#reviews">Reviews</a>
                         <a href="#support">Support</a>
-                        <a href="javascript:void(0)" onclick="showLegalModal('privacy')">Privacy Policy</a>
-                        <a href="javascript:void(0)" onclick="showLegalModal('terms')">Terms of Service</a>
-                        <a href="javascript:void(0)" onclick="showLegalModal('refund')">Refund Policy</a>
-                        <a href="javascript:void(0)" onclick="showLegalModal('shipping')">Shipping Policy</a>
                         <a href="mailto:dusted.help@hotmail.com">Contact</a>
                     </div>
                 </div>
+                
+                <div class="legal-links">
+                    <a href="javascript:void(0)" onclick="showLegalModal('privacy')">Privacy Policy</a>
+                    <a href="javascript:void(0)" onclick="showLegalModal('terms')">Terms of Service</a>
+                    <a href="javascript:void(0)" onclick="showLegalModal('refund')">Refund Policy</a>
+                    <a href="javascript:void(0)" onclick="showLegalModal('shipping')">Shipping Policy</a>
+                </div>
+                
                 <div class="footer-bottom">
                     <div>&copy; 2026 DUSTED INC. All rights reserved.</div>
                     <div>DESIGNED IN CYPRUS • SHIPPED WORLDWIDE</div>
